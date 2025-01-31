@@ -92,3 +92,19 @@ def reset_database_contents(db:'IFDatabase'):
     db.setModelUnits("kN,m,t,s,C")
 
     db.createAnalysisStructural("Analysis 1")
+
+
+
+def create_reinforcing_bar_attributes(db:'IFDatabase', diameters:list) -> list:
+    names = []
+    for dia in diameters:
+        name = f"Bar {dia}"
+        util = db.createParametricSection(name)
+        util.setType("Circular Solid")
+        util.setDimensions(['D'], [dia])
+
+        attr = db.createGeometricLine(name)
+        attr.setValue("elementType", "2D Thick Beam")
+        attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
+        names.append(name)
+    return names
