@@ -70,6 +70,8 @@ def delete_all_database_contents(db:'IFDatabase'):
     db.deleteAllAttributes()
     db.deleteAll()
 
+    db.createAnalysisStructural("Analysis 1")
+
 
 def reset_database_contents(db:'IFDatabase'):
     # Close any previous results
