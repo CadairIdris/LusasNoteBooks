@@ -106,7 +106,18 @@ def create_reinforcing_bar_attributes(db:'IFDatabase', diameters:list) -> list:
         util.setDimensions(['D'], [dia])
 
         attr = db.createGeometricLine(name)
-        attr.setValue("elementType", "2D Thick Beam")
         attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
         names.append(name)
     return names
+
+
+
+def create_circular_section(db:'IFDatabase', name:str, dia:float) -> 'IFAttribute':
+    util = db.createParametricSection(name)
+    util.setType("Circular Solid")
+    util.setDimensions(['D'], [dia])
+
+    attr = db.createGeometricLine(name)
+    attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
+    return attr
+    +
