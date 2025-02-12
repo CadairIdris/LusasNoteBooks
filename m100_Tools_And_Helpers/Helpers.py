@@ -77,12 +77,14 @@ def reset_database_contents(db:'IFDatabase'):
     # Close any previous results
     db.closeAllResults()
 
+    db.deleteAllNoGroups()
+
     # Delete all previous model data
     db.deleteLoadsets("Envelopes")
     db.deleteLoadsets("Smart Combinations")
     db.deleteLoadsets("Basic Combinations")
     db.deleteAllAnalyses()
-    db.deleteAllNoGroups()
+    
     db.deleteAllAttributes()
     db.deleteAll()
 
@@ -120,4 +122,4 @@ def create_circular_section(db:'IFDatabase', name:str, dia:float) -> 'IFAttribut
     attr = db.createGeometricLine(name)
     attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
     return attr
-    +
+    
