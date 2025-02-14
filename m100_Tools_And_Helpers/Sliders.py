@@ -1,17 +1,24 @@
 from tkinter import *
-from PIL import ImageTk, Image
-#import win32com.client as win32
-#lusas = win32.gencache.EnsureDispatch("Lusas.Modeller.22.0")
+from PIL import ImageTk, Image      # pip install pillow
+import win32com.client as win32
+lusas = win32.gencache.EnsureDispatch("Lusas.Modeller.22.0")
 
 
 def set_support_size(size:int):
-    print(size)
+    lusas.view().insertAttributesLayer()
+    lusas.view().getAttributesLayer().visualiseAll("Supports")
+    lusas.view().getAttributesLayer().setMaxArrowSize("Supports", size)
+
 
 def set_load_arrow_size(size:int):
-    print(size)
+    lusas.view().insertAttributesLayer()
+    lusas.view().getAttributesLayer().visualiseAll("Loading")
+    lusas.view().getAttributesLayer().setMaxArrowSize("Loading", size)
+
 
 def set_deformed_mesh_size(size:int):
-    print(size)
+    lusas.view().insertDeformLayer()
+    lusas.view().setDeformationMagnitude(size, False, True)
 
 
 
