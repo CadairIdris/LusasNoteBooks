@@ -21,6 +21,10 @@ def set_deformed_mesh_size(size:int):
     lusas.view().setDeformationMagnitude(size, False, True)
 
 
+def set_diagrams_size(size:int):
+    lusas.view().insertDiagramsLayer()
+    lusas.view().getDiagramsLayer().setScaleMagnitude(size)
+
 
 
 root = Tk()
@@ -35,5 +39,8 @@ Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_load_arro
 
 Label(root, text='Deformed Mesh Size').pack()
 Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_deformed_mesh_size).pack()
+
+Label(root, text='Diagrams Size').pack()
+Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_diagrams_size).pack()
 
 root.mainloop()
