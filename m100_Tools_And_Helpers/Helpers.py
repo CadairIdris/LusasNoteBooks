@@ -123,3 +123,13 @@ def create_circular_section(db:'IFDatabase', name:str, dia:float) -> 'IFAttribut
     attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
     return attr
     
+
+def create_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:float) -> 'IFAttribute':
+    util = db.createParametricSection(name)
+    util.setType("Reactangular Solid")
+    util.setDimensions(['B', 'D'], [breadth, depth])
+
+    attr = db.createGeometricLine(name)
+    attr.setFromLibrary("Utilities", "", name, 0, 0, 0)
+    return attr
+    
