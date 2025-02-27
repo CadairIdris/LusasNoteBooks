@@ -1,4 +1,4 @@
-
+import win32com.client as win32
 
 
 
@@ -19,8 +19,8 @@ def create_point(x:float, y:float, z:float) -> 'IFPoint':
     # Add the coordinates
     geom_data.addCoords(x, y, z)
     # Create the point and return it. 
-    # Note that createPoint returns and IFObjectSet from which we can get the point. (this allows multiple points to be created at once, here we only have 1)
-    return lusas.database().createPoint(geom_data).getObjects("Point")[0]
+    # Note that createPoint returns and IFObjectSet from which we can get the point.
+    return win32.CastTo(lusas.database().createPoint(geom_data).getObject("Point"), "IFPoint")
 
 
 # Define a useful helper function to create a line from two point objects
@@ -37,8 +37,8 @@ def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
     obs.add(p1)
     obs.add(p2)
 
-    # Create the line, get the line objects array from the returned object set and return the 1 and only line
-    return obs.createLine(geom_data).getObjects("Line")[0]
+    # Create the line, get the line object array from the returned object set
+    return win32.CastTo(obs.createLine(geom_data).getObject("Line"), "IFLine")
 
 
 # Define a useful helper function to create a line from two point coordinates
@@ -53,8 +53,8 @@ def create_line(p1:list, p2:list) -> 'IFLine':
     geom_data.addCoords(p1[0], p1[1], p1[2])    # Set the coordinates of the first point X,Y,Z
     geom_data.addCoords(p2[0], p2[1], p2[2])    # Set the coordinates of the second point X,Y,Z
 
-    # Create the line, get the line objects array from the returned object set and return the 1 and only line
-    return lusas.database().createLine(geom_data).getObjects("Line")[0]
+    # Create the line, get the line objects from the returned object set
+    return win32.CastTo(lusas.database().createLine(geom_data).getObject("Line"), "IFLine")
 
 
 def delete_all_database_contents(db:'IFDatabase'):
