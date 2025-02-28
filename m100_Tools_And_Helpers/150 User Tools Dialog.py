@@ -9,9 +9,9 @@ root = Tk()
 root.title('User Tools')
 root.geometry("400x600")
 
-Button(root, text='Match Surface Assignments', command=lib.match_assignments_surface(copy_mesh=True)).pack()
+Button(root, text='Match Surface Assignments', command=lib.match_assignments_surface(copy_mesh=True)).pack(padx=20, pady=20)
 
-Button(root, text='Match Line Assignments', command=lib.match_assignments_line(copy_mesh=True)).pack()
+Button(root, text='Match Line Assignments', command=lib.match_assignments_line(copy_mesh=True)).pack(padx=20, pady=80)
 
 
 root.mainloop()
