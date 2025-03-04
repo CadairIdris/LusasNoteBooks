@@ -26,9 +26,13 @@ def set_diagrams_size(size:int):
     lusas.view().getDiagramsLayer().setScaleMagnitude(size)
 
 
+def set_values_size(size:int):
+    lusas.view().insertValuesLayer()
+    lusas.view().getValuesLayer().setShowLabels(True, 6, f"Arial;{10*int(size)};Normal;NoItalic;NoUnderline;NoStrikeOut;0;")
+
 
 root = Tk()
-root.title('Sliders')
+root.title('Scale visualisations')
 root.geometry("400x400")
 
 Label(root, text='Support Size').pack()
@@ -42,5 +46,8 @@ Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_deformed_
 
 Label(root, text='Diagrams Size').pack()
 Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_diagrams_size).pack()
+
+Label(root, text='Values Font Size').pack()
+Scale(root, from_=6, to=36, orient=HORIZONTAL, length=200, command=set_values_size).pack()
 
 root.mainloop()
