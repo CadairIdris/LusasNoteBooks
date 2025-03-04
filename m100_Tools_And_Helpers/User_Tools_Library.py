@@ -1,4 +1,7 @@
 
+import ctypes  # An included library with Python install.
+def msgbox(title, text, style):
+    return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
 lusas  : 'IFModeller' = None
 db : "IFDatabase"     = None
@@ -73,6 +76,204 @@ def match_assignments_line(copy_mesh:bool):
         if copy_mesh: # Causes re-mesh
             __copy_assignments(lines, "Mesh")	
 			
+
+
+# %%
+''' Shell results Tables '''
+
+
+def __get_display_components_shells(entity: str) -> list:
+    # We just want the "Standard" components without the additional energy or UDRs
+    if entity == "Force/Moment - Thick Shell": 
+        return["Nx","Ny","Nxy","Mx","My","Mxy","Sx","Sy"]
+
+    # Default to everything
+    return lusas.view().getResultsComponentNames(entity)
+
+
+
+def __create_shell_table():
+
+    # Get the result being displayed
+    entity, component = None
+    lusas.view().contours().getResults(entity, component)
+    # And the transformation
+    sType, rXYAngle, extraInfo1, extraInfo2 = None
+    lusas.view().contours().getResultsTransformData(sType, rXYAngle, extraInfo1, extraInfo2)	
+
+    # Get the primary component being used - if any
+    hasPrimary, primaryEntity, primaryComponent = None
+    hasPrimary = lusas.view().getActiveLoadset().hasPrimaryComponent(primaryEntity, primaryComponent)
+
+    # Create the PRW
+    attr = db.createPrintResultsWizard("___TEMPORARY___")
+    attr.setUnits(None)
+    attr.setResultsType("Components")
+    attr.setResultsOrder("Mesh")
+    attr.setResultsContent("Tabular")
+    attr.setExtent("Selection", "")
+    attr.setLoadcasesOption("Active")
+	
+    # Reported Entity and Components
+    attr.setResultsEntity(entity)	
+    attr.setComponents(__get_display_components_shells(entity))
+    # Transformation
+    match sType:
+        case "Global":
+            attr.setResultsTransformGlobal()
+        case "Feature":
+            attr.setResultsTransformFeature()
+        case "Local Coords":
+            attr.setResultsTransformLocal(extraInfo1, extraInfo2)
+        case _:
+            msgbox(f"Un Transformed results -> {sType} {rXYAngle} {extraInfo1} {extraInfo2}")
+
+
+    if entity == "Reactions":
+        attr.setResultsLocation("Nodal")
+    else:
+        attr.setResultsLocation("ElementNodal")
+
+
+    # Primary Components
+    if hasPrimary: 
+        attr.setPrimaryResultsData(list(primaryComponent), list(primaryEntity))
+
+    # Options
+    attr.setAnalysisResultTypes(None)
+    attr.showCoordinates(False)
+    attr.showExtremeResults(False)
+    attr.setSlice(False)
+    attr.setAllowDerived(False)
+    attr.setDisplayNow(True)
+
+    # TODO - get model precision
+    if 0 :	
+        attr.setSigFig(6, False)
+        attr.setThreshold(None)
+    else :
+        attr.setDecimalPlaces(1)
+        attr.setThreshold(0.05)
+
+    # Display
+    if 0 :
+        attr.showResults() # Debug save to treeview
+    else:
+        attr.showResults(True)	
+
+
+def show_shell_results():
+     
+    if lusas.selection().countelements() < 1:
+        msgbox("Select a element")
+        return
+
+    if not lusas.view().existsContoursLayer():
+        msgbox("No contours")
+        return
+
+    __create_shell_table()
+
+
+
+
+
+# %%
+''' Beam results Tables '''
+
+
+def __get_display_components_beams(entity: str) -> list:
+    # We just want the "Standard" components without the additional energy or UDRs
+    if entity == "Force/Moment - Thick 2D Beam": 
+        return["Fx","Fy","Mz"]
+    if entity == "Force/Moment - Thick 3D Beam": 
+        return ["Fx","Fy","Fz","Mx","My","Mz"]
+
+    # Default to everything
+    return lusas.view().getResultsComponentNames(entity)
+
+
+
+def __create_beam_table():
+
+    # Get the result being displayed
+    entity, component = None
+    lusas.view().contours().getResults(entity, component)
+
+    # Get the primary component being used - if any
+    hasPrimary, primaryEntity, primaryComponent = None
+    hasPrimary = lusas.view().getActiveLoadset().hasPrimaryComponent(primaryEntity, primaryComponent)
+
+    # Create the PRW
+    attr = db.createPrintResultsWizard("___TEMPORARY___")
+    attr.setUnits(None)
+    attr.setResultsType("Components")
+    attr.setResultsOrder("Mesh")
+    attr.setResultsContent("Tabular")
+    attr.setExtent("Selection", "")
+    attr.setLoadcasesOption("Active")
+	
+    attr.setResultsLocation("Element Nodal")	
+
+    # Reported Entity and Components
+    attr.setResultsEntity(entity)	
+    attr.setComponents(__get_display_components_beams(entity))
+
+    # Primary Components
+    if hasPrimary: 
+        attr.setPrimaryResultsData(list(primaryComponent), list(primaryEntity))
+
+    # Options
+    attr.setAnalysisResultTypes(None)
+    attr.showCoordinates(True)
+    attr.showExtremeResults(False)
+    attr.setSlice(False)
+    attr.setAllowDerived(False)
+    attr.setDisplayNow(True)
+
+    # TODO - get model precision
+    if 0 :	
+        attr.setSigFig(6, False)
+        attr.setThreshold(None)
+    else :
+        attr.setDecimalPlaces(1)
+        attr.setThreshold(0.05)
+
+    # Display
+    if 0 :
+        attr.showResults() # Debug save to treeview
+    else:
+        attr.showResults(True)	
+
+
+def show_beam_results():
+     
+    if lusas.selection().countelements() < 1:
+        msgbox("Select a line")
+        return
+
+    if not lusas.view().existsDiagramsLayer():
+        msgbox("No diagrams")
+        return
+
+    __create_beam_table()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # %%

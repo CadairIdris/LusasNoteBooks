@@ -13,5 +13,8 @@ Button(root, text='Match Surface Assignments', command=lambda:lib.match_assignme
 
 Button(root, text='Match Line Assignments', command=lambda:lib.match_assignments_line(copy_mesh=True)).pack(padx=20, pady=20)
 
+Button(root, text='Show Shell Table Results', command=lambda:lib.show_shell_results()).pack(padx=20, pady=20)
+
+Button(root, text='Show Line Table Results', command=lambda:lib.show_beam_results()).pack(padx=20, pady=20)
 
 root.mainloop()
