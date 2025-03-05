@@ -277,4 +277,18 @@ def show_beam_results():
 
 
 # %%
+''' Reactions '''
+def plot_reactions():
+    fx, fy, fz = 0, 0, 0
+    for n in lusas.database().getObjects("Node"):
+        fx += n.getResults("Reaction", "FX")[0] if n.hasResults("Reaction", "FX") else 0
+        fy += n.getResults("Reaction", "FY")[0] if n.hasResults("Reaction", "FY") else 0
+        fz += n.getResults("Reaction", "FZ")[0] if n.hasResults("Reaction", "FZ") else 0
+
+    lusas.getTextWin().writeLine(f"Total reactions of selected nodes : {fx:.2f}, {fy:.2f}, {fz:.2f}")
+
+
+
+
+# %%
 ''' Next Section '''

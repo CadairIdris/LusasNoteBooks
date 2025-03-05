@@ -17,4 +17,6 @@ Button(root, text='Show Shell Table Results', command=lambda:lib.show_shell_resu
 
 Button(root, text='Show Line Table Results', command=lambda:lib.show_beam_results()).pack(padx=20, pady=20)
 
+Button(root, text='Print Reactions', command=lambda:lib.plot_reactions()).pack(padx=20, pady=20)
+
 root.mainloop()
