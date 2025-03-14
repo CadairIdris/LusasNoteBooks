@@ -68,32 +68,8 @@ def delete_all_database_contents(db:'IFDatabase'):
     db.deleteAllAnalyses()
     db.deleteAllNoGroups()
     db.deleteAllAttributes()
+    db.deleteAllUtilities()
     db.deleteAll()
-
-    db.createAnalysisStructural("Analysis 1")
-
-
-def reset_database_contents(db:'IFDatabase'):
-    # Close any previous results
-    db.closeAllResults()
-
-    db.deleteAllNoGroups()
-
-    # Delete all previous model data
-    db.deleteLoadsets("Envelopes")
-    db.deleteLoadsets("Smart Combinations")
-    db.deleteLoadsets("Basic Combinations")
-    db.deleteAllAnalyses()
-    
-    db.deleteAllAttributes()
-    db.deleteAll()
-
-    # 3D model with Z vertical
-    db.setAnalysisCategory("3D")
-    db.setVerticalDir("Z")
-
-    # Set the unit system
-    db.setModelUnits("kN,m,t,s,C")
 
     db.createAnalysisStructural("Analysis 1")
 
