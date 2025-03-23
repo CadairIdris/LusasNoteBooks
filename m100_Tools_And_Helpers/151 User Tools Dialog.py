@@ -7,7 +7,7 @@ lib.initialise(lusas)
 
 root = Tk()
 root.title('User Tools')
-root.geometry("400x600")
+root.geometry("400x400")
 
 Button(root, text='Match Surface Assignments', command=lambda:lib.match_assignments_surface(copy_mesh=True)).pack(padx=20, pady=20)
 

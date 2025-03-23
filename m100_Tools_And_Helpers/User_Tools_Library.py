@@ -285,7 +285,7 @@ def plot_reactions():
         fy += n.getResults("Reaction", "FY")[0] if n.hasResults("Reaction", "FY") else 0
         fz += n.getResults("Reaction", "FZ")[0] if n.hasResults("Reaction", "FZ") else 0
 
-    lusas.getTextWin().writeLine(f"Total reactions of selected nodes : {fx:.2f}, {fy:.2f}, {fz:.2f}")
+    lusas.getTextWindow().writeLine(f"Total reactions : {fx:.2f}, {fy:.2f}, {fz:.2f}")
 
 
 
