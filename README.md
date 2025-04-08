@@ -10,7 +10,7 @@ Collection of Jupyter notebooks providing example uses of the LUSAS Programmable
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/LusasNoteBooks.git
+   git clone https://github.com/CadairIdris/LusasNoteBooks.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -22,9 +22,9 @@ Collection of Jupyter notebooks providing example uses of the LUSAS Programmable
    ```
 
 ## Usage
-1. Open Jupyter Notebook:
+1. Open the folder in VSCode
    ```bash
-   jupyter notebook
+   code .
    ```
 2. Navigate to the desired notebook and run the cells to explore LPI examples.
 
