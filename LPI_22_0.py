@@ -2,7 +2,7 @@
 # Copyright Finite Element Analysis Ltd #
 #########################################
 
-# This file provides LPI documentation for lusas Modleler version 22.1 in a form that editors can use to
+# This file provides LPI documentation for LUSAS Modeller v22.0 in a form that editors can use to
 # generate intellisense style code completion and documentation
 
 
@@ -300,7 +300,7 @@ class IFUnitSet(IFDispatch):
 		Return a description of the given dimensionality, using the definition of this 
 		Params:
 			dim (unsigned int): the packed dimensionality of the quantity to be described
-			lengthUnitSet (unit set, optional): The name or ID of a unit set, or a pointer to a IFUnitSet object
+			lengthUnitSet (unit set, optional): The name of a unit set, or a pointer to a IFUnitSet object
 			timescaleUnitSet (str, optional): "Seconds", "Minutes", "Hours" or "Days". Only used by dimensions that are in terms of solution time (like age)
 		Returns:
 			str: the returned description
@@ -1012,7 +1012,7 @@ class IFMenu(IFDispatch):
 
 	def appendItem(self, itemText, command, helpString=None, sessionFile=None) -> int:
 		r"""
-		Appends a new menu item at the end of this menu Note that the returned menu ID is considered temporary  and is only valid for a given interactive session, and thus should not be stored in model files or similar. 
+		Appends a new menu item at the end of this menu Note that the returned menu ID is considered temporary and is only valid for a given interactive session, and thus should not be stored in model files or similar. 
 		Params:
 			itemText (str): text of new item
 			command (str): command to execute when menu item selected
@@ -1860,6 +1860,15 @@ class IFPolylineDefn(IFDispatch):
 		pass
 
 
+	def deleteAllLines(self) -> None:
+		r"""
+		delete all the lines defining this polyline 
+		Returns:
+			None: 
+		"""
+		pass
+
+
 	def countLines(self) -> int:
 		r"""
 		Return the number of lines defining this polyline 
@@ -2149,7 +2158,7 @@ class IFProject(IFDispatch):
 
 	def setCurrentDatabase(self, db) -> None:
 		r"""
-		Set the given database as "current", so that IFModeller.database will return it The "current" database can also be set implicitly via IFView.setCurrent and IFView.setActiveLoadcase 
+		Set the given database as "current", so that IFModeller.database will return it The "current" database can also be set implicitly via IFView.setCurrent and IFResultsContext.setActiveLoadset 
 		Params:
 			db (database): The name or ID of a database, or a pointer to a IFDatabase object
 		Returns:
@@ -2224,13 +2233,13 @@ class IFProject(IFDispatch):
 		pass
 
 
-	def listFilesInProjectFile(self, key) -> object:
+	def listFilesInProjectFile(self, key) -> list:
 		r"""
 		Lists the files that are to be saved inside the project file having previously been added using addFileToProjectFile. 
 		Params:
 			key (str): Category of file
 		Returns:
-			object: Array of filenames
+			array of strs: Array of filenames
 		"""
 		pass
 
@@ -3436,7 +3445,7 @@ class IFAttribute(IFDispatch):
 
 	def getLCAssignments(self, loadcase) -> list:
 		r"""
-		Behaves exactly like IFAssignment.getAssignments() except that it only works for material and geometric attributes, and the returned list is filtered to reflect the given loadcase. We are not returning assignments that are MADE in this given loadcase, but assignments that APPLY in the given loadcase. e.g. Consider that "this" material is assigned only to a particular line in LC1 and then a different material is assigned to the same line in LC4. Just like getAssignments(), when we ask for assignments in LC1, of course we get the assignment to that line. But with this function, when we ask for assignments in LC2, we also get the same return value (the earlier assignment still applies). When we ask for assignments in LC3, we still get the same, for the same reason. When we ask for assignments of this attribute in LC4, we get an empty array - because the line now has the other material assigned. 
+		Behaves exactly like IFAttribute.getAssignments() except that it only works for material and geometric attributes, and the returned list is filtered to reflect the given loadcase. We are not returning assignments that are MADE in this given loadcase, but assignments that APPLY in the given loadcase. e.g. Consider that "this" material is assigned only to a particular line in LC1 and then a different material is assigned to the same line in LC4. Just like getAssignments(), when we ask for assignments in LC1, of course we get the assignment to that line. But with this function, when we ask for assignments in LC2, we also get the same return value (the earlier assignment still applies). When we ask for assignments in LC3, we still get the same, for the same reason. When we ask for assignments of this attribute in LC4, we get an empty array - because the line now has the other material assigned. 
 		Params:
 			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -4389,6 +4398,18 @@ class IFAssignment(IFDispatch):
 		Returns the value specified by IFAssignment.meshPrimaryToSecondary 
 		Returns:
 			bool: 
+		"""
+		pass
+
+
+	def setTendonProperties(self, fitToLines, offsetFromEnd=None) -> IFAssignment:
+		r"""
+		Set the tendon properties for the assignment. If "fitTiLines" is True there there is no need to set the offsetFromEnd value; 
+		Params:
+			fitToLines (bool): Extend the tendon profile to fit the lines being assigned to
+			offsetFromEnd (float, optional): 
+		Returns:
+			IFAssignment: 
 		"""
 		pass
 
@@ -11336,7 +11357,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		Params:
 			name (str): name of the value
 			desc (str): new description
-			persist (object, optional): persistence (default false)
+			persist (bool, optional): persistence (default false)
 		Returns:
 			IFAnalysisBaseClass: 
 		"""
@@ -11381,7 +11402,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		set the selected results group 
 		Params:
 			type (str): selected results type, "all", "group", "assignments"
-			groupName (object, optional): name of the group
+			groupName (str, optional): name of the group
 		Returns:
 			None: 
 		"""
@@ -11393,7 +11414,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		set the selected elements output group 
 		Params:
 			type (str): selected output type, "all", "group"
-			groupName (object, optional): name of the group
+			groupName (str, optional): name of the group
 		Returns:
 			None: 
 		"""
@@ -11405,7 +11426,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		set the selected ndoes output group 
 		Params:
 			type (str): selected output type, "all", "group"
-			groupName (object, optional): name of the group
+			groupName (str, optional): name of the group
 		Returns:
 			None: 
 		"""
@@ -11468,7 +11489,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Follows the internal knowledge of "this" to tabulate and solve exactly what LUSAS believes needs solving. If multiple solutions are needed (for example to calculate prestress effects) this will be done, but only if LUSAS believes them to be out of date. If this analysis has prerequisites (for example, if this analysis starts with deformations from another analysis), then those prerequisites will be solved first, but only if LUSAS believes them to be out of date. Thus, looping all analyses, in any order, and calling solve() will bring all results up to date. If you set ignoreModified to be true, then LUSAS's internal knowledge is ignored, and the analysis (and any prerequisites) will be solved whether LUSAS thinks it necessary or not Returns 0 for success, or a failure code from LUSAS solver 
 		Params:
-			ignoreModified (object, optional): default false. Can be set true to ignore the modification state of this and its prerequisites
+			ignoreModified (bool, optional): default false. Can be set true to ignore the modification state of this and its prerequisites
 		Returns:
 			int: 
 		"""
@@ -11479,8 +11500,8 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Open any available results for this analysis. Note - there is no error for any results which are missing, or need to be solved, or need updating from a previous version. Nonetheless, such files will not be loaded. Optionally (default true) skip any results that LUSAS considers to be out of date 
 		Params:
-			scanOutputFiles (object, optional): default true. Can be set false to skip parsing output files and repeating errors and warnings into the text output window
-			skipOutOfDate (object, optional): default true. Can be set false to force LUSAS to load results files it believes to be out of date
+			scanOutputFiles (bool, optional): default true. Can be set false to skip parsing output files and repeating errors and warnings into the text output window
+			skipOutOfDate (bool, optional): default true. Can be set false to force LUSAS to load results files it believes to be out of date
 		Returns:
 			None: 
 		"""
@@ -11491,7 +11512,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Delete all of the files created by solver for this analysis Typically, this is dat, mys, out, log, his, dtf and rst files 
 		Params:
-			datFileToo (object, optional): default true. Can be set false to skip deleting the dat file (it is often desirable to keep this one file)
+			datFileToo (bool, optional): default true. Can be set false to skip deleting the dat file (it is often desirable to keep this one file)
 		Returns:
 			None: 
 		"""
@@ -11500,7 +11521,7 @@ class IFAnalysisBaseClass(IFDispatch):
 
 	def setRestartFromDump(self, restartFile, dumpNo, restartIncType=None, startingIncLength=None, maximumIncLength=None) -> IFAnalysisBaseClass:
 		r"""
-		Sets up the restart file and dump from which this analysis will start. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromLoadcase or IFAnalysisBaseClass.setDeformedMeshStart 
+		Sets up the restart file and dump from which this analysis will start. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromLoadcase or IFAnalysis.setDeformedMeshStart 
 		Params:
 			restartFile (str): full path of an rst file
 			dumpNo (int): Dump number within rst file
@@ -11515,7 +11536,7 @@ class IFAnalysisBaseClass(IFDispatch):
 
 	def setRestartFromLoadcase(self, loadcase, restartIncType=None, startingIncLength=None, maximumIncLength=None) -> IFAnalysisBaseClass:
 		r"""
-		Sets up the loadcase from which this analysis will start. This analysis will start from the end of the given loadcase. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromDump or IFAnalysisBaseClass.setDeformedMeshStart 
+		Sets up the loadcase from which this analysis will start. This analysis will start from the end of the given loadcase. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromDump or IFAnalysis.setDeformedMeshStart 
 		Params:
 			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			restartIncType (str, optional): increment type "load factor" or "arc length"
@@ -12308,7 +12329,7 @@ class IFPrestressSolver(IFDispatch):
 		r"""
 		Sets the one and only analysis that the next call to IFPrestressSolver.solve will process. In normal use, this function is not called, and all analyses are processed. Note that calling this function will NOT mark prestress loading as "up to date" because that can only be done for the whole model. 
 		Params:
-			analysis (analysis): The name or ID of a analysis, or a pointer to a IFAnalysisBaseClass object
+			analysis (analysis): The name of a analysis, or a pointer to a IFAnalysisBaseClass object
 		Returns:
 			IFPrestressSolver: 
 		"""
@@ -12948,7 +12969,7 @@ class IFDatabaseOperations(IFDatabaseMember):
 
 	def modify(self, data=None) -> IFObjectSet:
 		r"""
-		 
+		Modify the objects based on the given geometry data. (Check full documentation for argument details). 
 		Params:
 			data (IFGeometryData, optional): 
 		Returns:
@@ -14367,7 +14388,7 @@ class IFSurface(IFGeometry):
 
 	def hasCentroid(self) -> bool:
 		r"""
-		Return true if it is possbile to calcuate the centroid of this surface 
+		Return true if it is possible to calculate the centroid of this surface 
 		Returns:
 			bool: 
 		"""
@@ -14385,7 +14406,7 @@ class IFSurface(IFGeometry):
 
 	def getAxes(self, origin, xAxis, yAxis, zAxis, position=None) -> None:
 		r"""
-		returns the surface axes. Optionally, the position where the axes are required may also be given. If not given, the centroid of the surface is used. 
+		Returns the surface axes in the global system. Optionally, the position where the axes are returned may also be given. If not given, the centroid of the surface is used (when available). 
 		Params:
 			origin (object): Array of 3 real numbers representing a coordinate axis in 3D space
 			xAxis (object): Array of 3 real numbers representing a coordinate axis in 3D space
@@ -15444,7 +15465,7 @@ class IFElement(IFMeshFamily):
 
 	def getStressType(self) -> str:
 		r"""
-		Return stress type (sometimes called MDLR) name - e.g. "Solid", "Thick Shell" 
+		Return stress type (sometimes called MDLR) name - e.g. "Solids", "Thick Shell", "Thick 3D Beam", "Axisymmetric Solid" 
 		Returns:
 			str: Element stress type
 		"""
@@ -16611,15 +16632,15 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def beginCommandBatch(self, label, isUndoable=None) -> None:
+	def beginCommandBatch(self, label, isUndoable=None) -> bool:
 		r"""
 		Scriptable dialogs should use this call, together with IFDatabase.closeCommandBatch(), to group together all commands generated by a single user click, for example the OK or Apply buttons. The effect of these commands is to batch the commands together for undo/redo purposes, to show a wait (hourglass) cursor and also to temporarily disable the tree views during processing.
   Modeller will automatically capture any definition commands between the call to begin and the call to end, and automatically reproduce them in the session file and undo mechanism. Note however that cosmetic commands such as rotations, selections, and colour changes, will not be captured. If this is necessary, you must use IFModeller.createUndoableEvent() to specify exactly which commands should be used 
 		Params:
 			label (str): label to be used for undo and redo buttons
-			isUndoable (str, optional): "undoable", "not undoable", "ignored for undo", or "not redoable"
+			isUndoable (str, optional): "undoable", "not undoable", "ignored for undo", "not redoable" or "reset undo"
 		Returns:
-			None: 
+			bool: returned true if the batch is rejected (only happens for "reset undo" if user answered "no" to "do you want to continue?"). Caller should issue no more commands, and immediately call closeCommandBatch()
 		"""
 		pass
 
@@ -16733,7 +16754,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Set the units for this database. This function should only be called before any data has been entered, and should only be called once per new database. Once a value is entered, its numeric value never changes, therefore if the units change, for example, from m to mm, any value already in the database would correspondingly change - e.g. from 1m to 1mm. 
 		Params:
-			units (units): The name or ID of a units, or a pointer to a IFUnitSet object
+			units (units): The name of a units, or a pointer to a IFUnitSet object
 		Returns:
 			None: 
 		"""
@@ -16847,7 +16868,7 @@ class IFDatabase(IFGroup):
 		Params:
 			reportName (str): report name
 			reportTitle (str): report title
-			units (units): The name or ID of a units, or a pointer to a IFUnitSet object
+			units (units): The name of a units, or a pointer to a IFUnitSet object
 			nSigFig (int): number of significant figures
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
@@ -17402,10 +17423,10 @@ class IFDatabase(IFGroup):
 		r"""
 		remove all traces of the given loadset from other post-processing loadsets such as envelopes and combinations. Useful to call when deleting an analysis or something else with loats of loadcases in it. 
 		Params:
-			IDs (object): array of loadcase ids
-			resFiles (object, optional): array of result file ids
-			eigens (object, optional): array of eigenvalues ids
-			harms (object, optional): array of harmonic ids
+			IDs (array of int): array of loadcase ids
+			resFiles (array of int, optional): array of result file ids
+			eigens (array of int, optional): array of eigenvalues ids
+			harms (array of int, optional): array of harmonic ids
 		Returns:
 			None: 
 		"""
@@ -17660,8 +17681,8 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a static moving load analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
-			name (str): Cable tuning analysis name
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			name (str): Analysis name
 			linear (bool): true for a linear branch, false to continue the parent analysis (NL / transient)
 		Returns:
 			IFStaticMovingLoadAnalysis: 
@@ -17684,8 +17705,8 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a pedestrian moving load analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
-			name (str): Cable tuning analysis name
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			name (str): Analysis name
 		Returns:
 			IFPedestrianMovingLoadAnalysis: 
 		"""
@@ -17696,7 +17717,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cable tuning analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			name (str): Cable tuning analysis name
 			forceID (int, optional): The desired ID of the analysis results loadcase.
 		Returns:
@@ -17843,7 +17864,7 @@ class IFDatabase(IFGroup):
 		change the state of automatic gravity for all structural loadcases to that given. Note that this function will automatically skip any loadcases that inherit gravity from a previous loadcase by way of automatic incrementation. If an analysis is given, only that analysis will receive the change. 
 		Params:
 			isGravity (bool): on or off
-			analysis (analysis, optional): The name or ID of a analysis, or a pointer to a IFAnalysis object
+			analysis (analysis, optional): The name of a analysis, or a pointer to a IFAnalysis object
 		Returns:
 			None: 
 		"""
@@ -18205,7 +18226,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create an empty branch, within a stage, ready to receive loadcases 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			branchName (str, optional): Branch name; if empty or not given, a default name will be generated
 			createInitialLoadcase (bool, optional): True (default) to create an initial loadcase. False to create an empty (and thus temporarily invalid) analysis
 			type (str, optional): "general" (default), "linear", "eigenvalue", "phi-c", "staged"
@@ -18291,7 +18312,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Deletes the given analysis The analysis may be specified by name or as an object 
 		Params:
-			analysis (analysis): The name or ID of a analysis, or a pointer to a IFAnalysis object
+			analysis (analysis): The name of a analysis, or a pointer to a IFAnalysis object
 		Returns:
 			None: 
 		"""
@@ -18335,7 +18356,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create new Direct Method Influence Analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			analysisName (str, optional): Analysis name; if empty or not given, a default name will be generated
 		Returns:
 			IFDirectMethodInfAnalysis: Return created direct method influence analysis
@@ -18358,7 +18379,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create new Rail Direct Method Influence Analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			analysisName (str, optional): Analysis name; if empty or not given, a default name will be generated
 		Returns:
 			IFRailDMIAnalysis: Return created direct method influence analysis
@@ -18383,7 +18404,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a new run of VLO (and, if necessary, the analysis to contain it) as a branch within the given stage. VLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			runName (str): Name of this run of VLO, if empty string given then a default name will be generated
 			analysisName (str, optional): Name of containing analysis, if empty or not given then a default name will be generated
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
@@ -18395,23 +18416,23 @@ class IFDatabase(IFGroup):
 
 	def createRLORun(self, runName, analysisName=None, informPanel=None) -> IFVLORun:
 		r"""
-		Create a new run of VLO (and, if necessary, the analysis to contain it). VLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
+		Create a new run of RLO (and, if necessary, the analysis to contain it). RLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			runName (str): Name of this run of VLO, if empty string given then a default name will be generated
+			runName (str): Name of this run of RLO, if empty string given then a default name will be generated
 			analysisName (str, optional): Name of containing analysis, if empty or not given then a default name will be generated
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
 		Returns:
-			IFVLORun: Return created VLO analysis
+			IFVLORun: Return created RLO analysis
 		"""
 		pass
 
 
-	def createTLOEnvelopeRun(self, runName, isRLO, informPanel=None) -> IFTLOEnvelopeRun:
+	def createTLOEnvelopeRun(self, runName, isTLO, informPanel=None) -> IFTLOEnvelopeRun:
 		r"""
 		Create a new envlope run of TLO (and, if necessary, the analysis to contain it). TLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
 			runName (str): Name of the TLO envelope Run, if empty string given then a default name will be generated
-			isRLO (bool): if TRUE, an RLO Envelope Run is created
+			isTLO (bool): if TRUE, an TLO Envelope Run is created
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
 		Returns:
 			IFTLOEnvelopeRun: Return created VLO analysis
@@ -18419,13 +18440,13 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def createTLOEnvelopeRunBranch(self, loadcase, runName, isRLO, informPanel=None) -> IFTLOEnvelopeRun:
+	def createTLOEnvelopeRunBranch(self, loadcase, runName, isTLO, informPanel=None) -> IFTLOEnvelopeRun:
 		r"""
 		Create a new envlope run of TLO (and, if necessary, the analysis to contain it). TLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			runName (str): Name of the TLO envelope Run, if empty string given then a default name will be generated
-			isRLO (bool): if TRUE, an RLO Envelope Run is created
+			isTLO (bool): if TRUE, a TLO Envelope Run is created
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
 		Returns:
 			IFTLOEnvelopeRun: Return created TLO Envelope branch
@@ -18437,12 +18458,12 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a new run of RLO (and, if necessary, the analysis to contain it) as a branch within the given stage. RLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
-			runName (str): Name of this run of VLO, if empty string given then a default name will be generated
+			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			runName (str): Name of this run of RLO, if empty string given then a default name will be generated
 			analysisName (str, optional): Name of containing analysis, if empty or not given then a default name will be generated
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
 		Returns:
-			IFVLORun: Return created VLO analysis
+			IFVLORun: Return created RLO analysis
 		"""
 		pass
 
@@ -21292,6 +21313,17 @@ class IFDatabase(IFGroup):
 		pass
 
 
+	def createTendonProfile(self, attrName) -> IFTendonProfile:
+		r"""
+		Create a tendon profile utility defining the geometry of a tendon for use with prestress loads. 
+		Params:
+			attrName (str): name of attribute
+		Returns:
+			IFTendonProfile: 
+		"""
+		pass
+
+
 	def createFailureComposite(self, attrName) -> IFFailureComposite:
 		r"""
 		
@@ -23787,14 +23819,14 @@ class IFVariationPriorResults(IFVariationAttr):
 	prior results variation attribute 
 	"""
 
-	def setLoadset(self, ID, resFileID, eigenvalueID, harmonicID) -> IFVariationPriorResults:
+	def setLoadset(self, ID, resFile=None, eigen=None, harm=None) -> IFVariationPriorResults:
 		r"""
 		Specify the loadset used to generate this variation. 
 		Params:
-			ID (object): Loadcase ID
-			resFileID (object): Results file ID
-			eigenvalueID (object): Eigenvalue ID
-			harmonicID (object): Harmonic ID
+			ID (object): IFLoadset object, loadset ID or loadset name
+			resFile (int, optional): default = 0
+			eigen (int, optional): default = -1
+			harm (int, optional): default = -1
 		Returns:
 			IFVariationPriorResults: 
 		"""
@@ -25441,11 +25473,11 @@ class IFGeomBeamOptimPool(IFAttribute):
 		pass
 
 
-	def getAllSections(self) -> object:
+	def getAllSections(self) -> list:
 		r"""
 		Returns all the sections in this pool as a 2d array of strings. If there are seven sections in the pool, the array will be dimensioned as [7][3] 
 		Returns:
-			object: 
+			array of strs: 
 		"""
 		pass
 
@@ -25504,11 +25536,11 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		pass
 
 
-	def getAllGeometricLines(self) -> object:
+	def getAllGeometricLines(self) -> list:
 		r"""
 		Returns all the geometric lines in this utility as an array of IFGeometricLine 
 		Returns:
-			object: 
+			array of IFGeometricLine: 
 		"""
 		pass
 
@@ -25560,9 +25592,9 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		Returns a single constraint from this utility, identified by its position 
 		Params:
 			index (int): Must be in range 0.. countConstraints()-1
-			componentName (object): Component name, e.g. Util(My)
-			maxValue (object): Max value allowed for given component
-			active (object): Set to false to ignore this constraint
+			componentName (str): Component name, e.g. Util(My)
+			maxValue (float): Max value allowed for given component
+			active (bool): Set to false to ignore this constraint
 		Returns:
 			None: 
 		"""
@@ -25598,11 +25630,11 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		pass
 
 
-	def getAllLoadcases(self) -> object:
+	def getAllLoadcases(self) -> list:
 		r"""
 		Returns all the loadcases in this utility as an array of IFGeometricLine 
 		Returns:
-			object: 
+			array of IFLoadcase: 
 		"""
 		pass
 
@@ -34725,8 +34757,8 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Returns (as two 2D arrays of strings via arg list) a list of all load assignments made to loadcases logically before this in the solution. Each array is [n][3] where n is the number of loads, and for each we have the loadcase receiving the assignment, the load attribute name, and the reason the load continues (or does not). This function is equivalent to the grids that can be seen by clicking on the "Loading brought forward" item within the loadcase in the analysis treeview. 
 		Params:
-			pContinuing (object): 
-			pNotContinuing (object): 
+			pContinuing (array of strs): 
+			pNotContinuing (array of strs): 
 		Returns:
 			None: 
 		"""
@@ -39708,16 +39740,16 @@ class IFView(IFResultsContext):
 		pass
 
 
-	def selectAlongXYZ(self, x1, y1, z1, x2=None, y2=None, z2=None, selType=None, objectType=None, cycleNo=None) -> None:
+	def selectAlongXYZ(self, x1, y1, z1, x2, y2, z2, selType=None, objectType=None, cycleNo=None) -> None:
 		r"""
 		Select one object along the given vector. Coordinates are given in unrotated model units. If more than one object could possibly be selected at that location, an array of cyclable items is created, ordered and stored internally. Subsequent selections at the same location cycle through this array. Alternatively, the functions IFView.cycleSelnNext and similar may be used to achieve the same result. A selection may set, add to, or toggle the previously selected items. Note that the vector is conceptually a single 3d location, but represented as a vector for tolerance reasons. The implementation is not designed to accept a vector of significant length 
 		Params:
 			x1 (float): 
 			y1 (float): 
 			z1 (float): 
-			x2 (float, optional): 
-			y2 (float, optional): 
-			z2 (float, optional): 
+			x2 (float): 
+			y2 (float): 
+			z2 (float): 
 			selType (str, optional): "Set", "Add", "Toggle"
 			objectType (str, optional): "All", "Geometry", "Mesh", "Annotation" or "Point", "Line" etc
 			cycleNo (int, optional): number of cycles before desired object
@@ -43453,7 +43485,7 @@ class IFRailTrackLayout(IFDatabaseMember):
 		r"""
 		Add a track definition to the rail layout 
 		Params:
-			trackDefVar (trackdefinition): The name or ID of a trackdefinition, or a pointer to a IFRailTrackDefinition object
+			trackDefVar (trackdefinition): The name of a trackdefinition, or a pointer to a IFRailTrackDefinition object
 		Returns:
 			None: 
 		"""
@@ -45809,6 +45841,37 @@ class IFRailDMIAnalysis(IFDirectMethodInfAnalysisBase):
 		pass
 
 
+class IFUserDefinedResult(IFAttribute):
+	"""
+	User Defined Result Attribute 
+	"""
+
+	def setUserResultComponent(self, compName, entityName, expression, description, options=None) -> IFUserDefinedResult:
+		r"""
+		Modifies the definition of an existing user result component or creates a new one if 'compName' does not exist. This method also allows renaming an existing user result component. 
+		Params:
+			compName (str): user result component name
+			entityName (str): result entity name that this component is assigned to
+			expression (str): expression that defines the result component values
+			description (str): a user friendly description of the user result component
+			options (IFUserDefinedResultOptions, optional): specifies additional options for the expression
+		Returns:
+			IFUserDefinedResult: 
+		"""
+		pass
+
+
+	def removeUserResultComponent(self, compName) -> IFUserDefinedResult:
+		r"""
+		Removes the specified existing user result component. 
+		Params:
+			compName (str): user result component name to be deleted
+		Returns:
+			IFUserDefinedResult: 
+		"""
+		pass
+
+
 class IFReinforcementSection(IFAttribute):
 	"""
 	Representation of the reinforcement of one cross section 
@@ -46412,7 +46475,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def getMainMenu(self) -> IFMenu:
 		r"""
-		 
+		Returns the main menu object. To add custom menu or menu options use IFMenu.appendMenu or IFMenu.appendItem. 
 		Returns:
 			IFMenu: 
 		"""
@@ -46430,7 +46493,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def getSystemString(self, stringName) -> str:
 		r"""
-		Returns the value of the named token, reports an error if not found. To modify system strings, use IFDatabase.overrideSystemString or IFModeller.getSystemString. 
+		Returns the value of the named token, reports an error if not found. To modify system strings, use IFProject.overrideSystemString or IFModeller.setSystemString. 
 		Params:
 			stringName (str): 
 		Returns:
@@ -46441,7 +46504,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def setSystemString(self, stringName, value) -> None:
 		r"""
-		Allows you to override a standard LUSAS system string for all models. The values of system strings should never be changed without instruction from LUSAS technical support. To obtain the current value of a system string, use IFModeller.getSystemString. To override a standard LUSAS system string for only the current model, use IFDatabase.overrideSystemString 
+		Allows you to override a standard LUSAS system string for all models. The values of system strings should never be changed without instruction from LUSAS technical support. To obtain the current value of a system string, use IFModeller.getSystemString. To override a standard LUSAS system string for only the current model, use IFProject.overrideSystemString 
 		Params:
 			stringName (str): 
 			value (str): 
@@ -47233,7 +47296,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		Opens an existing V13->V21.1 model file from disk without saving changes in the previous model. (If you wish to save changes, use IFModeller.project.IFProject.save first.) The file is immediately converted to the given format. In normal use, omit the optional arguments, they are for future use, and/or backwards compatibilty. In the 32bit exe, the optional "textoutput" argument is ignored. In the 64bit exe, you may pass in the name of a file which will be filled with the contents of the text output window from the 32 bit modeller used to do the conversion. 
 		Params:
 			filename (str): Name and location of model file to open
-			dbVersion (object, optional): The only permitted value is 3, meaning 64bit mdl files. Other formats may be supported in future
+			dbVersion (int, optional): The only permitted value is 3, meaning 64bit mdl files. Other formats may be supported in future
 			textoutput (str, optional): name of a file (which must not exist) to recieve the contents of the 32bit text output window
 			facetPostConversion (bool, optional): if true facet the geometry objects post conversion
 		Returns:
@@ -48875,5 +48938,6 @@ All other objects in the LPI are accessed through these global variables and fun
 
 import win32com.client as win32
 
+
 def get_lusas_modeller() -> IFModeller:
-	return win32.gencache.EnsureDispatch('Lusas.Modeller.22.0')
+	return win32.dynamic.Dispatch('Lusas.Modeller.22.0')
