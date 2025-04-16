@@ -1,9 +1,8 @@
 import User_Tools_Library as lib
 from tkinter import *
-import win32com.client as win32
-lusas = win32.gencache.EnsureDispatch("Lusas.Modeller.22.0")
-lib.initialise(lusas)
-
+import sys; sys.path.append('../') # Reference modules in parent directory
+from LPI_22_0 import *
+lusas = get_lusas_modeller()
 
 root = Tk()
 root.title('User Tools')
