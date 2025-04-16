@@ -156,3 +156,9 @@ def create_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:f
 
     return db.createGeometricLine(name).setFromLibrary("Utilities", "", name, 0, 0, 0)
     
+
+
+
+def get_loadcase(db:IFDatabase, id:int) -> IFLoadcase:
+    loadset = db.getLoadset(id)
+    return win32.CastTo(loadset, "IFLoadcase")
