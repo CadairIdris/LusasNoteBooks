@@ -1,6 +1,7 @@
 from tkinter import *
-import win32com.client as win32
-lusas = win32.gencache.EnsureDispatch("Lusas.Modeller.22.0")
+import sys; sys.path.append('../') # Reference modules in parent directory
+from LPI_22_0 import *
+lusas = get_lusas_modeller()
 
 
 def set_support_size(size:int):
