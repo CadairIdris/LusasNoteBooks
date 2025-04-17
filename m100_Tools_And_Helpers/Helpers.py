@@ -123,7 +123,7 @@ def create_volume_by_surfaces(surfaces:list[IFSurface]) -> IFVolume:
     vlm : IFVolume = lusas.db().createVolume(geometry_data).getObjects("Volume")[0]
     return vlm
 
-def sweepPoints(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
+def sweep_points(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
     """
     Sweeps the given points in the specified direction to create lines.
     """
@@ -135,7 +135,7 @@ def sweepPoints(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
         return []
     return lines
 
-def sweepLines(lines:list[int], vector: list[float]) -> list[IFSurface]:
+def sweep_lines(lines:list[IFLine], vector: list[float]) -> list[IFSurface]:
     """
     Sweeps the given lines in the specified direction to create surfaces.
     """
@@ -147,7 +147,7 @@ def sweepLines(lines:list[int], vector: list[float]) -> list[IFSurface]:
         return []
     return surfs
 
-def sweepSurfaces(surfs:list[IFSurface], vector: list[float]) -> list[IFVolume]:
+def sweep_surfaces(surfs:list[IFSurface], vector: list[float]) -> list[IFVolume]:
     """
     Sweeps the given surfaces in the specified direction to create volumes.
     """
@@ -177,7 +177,43 @@ def sweep_Ext(trgtObjSet:IFObjectSet, vector: list[float], hofType:str):
 
     return objSet
 
-def sweepRot_Ext(trgtObjSet:IFObjectSet, origin:list, hofType:str, degree:float, aboutAxis:str=None):
+def sweep_points_rotationally(pnts:list[IFPoint], degrees : float, origin: list[float] = [0, 0, 0]) -> list[IFLine]:
+    """
+    Sweeps the given points in the specified degrees to create lines.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(pnts)
+        lines : list[IFLine] = sweep_rotationally_Ext(myObj, origin, "Line", degrees).getObjects("Lines")
+    except Exception as e:
+        print(f"Error sweeping points: {str(e)}")
+        return []
+    return lines
+
+def sweep_lines_rotationally(lines:list[IFLine], degrees : float, origin: list[float] = [0, 0, 0]) -> list[IFSurface]:
+    """
+    Sweeps the given lines in the specified degrees to create surfaces.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(lines)
+        surfs : list[IFSurface] = sweep_rotationally_Ext(myObj, origin, "Surface", degrees).getObjects("Surfaces")
+    except Exception as e:
+        print(f"Error sweeping lines: {str(e)}")
+        return []
+    return surfs
+
+def sweep_surfaces_rotationally(surfs:list[IFSurface], degrees : float, origin: list[float] = [0, 0, 0]) -> list[IFVolume]:
+    """
+    Sweeps the given surfaces in the specified degrees to create volumes.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(surfs)
+        vlms : list[IFVolume] = sweep_rotationally_Ext(myObj, origin, "Volume", degrees).getObjects("Volumes")
+    except Exception as e:
+        print(f"Error sweeping surfaces: {str(e)}")
+        return []
+    return vlms
+
+def sweep_rotationally_Ext(trgtObjSet:IFObjectSet, origin:list, hofType:str, degree:float, aboutAxis:str=None):
     types = ["Point", "Line", "Surface", "Volume"]
     MaximumDimension = types.index(hofType)
 
