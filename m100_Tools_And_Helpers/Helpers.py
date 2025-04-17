@@ -31,6 +31,28 @@ def create_point(x:float, y:float, z:float) -> 'IFPoint':
     # Note that createPoint returns and IFObjectSet from which we can get the point.
     return win32.CastTo(lusas.database().createPoint(geom_data).getObject("Point"), "IFPoint")
 
+def create_line_by_coordinates(x1:float, y1:float, z1:float, x2:float, y2:float, z2:float,) -> 'IFLine':
+    """Helper function to create a line from coordinates
+
+    Args:
+        x1 (float): Starting point global X coordinate
+        y1 (float): Starting point global Y coordinate
+        z1 (float): Starting point global Z coordinate
+        x2 (float): Ending point global X coordinate
+        y2 (float): Ending point global Y coordinate
+        z2 (float): Ending point global Z coordinate
+
+    Returns:
+        IFLine: Line in the IFDatabase
+    """
+
+    geometry_data = lusas.geometryData().setAllDefaults()
+    geometry_data.setLowerOrderGeometryType("coordinates")
+    geometry_data.setCreateMethod("straight")
+    geometry_data.addCoords(x1, y1, z1)
+    geometry_data.addCoords(x2, y2, z2)
+    newLine:IFLine = lusas.database().createLine(geometry_data).getObjects("Line")[0]
+    return newLine
 
 def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
     """Helper function to create a line from two point objects.
@@ -78,6 +100,110 @@ def create_line(p1:list, p2:list) -> 'IFLine':
 
     # Create the line, get the line objects from the returned object set
     return win32.CastTo(lusas.database().createLine(geom_data).getObject("Line"), "IFLine")
+
+def create_surface_by_coordinates(x:list[float], y:list[float], z:list[float]) -> IFSurface:
+    geometry_data = lusas.newGeometryData()
+    geometry_data.setCreateMethod("coons")
+    geometry_data.setLowerOrderGeometryType("coordinates")
+    for i in range(len(x)):
+        geometry_data.addCoords(x[i], y[i], z[i])
+    surf : IFSurface = lusas.db().createSurface(geometry_data).getObjects("Surface")[0]
+    return surf
+
+def create_volume_by_surfaces(surfaces:list[IFSurface]) -> IFVolume:
+    # Create a geometryData object to contain all the settings for the geometry creation
+    geometry_data = lusas.newGeometryData()
+    # set the options for creating geometries from surfaces
+    geometry_data.setCreateMethod("solidVolume")
+    geometry_data.setExtractAllVolumes()
+    # create an object set to contain the surfaces and use this set to create the volume
+    surfsObj = lusas.newObjectSet()
+    surfsObj.add(surfaces)
+    # Create the volume using the surfaces
+    vlm : IFVolume = lusas.db().createVolume(geometry_data).getObjects("Volume")[0]
+    return vlm
+
+def sweepPoints(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
+    """
+    Sweeps the given points in the specified direction to create lines.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(pnts)
+        lines : list[IFLine] = sweep_Ext(myObj, vector, "Line").getObjects("Lines")
+    except Exception as e:
+        print(f"Error sweeping points: {str(e)}")
+        return []
+    return lines
+
+def sweepLines(lines:list[int], vector: list[float]) -> list[IFSurface]:
+    """
+    Sweeps the given lines in the specified direction to create surfaces.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(lines)
+        surfs : list[IFSurface] = sweep_Ext(myObj, vector, "Surface").getObjects("Surfaces")
+    except Exception as e:
+        print(f"Error sweeping lines: {str(e)}")
+        return []
+    return surfs
+
+def sweepSurfaces(surfs:list[IFSurface], vector: list[float]) -> list[IFVolume]:
+    """
+    Sweeps the given surfaces in the specified direction to create volumes.
+    """
+    try:
+        myObj = lusas.newObjectSet().add(surfs)
+        vlms : list[IFVolume] = sweep_Ext(myObj, vector, "Volume").getObjects("Volumes")
+    except Exception as e:
+        print(f"Error sweeping surfaces: {str(e)}")
+        return []
+    return vlms
+
+def sweep_Ext(trgtObjSet:IFObjectSet, vector: list[float], hofType:str):
+    types = ["Point", "Line", "Surface", "Volume"]
+    MaximumDimension = types.index(hofType)
+
+    attr = lusas.db().createTranslationTransAttr("Temp_SweepTranslation", vector)
+    attr.setSweepType("straight")
+    attr.setHofType(hofType)
+
+    geomData = lusas.newGeometryData()
+    geomData.setMaximumDimension(MaximumDimension)
+    geomData.setTransformation(attr)
+    geomData.sweptArcType("straight")
+
+    objSet = trgtObjSet.sweep(geomData)
+    lusas.db().deleteAttribute(attr)
+
+    return objSet
+
+def sweepRot_Ext(trgtObjSet:IFObjectSet, origin:list, hofType:str, degree:float, aboutAxis:str=None):
+    types = ["Point", "Line", "Surface", "Volume"]
+    MaximumDimension = types.index(hofType)
+
+    if aboutAxis is None:
+        aboutAxis = "z"
+
+    title = "Temp_SweepRotation"
+    if aboutAxis.lower() == "x":
+        attr = lusas.db().createYZRotationTransAttr(title, degree, origin)
+    elif aboutAxis.lower() == "y":
+        attr = lusas.db().createXZRotationTransAttr(title, degree, origin)
+    else:
+        attr = lusas.db().createXYRotationTransAttr(title, degree, origin)
+
+    attr.setSweepType("minorArc")
+    attr.setHofType(hofType)
+
+    geomData = lusas.newGeometryData()
+    geomData.setMaximumDimension(MaximumDimension)
+    geomData.setTransformation(attr)
+    geomData.sweptArcType("minorArc")
+
+    objSet = trgtObjSet.sweep(geomData)
+    lusas.db().deleteAttribute(attr)
+
+    return objSet
 
 
 def delete_all_database_contents(db:'IFDatabase'):
