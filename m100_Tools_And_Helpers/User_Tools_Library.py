@@ -1,5 +1,7 @@
 
 import ctypes  # An included library with Python install.
+from LPI_22_0 import *
+
 def msgbox(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
@@ -16,9 +18,9 @@ def initialise(modellr):
 ''' Match Assignments '''
 
 
-def __copy_assignments(geoms:list, attrType:str) -> None:
+def __copy_assignments(geoms:list[IFGeometry], attrType:str) -> None:
 	# Get a list of the assignments for the given attribute
-	primary_assignments = geoms[0].getAssignments(attrType)
+	primary_assignments : list[IFAssignment] = geoms[0].getAssignments(attrType)
 	# For each assignment get the corresponding attribute
 	for a in range(0, len(primary_assignments)):
 		attr = primary_assignments[a].getAttribute()
@@ -26,7 +28,7 @@ def __copy_assignments(geoms:list, attrType:str) -> None:
 		for i in range(1, len(geoms)):
 			attr.assignTo(geoms[i], primary_assignments[a])
 			
-def __copy_groups(geoms:list) -> None:
+def __copy_groups(geoms:list[IFGeometry]) -> None:
 	for g in db.getObjects("Group"):
 		if geoms[0].isMemberOfGroup(g):
 			for i in range(1, len(geoms)):
