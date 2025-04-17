@@ -159,6 +159,15 @@ def create_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:f
 
 
 
-def get_loadcase(db:IFDatabase, id:int) -> IFLoadcase:
-    loadset = db.getLoadset(id)
+def get_loadcase(id:int) -> IFLoadcase:
+    """Gets a loadcase with the given ID. 
+       This function provides a type hint for a loadcase, since the underlying LPI function returns an IFLoadset
+    Args:
+        id (int): ID of the loadcase
+
+    Returns:
+        IFLoadcase: Loadcase object
+    """    
+    loadset = lusas.db().getLoadset(id)
+    # Cast the return type from IFLoadset to IFLoadcase so loadcase functions can be called.
     return win32.CastTo(loadset, "IFLoadcase")
