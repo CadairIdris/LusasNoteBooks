@@ -1,3 +1,6 @@
+# This script creates a simple GUI for user tools in LUSAS Modeller.
+# It provides buttons to perform various tasks such as matching surface and line assignments,
+
 import User_Tools_Library as lib
 from tkinter import *
 import sys; sys.path.append('../') # Reference modules in parent directory

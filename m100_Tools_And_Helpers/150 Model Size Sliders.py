@@ -1,3 +1,6 @@
+# This script creates a GUI with sliders to adjust the size of various visual elements in LUSAS Modeller.
+# It allows the user to set the size of support arrows, load arrows, deformed mesh, diagrams, and values font size.
+
 from tkinter import *
 import sys; sys.path.append('../') # Reference modules in parent directory
 from LPI_22_0 import *
