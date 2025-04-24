@@ -2,7 +2,7 @@
 # It includes functions to create points, lines, surfaces, and volumes from coordinates or existing objects
 # It also includes functions for sweeping objects in a specified direction or rotationally
 # and for creating geometric attributes based on parametric definitions.
-# The library must be iniytialised with the a reference to LUSAS Modeller before using these functions.
+# The library must be initialised with the a reference to LUSAS Modeller before using these functions.
 
 from LPI_22_0 import *
 
