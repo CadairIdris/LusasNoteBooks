@@ -1,4 +1,4 @@
-# This file provoides the funtionality behid the dialog in #150
+# This file provides the functionality behind the dialog in #150
 
 import ctypes  # An included library with Python install.
 from LPI_22_0 import *
