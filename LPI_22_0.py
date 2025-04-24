@@ -300,7 +300,7 @@ class IFUnitSet(IFDispatch):
 		Return a description of the given dimensionality, using the definition of this 
 		Params:
 			dim (unsigned int): the packed dimensionality of the quantity to be described
-			lengthUnitSet (unit set, optional): The name of a unit set, or a pointer to a IFUnitSet object
+			lengthUnitSet (IFUnitSet, optional): The name of a unitset, or a pointer to a IFUnitSet object
 			timescaleUnitSet (str, optional): "Seconds", "Minutes", "Hours" or "Days". Only used by dimensions that are in terms of solution time (like age)
 		Returns:
 			str: the returned description
@@ -1237,7 +1237,7 @@ class IFResultsCache(IFDispatch):
 		r"""
 		add a PRW utility to the list of utilities that will be used to create a cache just after solving the model. Note that only PRW utilities with the extent set to "all" may be used - others will yield an error message 
 		Params:
-			attr (name): The name or ID of a name, or a pointer to a IFPrintResultsWizard object
+			attr (IFPrintResultsWizard): The name or ID of a name, or a pointer to a IFPrintResultsWizard object
 		Returns:
 			None: 
 		"""
@@ -1282,7 +1282,7 @@ class IFResultsCache(IFDispatch):
 		r"""
 		Call to delete all files containing cached results that are transformed by the given local coordinate 
 		Params:
-			localCoord (local coord): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoord (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			None: 
 		"""
@@ -1293,7 +1293,7 @@ class IFResultsCache(IFDispatch):
 		r"""
 		Call to delete all files containing cached results that are transformed by the given path 
 		Params:
-			path (path): The name or ID of a path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a path, or a pointer to a IFReferencePath object
 		Returns:
 			None: 
 		"""
@@ -2038,24 +2038,24 @@ class IFPolylineDefn(IFDispatch):
 		pass
 
 
-	def getInterpolatedPosition(self, nrmCoord) -> object:
+	def getInterpolatedPosition(self, nrmCoord) -> list[float]:
 		r"""
 		Return the coordinates at the given normalised coordinate, nrmCoord=0.0 at the polyline start nrmCoord=1.0 at the polyline end 
 		Params:
 			nrmCoord (float): normalised coord
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
 
-	def getInterpolatedTangent(self, nrmCoord) -> object:
+	def getInterpolatedTangent(self, nrmCoord) -> list[float]:
 		r"""
 		Return the tangent at the given normalised coordinate, nrmCoord=0.0 at the polyline start nrmCoord=1.0 at the polyline end 
 		Params:
 			nrmCoord (float): normalised coord
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -2065,10 +2065,10 @@ class IFPolylineDefn(IFDispatch):
 		get the axes at the given normalised coordinate, nrmCoord=0.0 at the polyline start nrmCoord=1.0 at the polyline end 
 		Params:
 			nrmCoord (float): specified normalised coord
-			pOrigin (object): An array of 3 real numbers, representing 3d coordinates
-			pxAxis (object): An array of 3 real numbers, representing 3d coordinates
-			pyAxis (object): An array of 3 real numbers, representing 3d coordinates
-			pzAxis (object): An array of 3 real numbers, representing 3d coordinates
+			pOrigin (array of float): An array of 3 real numbers, representing 3d coordinates
+			pxAxis (array of float): An array of 3 real numbers, representing 3d coordinates
+			pyAxis (array of float): An array of 3 real numbers, representing 3d coordinates
+			pzAxis (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			None: 
 		"""
@@ -2080,8 +2080,8 @@ class IFPolylineDefn(IFDispatch):
 		calculate the centre and radius of curvature at the given normalised coordinate along this polyline nrmCoord=0.0 at the polyline start nrmCoord=1.0 at the polyline end 
 		Params:
 			nrmCoord (float): specified normalised coord
-			pPointOnLine (array of real numbers): coordinates of the point on this line
-			pCentreOfCurvature (array of real numbers): coordinates of the centre of curvature
+			pPointOnLine (array of float): coordinates of the point on this line
+			pCentreOfCurvature (array of float): coordinates of the centre of curvature
 			pRadiusOfCurvature (float): radius of curvature
 		Returns:
 			int: on exit, 0 = success, -1 = very large radius, all other values = error
@@ -2118,7 +2118,7 @@ class IFProject(IFDispatch):
 		r"""
 		Remove a sub-model from this project. The sub-model must have been previously added with IFProject.addSubModel. It is not possible to remove the governing model. 
 		Params:
-			db (database): The name or ID of a database, or a pointer to a IFDatabase object
+			db (IFDatabase): The name or ID of a database, or a pointer to a IFDatabase object
 		Returns:
 			None: 
 		"""
@@ -2129,7 +2129,7 @@ class IFProject(IFDispatch):
 		r"""
 		Return an array of all sub-models in this project 
 		Returns:
-			Array: Array of database objects
+			Array of IFDatabase objects: 
 		"""
 		pass
 
@@ -2160,7 +2160,7 @@ class IFProject(IFDispatch):
 		r"""
 		Set the given database as "current", so that IFModeller.database will return it The "current" database can also be set implicitly via IFView.setCurrent and IFResultsContext.setActiveLoadset 
 		Params:
-			db (database): The name or ID of a database, or a pointer to a IFDatabase object
+			db (IFDatabase): The name or ID of a database, or a pointer to a IFDatabase object
 		Returns:
 			None: 
 		"""
@@ -2572,7 +2572,7 @@ class IFCustomSubReport(IFDispatch):
 		Go to the next line(s) at the given section 
 		Params:
 			text (str): Header text
-			width (int float): Table width. If given as integer it will be tha absolute width (setting this to zero will auto adjust it). If given as double it will be the percentage of the total table width
+			width (int or float): Table width. If given as integer it will be the absolute width (setting this to zero will auto adjust it). If given as double it will be the percentage of the total table width
 		Returns:
 			None: 
 		"""
@@ -2856,7 +2856,7 @@ class IFReport(IFDispatch):
 		Adds a graph chapter in the report 
 		Params:
 			chapterName (str): chapter name
-			graph (graphWizard): The name or ID of a graphWizard, or a pointer to a IFGraphWizard object
+			graph (IFGraphWizard): The name or ID of a graphWizard, or a pointer to a IFGraphWizard object
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 			isAppend (bool, optional): If false (the default), adds a normal chapter. If true, appends the contents of this chapter to the previous chapter.
 		Returns:
@@ -2870,7 +2870,7 @@ class IFReport(IFDispatch):
 		Adds a chapter with a model view in the report 
 		Params:
 			chapterName (str): chapter name
-			modelView (modelView): The name or ID of a modelView, or a pointer to a IFSavedView object
+			modelView (IFSavedView): The name or ID of a modelView, or a pointer to a IFSavedView object
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 			isAppend (bool, optional): If false (the default), adds a normal chapter. If true, appends the contents of this chapter to the previous chapter.
 		Returns:
@@ -2884,7 +2884,7 @@ class IFReport(IFDispatch):
 		Adds a chapter with a note in the report 
 		Params:
 			chapterName (str): chapter name
-			modelView (note): The name or ID of a note, or a pointer to a IFNote object
+			modelView (IFNote): The name or ID of a note, or a pointer to a IFNote object
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 			isAppend (bool, optional): If false (the default), adds a normal chapter. If true, appends the contents of this chapter to the previous chapter.
 		Returns:
@@ -2930,7 +2930,7 @@ class IFReport(IFDispatch):
 		r"""
 		Adds a saved view in the report's front page. Pass "Nothing" for no view in the front page. 
 		Params:
-			savedView (saved view): The name or ID of a saved view, or a pointer to a IFSavedView object
+			savedView (IFSavedView): The name or ID of a savedview, or a pointer to a IFSavedView object
 		Returns:
 			IFReport: 
 		"""
@@ -3432,7 +3432,7 @@ class IFAttribute(IFDispatch):
 		pass
 
 
-	def getAssignments(self, andAssignedObjects=None) -> list:
+	def getAssignments(self, andAssignedObjects=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment made to this object. Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
@@ -3443,11 +3443,11 @@ class IFAttribute(IFDispatch):
 		pass
 
 
-	def getLCAssignments(self, loadcase) -> list:
+	def getLCAssignments(self, loadcase) -> list[IFAssignment]:
 		r"""
 		Behaves exactly like IFAttribute.getAssignments() except that it only works for material and geometric attributes, and the returned list is filtered to reflect the given loadcase. We are not returning assignments that are MADE in this given loadcase, but assignments that APPLY in the given loadcase. e.g. Consider that "this" material is assigned only to a particular line in LC1 and then a different material is assigned to the same line in LC4. Just like getAssignments(), when we ask for assignments in LC1, of course we get the assignment to that line. But with this function, when we ask for assignments in LC2, we also get the same return value (the earlier assignment still applies). When we ask for assignments in LC3, we still get the same, for the same reason. When we ask for assignments of this attribute in LC4, we get an empty array - because the line now has the other material assigned. 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			array of IFAssignment objects: Returned filtered array of IFAssignment objects
 		"""
@@ -3566,7 +3566,7 @@ class IFAttribute(IFDispatch):
 		r"""
 		Move this attribute to be below the given attribute in the treeview 
 		Params:
-			ID (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			ID (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFAttribute: 
 		"""
@@ -3649,7 +3649,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the loadset for the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3680,7 +3680,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the ending loadset for the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3691,7 +3691,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the starting loadset for the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3702,7 +3702,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the first loadset of a set for the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3713,7 +3713,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Add a loadset to a set for the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3724,8 +3724,8 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the range of loadsets the assignment. Generally this will be a IFLoadcase but in a load curve analysis, loading must be assigned to a IFLoadCurve. 
 		Params:
-			IDstart (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
-			IDend (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			IDstart (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			IDend (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3756,7 +3756,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the beta angle for assignment of mesh. This is the angle between the line z axis (as modified by any assigned local coordinates) and the element z axis 
 		Params:
-			Beta (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			Beta (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3767,7 +3767,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the beta angle for assignment of mesh. This ts the beta angle originally calculated from "setBetaAngleMatrix" 
 		Params:
-			Beta (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			Beta (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3797,7 +3797,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			TransAttr (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			TransAttr (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3817,7 +3817,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			TransAttr (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			TransAttr (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3837,7 +3837,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			SearchAreaAttr (search area): The name or ID of a search area, or a pointer to a IFSearchArea object
+			SearchAreaAttr (IFSearchArea): The name or ID of a searcharea, or a pointer to a IFSearchArea object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3912,7 +3912,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			LocalCoordAttr (local coordinate): The name or ID of a local coordinate, or a pointer to a IFLocalCoord object
+			LocalCoordAttr (IFLocalCoord): The name or ID of a localcoordinate, or a pointer to a IFLocalCoord object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3932,7 +3932,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			Point (point): The name or ID of a point, or a pointer to a IFPoint object
+			Point (IFPoint): The name or ID of a point, or a pointer to a IFPoint object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3943,7 +3943,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			Point (point): The name or ID of a point, or a pointer to a IFPoint object
+			Point (IFPoint): The name or ID of a point, or a pointer to a IFPoint object
 		Returns:
 			IFAssignment: 
 		"""
@@ -3963,7 +3963,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		 
 		Params:
-			Grid (background grid): The name or ID of a background grid, or a pointer to a IFBackgroundGrid object
+			Grid (IFBackgroundGrid): The name or ID of a backgroundgrid, or a pointer to a IFBackgroundGrid object
 		Returns:
 			IFAssignment: 
 		"""
@@ -4507,7 +4507,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the reference path that applies to this assignment 
 		Params:
-			pRefPath (reference path): The name or ID of a reference path, or a pointer to a IFReferencePath object
+			pRefPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 		Returns:
 			IFAssignment: 
 		"""
@@ -4527,7 +4527,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		Specify the twist along a line for beam elements 
 		Params:
-			twist (variation): The name or ID of a variation, or a pointer to a IFVariationAttr object
+			twist (IFVariationAttr): The name or ID of a variation, or a pointer to a IFVariationAttr object
 		Returns:
 			IFAssignment: 
 		"""
@@ -4589,7 +4589,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		add an object that will be used to restrict results calculation (equivalent to selecting the object when influence is assigned) 
 		Params:
-			obj (database member): The name or ID of a database member, or a pointer to a IFDatabaseMember object
+			obj (IFDatabaseMember): The name or ID of a databasemember, or a pointer to a IFDatabaseMember object
 		Returns:
 			None: 
 		"""
@@ -4797,7 +4797,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		For a "single feature mesh assignment" add a parent object to be separated from the assigned child object 
 		Params:
-			obj (database member): The name or ID of a database member, or a pointer to a IFDatabaseMember object
+			obj (IFDatabaseMember): The name or ID of a databasemember, or a pointer to a IFDatabaseMember object
 		Returns:
 			IFAssignment: 
 		"""
@@ -4906,18 +4906,18 @@ class IFAssignment(IFDispatch):
 		r"""
 		return true if the given loadcase is in the loadcase range 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			bool: 
 		"""
 		pass
 
 
-	def getAllLoadcases(self) -> object:
+	def getAllLoadcases(self) -> list[IFLoadcase]:
 		r"""
 		return array of all loadcases to which the loadcase range currently applies, this array may be very large 
 		Returns:
-			object: array <IFLoadset>
+			array of IFLoadcase: 
 		"""
 		pass
 
@@ -4961,20 +4961,20 @@ class IFAssignment(IFDispatch):
 		pass
 
 
-	def getSpecifiedLoadcases(self) -> object:
+	def getSpecifiedLoadcases(self) -> list[IFLoadset]:
 		r"""
 		return array of loadcases from the loadcase range of type specified 
 		Returns:
-			object: array <IFLoadset>
+			array of IFLoadset: 
 		"""
 		pass
 
 
-	def getAssignedObjects(self) -> object:
+	def getAssignedObjects(self) -> list[IFGeometry]:
 		r"""
 		return array of objects with this assignment 
 		Returns:
-			object: array <IFDatabaseMember>
+			array of IFGeometry: 
 		"""
 		pass
 
@@ -4994,7 +4994,7 @@ class IFAssignment(IFDispatch):
 		r"""
 		discrete loading following a reference path 
 		Params:
-			refPath (reference path): The name or ID of a reference path, or a pointer to a IFReferencePath object
+			refPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			nrmCrd (float): normalised coordinate along the path
 			patchTransformType (str or int): patch transformation type
 			doPatchReverse (bool): if true reverse patch direction
@@ -5183,7 +5183,7 @@ class IFControl(IFDispatch):
 		r"""
 		Creates a clone control 
 		Params:
-			loadcase ("Loadcase"): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
 		Returns:
 			IFControl: the new control that has been created
 		"""
@@ -5687,7 +5687,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		specifies the IFTransformationAttr attribute which will be used in move, copy, sweep and similar operations. 
 		Params:
-			transAttr (transformation, optional): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			transAttr (IFTransformationAttr, optional): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFGeometryData: 
 		"""
@@ -5707,7 +5707,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		Specifies the IFLocalCoord attribute which will be used in move, copy, sweep and similar operations. 
 		Params:
-			localAttr (local coordinate): The name or ID of a local coordinate, or a pointer to a IFLocalCoord object
+			localAttr (IFLocalCoord): The name or ID of a localcoordinate, or a pointer to a IFLocalCoord object
 		Returns:
 			IFGeometryData: 
 		"""
@@ -6214,7 +6214,7 @@ class IFGeometryData(IFDispatch):
 		Defines a plane by a perpendicular vector and a point in the plane. 
 		Params:
 			perpendicular (coordarray): Vector perpendicular to the plane
-			pointInPlane (object): An array of 3 real numbers, representing 3d coordinates
+			pointInPlane (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGeometryData: 
 		"""
@@ -6225,7 +6225,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		Defines a plane with the equation A.x + B.y + C.z = D where 
 		Params:
-			coefficients (array of real numbers): Array of three numbers, A, B, C
+			coefficients (array of float): Array of three numbers, A, B, C
 			coeff (float): D
 		Returns:
 			IFGeometryData: 
@@ -7623,7 +7623,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		store the given internal surface point 
 		Params:
-			point (point): The name or ID of a point, or a pointer to a IFPoint object
+			point (IFPoint): The name or ID of a point, or a pointer to a IFPoint object
 		Returns:
 			IFGeometryData: 
 		"""
@@ -7763,7 +7763,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		add the given surface to the set of surfaces defining a volume 
 		Params:
-			surface (surface): The name or ID of a surface, or a pointer to a IFSurface object
+			surface (IFSurface): The name or ID of a surface, or a pointer to a IFSurface object
 		Returns:
 			IFGeometryData: 
 		"""
@@ -7775,7 +7775,7 @@ class IFGeometryData(IFDispatch):
 		add the given surface to the set of surfaces defining a void in a volume 
 		Params:
 			voidIndex (int): index of the void in the surface, first void is 0
-			surface (point): The name or ID of a point, or a pointer to a IFSurface object
+			surface (IFSurface): The name or ID of a point, or a pointer to a IFSurface object
 		Returns:
 			IFGeometryData: 
 		"""
@@ -7959,7 +7959,7 @@ class IF3dCoords(IFDispatch):
 		pass
 
 
-	def crossProduct(self, X, Y=None, Z=None) -> object:
+	def crossProduct(self, X, Y=None, Z=None) -> list[float]:
 		r"""
 		 
 		Params:
@@ -7967,7 +7967,7 @@ class IF3dCoords(IFDispatch):
 			Y (object, optional): 
 			Z (object, optional): 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -7976,7 +7976,7 @@ class IF3dCoords(IFDispatch):
 		r"""
 		 
 		Params:
-			pGiven (IF3dCoords): Array of 3 real numbers representing a coordinate axis in 3D space
+			pGiven (IF3dCoords): Reference to a 3D Coords object
 		Returns:
 			IF3dCoords: 
 		"""
@@ -8281,7 +8281,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createFourierResults(self, entity, combination, angle, nDiv, node, component, pInLoadCase=None) -> list:
+	def createFourierResults(self, entity, combination, angle, nDiv, node, component, pInLoadCase=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8289,7 +8289,7 @@ class IFGraphBase(IFDispatch):
 			combination (str): 
 			angle (float): 
 			nDiv (int): 
-			node (node): The name or ID of a node, or a pointer to a IFNode object
+			node (IFNode): The name or ID of a node, or a pointer to a IFNode object
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
 			pInLoadCase (loadcase, optional): 
 		Returns:
@@ -8298,11 +8298,11 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createFromLoadCurve(self, loadCurve, applyAssignmentFactor=None) -> list:
+	def createFromLoadCurve(self, loadCurve, applyAssignmentFactor=None) -> list[IFDataset]:
 		r"""
 		create graph from loadCurve 
 		Params:
-			loadCurve (loadcurve): The name or ID of a loadcurve, or a pointer to a IFLoadCurve object
+			loadCurve (IFLoadCurve): The name or ID of a loadcurve, or a pointer to a IFLoadCurve object
 			applyAssignmentFactor (bool, optional): , if T apply the assignment factor
 		Returns:
 			array of IFDataset objects: The datasets just created in array format
@@ -8310,14 +8310,14 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createFromVariation(self, attr, nValues, factor, line=None) -> list:
+	def createFromVariation(self, attr, nValues, factor, line=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
-			attr (variation): The name or ID of a variation, or a pointer to a IFVariationAttr object
+			attr (IFVariationAttr): The name or ID of a variation, or a pointer to a IFVariationAttr object
 			nValues (int): 
 			factor (float): 
-			line (line, optional): The name or ID of a line, or a pointer to a IFLine object
+			line (IFLine, optional): The name or ID of a line, or a pointer to a IFLine object
 		Returns:
 			array of IFDataset objects: The datasets just created in array format
 		"""
@@ -8330,15 +8330,15 @@ class IFGraphBase(IFDispatch):
 		Params:
 			type (str): 
 			modes (str): 
-			viscous (array of real numbers, optional): 
-			structural (array of real numbers, optional): 
+			viscous (array of float, optional): 
+			structural (array of float, optional): 
 		Returns:
 			IFGraph: 
 		"""
 		pass
 
 
-	def createResultsModalTime(self, restType, respType, node, col, start, end, step, excType) -> list:
+	def createResultsModalTime(self, restType, respType, node, col, start, end, step, excType) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8356,7 +8356,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createResultsModalFrequency(self, restType, respType, node, col, start, end, step, resType, psd=None) -> list:
+	def createResultsModalFrequency(self, restType, respType, node, col, start, end, step, resType, psd=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8368,7 +8368,7 @@ class IFGraphBase(IFDispatch):
 			end (float): 
 			step (float): 
 			resType (int): 1=Real, 2=Imaginary,3=Amplitude,4=Phase,5=PSD input,6=PSD response,7=All
-			psd ( PSD, optional): The name or ID of a  PSD, or a pointer to a  IFPSD object
+			psd (IFPSD, optional): The name or ID of a PSD, or a pointer to a IFPSD object
 		Returns:
 			array of IFDataset objects: The datasets just created in array format
 		"""
@@ -8380,7 +8380,7 @@ class IFGraphBase(IFDispatch):
 		 
 		Params:
 			type (str): "Force", "Displacement", "Velocity", or "Acceleration"
-			node ( node): The name or ID of a  node, or a pointer to a  IFNode object
+			node (IFNode): The name or ID of a node, or a pointer to a IFNode object
 			largeMass (float): large mass
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
 			amplitude (float, optional): amplitude
@@ -8422,8 +8422,8 @@ class IFGraphBase(IFDispatch):
 		r"""
 		 
 		Params:
-			real ( loadset): The name or ID of a  loadset, or a pointer to a  IFLoadset object
-			imaginary ( loadset): The name or ID of a  loadset, or a pointer to a  IFLoadset object
+			real (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			imaginary (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFGraph: 
 		"""
@@ -8500,7 +8500,7 @@ class IFGraphBase(IFDispatch):
 		Params:
 			entity (str): Results entity i.e. "Force/Moment - Thick Shell" etc..
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
-			element (element): The name or ID of a element, or a pointer to a IFElement object
+			element (IFElement): The name or ID of a element, or a pointer to a IFElement object
 			GaussPoint (int): index of the Gauss point to be considered
 		Returns:
 			IFDataset: returns dataset just created
@@ -8514,7 +8514,7 @@ class IFGraphBase(IFDispatch):
 		Params:
 			entity (str): Results entity i.e. "Force/Moment - Thick Shell" etc..
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
-			element (element): The name or ID of a element, or a pointer to a IFElement object
+			element (IFElement): The name or ID of a element, or a pointer to a IFElement object
 			internalPoint (int): index of the internal point to be considered
 		Returns:
 			IFDataset: returns dataset just created
@@ -8546,7 +8546,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createSlidelineResults(self, type, component, posX=None, posY=None) -> list:
+	def createSlidelineResults(self, type, component, posX=None, posY=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8560,7 +8560,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createThermalSurfaceResults(self, type, component, posX=None, posY=None) -> list:
+	def createThermalSurfaceResults(self, type, component, posX=None, posY=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8574,7 +8574,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createSliceResults(self, entity, component, startX, startY, endX, endY, stringX=None, stringY=None, posX=None, posY=None, posZ=None, useAngle=None, matrix=None, corridorWidth=None) -> list:
+	def createSliceResults(self, entity, component, startX, startY, endX, endY, stringX=None, stringY=None, posX=None, posY=None, posZ=None, useAngle=None, matrix=None, corridorWidth=None) -> list[IFDataset]:
 		r"""
 		Create a graph by 'cutting' the model along a line specified by end coordinates. The line is given in rotated model coordinates, along with the rotation matrix used to rotate them. Only works on surface elements (including the result of a 3d slice through a solid). Optionally the given line may be considered as an arc, by specifying an origin, in which case distances are presented as subtended angles. A corridor width may be given, in which case the program considers three parallel lines, (left, right and centre) and averages values between them (0.25*left + 0.5*centre + 0.25*right) 
 		Params:
@@ -8598,13 +8598,13 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createSliceResultsByObject(self, entity, component, object, projType, stringX=None, stringY=None, matrix=None, corridorWidth=None) -> list:
+	def createSliceResultsByObject(self, entity, component, object, projType, stringX=None, stringY=None, matrix=None, corridorWidth=None) -> list[IFDataset]:
 		r"""
 		Create a graph by 'cutting' the model along a line specified as an object. Only works on surface elements (including the result of a 3d slice through a solid). The given object may be a line (straight or curved), an annotation line, a reference path, or a previously cut slice graph. A projection vector must be given to convert the given line into a plane which cuts the model. Typically, the projection vector is screen z. A corridor width may be given, in which case the program considers three parallel lines, (left, right and centre) and averages values between them (0.25*left + 0.5*centre + 0.25*right). 
 		Params:
 			entity (str): Results entity i.e. "Force/Moment - Thick Shell" etc..
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
-			object (database member): The name or ID of a database member, or a pointer to a IFDatabaseMember object
+			object (IFDatabaseMember): The name or ID of a databasemember, or a pointer to a IFDatabaseMember object
 			projType (str): "Normal to screen", "Normal to line", "Vertically", "In X direction", "In X direction", or "In Z direction"
 			stringX (str, optional): Optional x axis legend (if not given, one will be computed automatically)
 			stringY (str, optional): Optional y axis legend (if not given, one will be computed automatically)
@@ -8616,7 +8616,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createSliceResultantEffects(self, sliceType, startX, startY, endX, endY, matrix=None, corridorWidth=None) -> list:
+	def createSliceResultantEffects(self, sliceType, startX, startY, endX, endY, matrix=None, corridorWidth=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8633,12 +8633,12 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createSliceResultantEffectsByObject(self, sliceType, object, projType, matrix=None, corridorWidth=None) -> list:
+	def createSliceResultantEffectsByObject(self, sliceType, object, projType, matrix=None, corridorWidth=None) -> list[IFDataset]:
 		r"""
 		 
 		Params:
 			sliceType (str): 
-			object (database member): The name or ID of a database member, or a pointer to a IFDatabaseMember object
+			object (IFDatabaseMember): The name or ID of a databasemember, or a pointer to a IFDatabaseMember object
 			projType (str): "Cut model normal to screen", "Cut model normal to line", or "Cut model vertically"
 			matrix (array of float, optional): transformation matrix (usually rotation of current view)
 			corridorWidth (float, optional): width of corridor to be averaged
@@ -8648,7 +8648,7 @@ class IFGraphBase(IFDispatch):
 		pass
 
 
-	def createFromPrestress(self, assignments) -> list:
+	def createFromPrestress(self, assignments) -> list[IFDataset]:
 		r"""
 		 
 		Params:
@@ -8692,7 +8692,7 @@ class IFGraphBase(IFDispatch):
 		r"""
 		Use the specified local coordinate as the results transformation for this graph. 
 		Params:
-			localCoordSe ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoordSe (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -8704,7 +8704,7 @@ class IFGraphBase(IFDispatch):
 		r"""
 		Uses the specified path as the results transformation for this graph 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -9589,7 +9589,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def getInspLocnResults(self, componentNumber, feature, attr, index, units) -> list:
+	def getInspLocnResults(self, componentNumber, feature, attr, index, units) -> list[float]:
 		r"""
 		equivalent to feature.getResultsAt(attr, index, this object, componentNumber, units) 
 		Params:
@@ -9620,7 +9620,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def isValidValue(self, value) -> list:
+	def isValidValue(self, value) -> list[float]:
 		r"""
 		returns true if the given value is valid. The answer will be false if (for example) you asked for a reaction of an unsupported node, or if you ask for a value from an element that is not in the set of elements showing results, if if you ask for a value of a user defined result that cannot be evaluated (e.g. divide by zero). In practice, this concept is represented using the system parameter DBL_MIN - the smallest positive value that the architecture can represent 
 		Params:
@@ -9755,7 +9755,7 @@ class IFResultsContext(IFDispatch):
 		r"""
 		Use the specified local coordinate as the results transformation in this context. Calling this function on the view modifies the transformation setting of all currently showing drawing layers and sets the default transformation for new drawing layers, as they are created. When a combination or envelope is active in the view, it is an error if the individual transformation settings of the individual layers are not same as the settings of the parent view 
 		Params:
-			localCoordSet ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoordSet (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -9767,7 +9767,7 @@ class IFResultsContext(IFDispatch):
 		r"""
 		Uses the specified path as the results transformation in this context. Calling this function on the view modifies the transformation setting of all currently showing drawing layers and sets the default transformation for new drawing layers, as they are created. When a combination or envelope is active in the view, it is an error if the individual transformation settings of the individual layers are not same as the settings of the parent view 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -9898,7 +9898,7 @@ class IFResultsContext(IFDispatch):
 		r"""
 		Set active the given lamina (layer) belonging to the given laminate (composite attribute). Thus, if this function is called with the lamina name 'layer1', and the laminate 'bob', only elements with an assignment to 'bob' will be affected. The active lamina is the one that is used for visualisation and results plots There is always an active lamina, even if the currently requested results or visualisation do not require it (in which case it is ignored). 
 		Params:
-			laminate (composite): The name or ID of a composite, or a pointer to a IFComposite object
+			laminate (IFComposite): The name or ID of a composite, or a pointer to a IFComposite object
 			lamina (str): 
 		Returns:
 			None: 
@@ -9921,7 +9921,7 @@ class IFResultsContext(IFDispatch):
 		r"""
 		Set active the given fibre belonging to the given geometric beam attribute. Thus, if this function is called with the fibre name 'fibre1', and the attribute 'bob', only elements with an assignment to 'bob' will be affected. The active fibre is the one that is used for visualisation and results plots There is always an active fibre, even if the currently requested results or visualisation do not require it (in which case it is ignored). 
 		Params:
-			geomCSBeam (geometric): The name or ID of a geometric, or a pointer to a IFGeometric object
+			geomCSBeam (IFGeometric): The name or ID of a geometric, or a pointer to a IFGeometric object
 			fibre (str): fibre name
 		Returns:
 			None: 
@@ -11215,7 +11215,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Creates a copy of this analysis and adds it to the panel. Loadcases and their assignments will be copied as well. If "this" analysis is a branch, then it is necessary to specify the loadcase in which the copy will be created Conversely, if "this" analysis is not a branch, the target should not be given 
 		Params:
-			target ("Loadcase", optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
+			target (IFLoadcase, optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
 			copyMaterials (str, optional): "copy","no copy","inherit" material and composite assignments
 		Returns:
 			IFAnalysisBaseClass: the new analysis that has been created
@@ -11227,7 +11227,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Copy assignments from the given analysis into this analysis. If only the source analysis is given then all assignments of all attributes will be copied 
 		Params:
-			sourceAnalysis ("Analysis"): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
+			sourceAnalysis (IFAnalysisBaseClass): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
 			attrType (str, optional): Type of attributes whose assignments will be copied
 			attributes (array, optional): Names and/or numbers of the attributes whose assignments will be copied
 		Returns:
@@ -11538,7 +11538,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		r"""
 		Sets up the loadcase from which this analysis will start. This analysis will start from the end of the given loadcase. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromDump or IFAnalysis.setDeformedMeshStart 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			restartIncType (str, optional): increment type "load factor" or "arc length"
 			startingIncLength (float, optional): starting increment length
 			maximumIncLength (float, optional): maximum increment length
@@ -11751,7 +11751,7 @@ class IFVLOInfluenceAssignEntry(IFDispatch):
 		pass
 
 
-	def getCoincidentEffectEntries(self) -> list:
+	def getCoincidentEffectEntries(self) -> list[IFVLOInfluenceAssignEntry]:
 		r"""
 		return the entries needed for coincident effects 
 		Returns:
@@ -12329,7 +12329,7 @@ class IFPrestressSolver(IFDispatch):
 		r"""
 		Sets the one and only analysis that the next call to IFPrestressSolver.solve will process. In normal use, this function is not called, and all analyses are processed. Note that calling this function will NOT mark prestress loading as "up to date" because that can only be done for the whole model. 
 		Params:
-			analysis (analysis): The name of a analysis, or a pointer to a IFAnalysisBaseClass object
+			analysis (IFAnalysisBaseClass): The name of a analysis, or a pointer to a IFAnalysisBaseClass object
 		Returns:
 			IFPrestressSolver: 
 		"""
@@ -13112,7 +13112,7 @@ As well as interacting with Modeller's own intrinsic set objects, the script pro
 		pass
 
 
-	def getObjects(self, arg1, arg2=None, arg3=None, arg4=None, arg5=None) -> list:
+	def getObjects(self, arg1, arg2=None, arg3=None, arg4=None, arg5=None) -> list[IFDatabaseMember]:
 		r"""
 		Fetch the specified object(s) as an array. The output array is sorted into increasing object type and increasing object ID. E.g. (regardless of the input), the output would be something like { P1, P2, P32, L1, L3, L58, S4, S34 } The array can then be looped in the normal way. (Check full documentation for argument details). 
 		Params:
@@ -13369,7 +13369,7 @@ class IFGeometry(IFDatabaseOperations):
 		r"""
 		Returns TRUE if this object is a member of the given group 
 		Params:
-			group (group): The name or ID of a group, or a pointer to a IFGroup object
+			group (IFGroup): The name or ID of a group, or a pointer to a IFGroup object
 		Returns:
 			bool: 
 		"""
@@ -13396,12 +13396,12 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list:
+	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment made to this object. The array can be restricted by using the optional argument to specify a given attribute type, e.g. loading. If not given, all assignments are returned Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
 			attributeType (object, optional): "Loading", "Support", "Material", etc
-			loadset (loadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
 			andAssignedObjects (bool, optional): default false, if true add the assigned objects to the IFAssignment objects returned
 			singleLoadcase (object, optional): NOT YET,  <boolean>default true, if true return only assignments to the specific loadcase, if false assignments that apply to the given loadcase
 		Returns:
@@ -13410,29 +13410,29 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getHOFs(self) -> list:
+	def getHOFs(self) -> list[IFGeometry]:
 		r"""
 		Creates and returns an array of higher order features. E.g. if this object is a line, the array may contain combined lines and/or surfaces. 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFGeometry objects: The returned array
 		"""
 		pass
 
 
-	def getLOFs(self) -> list:
+	def getLOFs(self) -> list[IFGeometry]:
 		r"""
 		Creates and returns an array of lower order features. E.g. if this object is a surface, the array may contain combined lines and/or lines. 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFGeometry objects: The returned array
 		"""
 		pass
 
 
-	def getInternalPoints(self) -> list:
+	def getInternalPoints(self) -> list[IFPoint]:
 		r"""
-		Creates and returns an array of embedded point in a surface 
+		Creates and returns an array of embedded points in a surface. Use 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFPoint objects: The returned array
 		"""
 		pass
 
@@ -13455,13 +13455,13 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getBoundaryLOFs(self, boundaryIndex) -> list:
+	def getBoundaryLOFs(self, boundaryIndex) -> list[IFGeometry]:
 		r"""
 		Creates and returns an array of lower order features for the given boundary index. boundaryIndex 0 = outer boundary, 1 = first hole, 2 = second hole ... etc 
 		Params:
 			boundaryIndex (int): 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFGeometry objects: The returned array
 		"""
 		pass
 
@@ -13486,20 +13486,20 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getElements(self) -> list:
+	def getElements(self) -> list[IFElement]:
 		r"""
 		Creates and returns an array of elements meshed on to this object. 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFElement objects: The returned array
 		"""
 		pass
 
 
-	def getNodes(self) -> list:
+	def getNodes(self) -> list[IFNode]:
 		r"""
 		Creates and returns an array of nodes meshed on to this object. 
 		Returns:
-			array of IFDatabaseMember objects: The returned array
+			array of IFNode objects: The returned array
 		"""
 		pass
 
@@ -13648,7 +13648,7 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getResultsAt(self, attr, index, entity, component, units=None, context=None) -> list:
+	def getResultsAt(self, attr, index, entity, component, units=None, context=None) -> list[float]:
 		r"""
 		Return the value(s) of the specified result type and component at the given inspection location. All options (loadcase, transformation, active fibre, active composite layer, etc) will be taken from the given context. If a context is not given, the current view will be used for all those options and settings instead.
  Asking for a value using this function, subsequently changing a setting in the context (e.g. active loadcase or transformation), and then asking for the same value again will yield two different values - except in some very specific circumstances that are explained in IFResultsComponentSet.
@@ -13657,7 +13657,7 @@ class IFGeometry(IFDatabaseOperations):
  If an IFUnitSet object (or its name) is given, the value will be returned in those units. Otherwise it will be returned in the database's current unit system. Note that for efficiency the requested results are cached and will not be removed from the system (and so will potentially use a large amount of memory) until explicitly removed with a call to IFDatabase.flushScriptedResults.
  Although usually the array will contain only one value, multiple values could be returned if the inspection locaton occurs at an averaging discontinuity (e.g. material boundary) 
 		Params:
-			attr (inspection location): The name or ID of a inspection location, or a pointer to a IFInspectionPoint object
+			attr (IFInspectionPoint): The name or ID of a inspectionlocation, or a pointer to a IFInspectionPoint object
 			index (int): index of location number within attr (corresponds to the row number in the definition dialog) (ignored for inspection locations assigned to points)
 			entity (object): Results entity i.e. "Force/Moment - Thick Shell" etc..
 			component (object): Sx, Sy, Sxy, etc.. See element reference manual for details
@@ -13735,7 +13735,7 @@ class IFMeshFamily(IFDatabaseMember):
 		r"""
 		return TRUE if this object is a member of the given group 
 		Params:
-			group (group): The name or ID of a group, or a pointer to a IFGroup object
+			group (IFGroup): The name or ID of a group, or a pointer to a IFGroup object
 		Returns:
 			bool: 
 		"""
@@ -13825,13 +13825,13 @@ class IFPoint(IFGeometry):
 		pass
 
 
-	def getTransformedPosition(self, localCoord) -> object:
+	def getTransformedPosition(self, localCoord) -> list[float]:
 		r"""
 		 
 		Params:
 			localCoord (IFLocalCoord): 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -13840,7 +13840,7 @@ class IFPoint(IFGeometry):
 		r"""
 		Returns the mass of a point for a given loadcase. Only points that have both point mass elements and mass material assigned actually have mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of a point for a given loadcase
 		"""
@@ -13851,7 +13851,7 @@ class IFPoint(IFGeometry):
 		r"""
 		 
 		Params:
-			position (object): An array of 3 real numbers, representing 3d coordinates
+			position (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			float: 
 		"""
@@ -13891,7 +13891,7 @@ class IFPoint(IFGeometry):
 		pass
 
 
-	def nearestPositionOn(self, obj, includeLofs=None, returnMinimum=None) -> object:
+	def nearestPositionOn(self, obj, includeLofs=None, returnMinimum=None) -> list[float]:
 		r"""
 		return the coordinates of the closest or furthest point on the given objet to this point 
 		Params:
@@ -13899,7 +13899,7 @@ class IFPoint(IFGeometry):
 			includeLofs (bool, optional): true to include the nearest defining object of "obj"
 			returnMinimum (bool, optional): true to return the minimum distance,, false for the maximum distance
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -13927,20 +13927,20 @@ class IFLine(IFGeometry):
 		pass
 
 
-	def getStartPosition(self) -> object:
+	def getStartPosition(self) -> list[float]:
 		r"""
 		Return start coordinate of line 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
 
-	def getEndPosition(self) -> object:
+	def getEndPosition(self) -> list[float]:
 		r"""
 		Return end coordinate of line 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -13963,33 +13963,33 @@ class IFLine(IFGeometry):
 		pass
 
 
-	def getInterpolatedPosition(self, nrmCoord) -> object:
+	def getInterpolatedPosition(self, nrmCoord) -> list[float]:
 		r"""
 		Return the coordinates at the given normalised coordinate, nrmCoord=0.0 at the line start nrmCoord=1.0 at the line end 
 		Params:
 			nrmCoord (float): normalised coord
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
 
-	def getInterpolatedTangent(self, nrmCoord) -> object:
+	def getInterpolatedTangent(self, nrmCoord) -> list[float]:
 		r"""
 		Return the tangent at the given normalised coordinate, nrmCoord=0.0 at the line start nrmCoord=1.0 at the line end 
 		Params:
 			nrmCoord (float): normalised coord
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
 
-	def getArcCentre(self) -> object:
+	def getArcCentre(self) -> list[float]:
 		r"""
 		Return coordinate at centre of arc 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -14003,11 +14003,11 @@ class IFLine(IFGeometry):
 		pass
 
 
-	def getArcBulge(self) -> object:
+	def getArcBulge(self) -> list[float]:
 		r"""
 		Return coordinate of the arc bulge midpoint Note: It is an error to call this function on a combined line 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -14043,10 +14043,10 @@ class IFLine(IFGeometry):
 		r"""
 		Given a straight line defined by a position and direction, this function returns the closest positions on the straight line and this line 
 		Params:
-			Origin (object): An array of 3 real numbers, representing 3d coordinates
-			Direction (object): An array of 3 real numbers, representing 3d coordinates
-			PointOnStraightLine (object): An array of 3 real numbers, representing 3d coordinates
-			PointOnThisLine (object): An array of 3 real numbers, representing 3d coordinates
+			Origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			Direction (array of float): An array of 3 real numbers, representing 3d coordinates
+			PointOnStraightLine (array of float): An array of 3 real numbers, representing 3d coordinates
+			PointOnThisLine (array of float): An array of 3 real numbers, representing 3d coordinates
 			IsValidSolution (int): Flag indicating validity of solutions +1 valid, -1 invalid
 		Returns:
 			None: 
@@ -14054,11 +14054,11 @@ class IFLine(IFGeometry):
 		pass
 
 
-	def getFacetCoordinates(self) -> list:
+	def getFacetCoordinates(self) -> list[float]:
 		r"""
 		Return an array of model space coordinates of the facet positions along this line 
 		Returns:
-			array of real numbers: vector of coordinates (x1, y1, z1, ... xn, yn, zn)
+			array of float: vector of coordinates (x1, y1, z1, ... xn, yn, zn)
 		"""
 		pass
 
@@ -14067,20 +14067,20 @@ class IFLine(IFGeometry):
 		r"""
 		Return the normalised coords of the given model space coordinated on this line *pRetval=0.0 at the line start *pRetval=1.0 at the line end 
 		Params:
-			pCoords (object): An array of 3 real numbers, representing 3d coordinates
+			pCoords (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			float: returned equivalent normalised coordinate
 		"""
 		pass
 
 
-	def getNormalisedCoordsFromCoords(self, pCoords) -> list:
+	def getNormalisedCoordsFromCoords(self, pCoords) -> list[float]:
 		r"""
 		Return the normalised coords of the given model space coordinates on this line 
 		Params:
-			pCoords (object): An array of 3 real numbers, representing 3d coordinates
+			pCoords (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
-			array of real numbers: vector of coordinates (x1, y1, z1, ... xn, yn, zn)
+			array of float: vector of coordinates (x1, y1, z1, ... xn, yn, zn)
 		"""
 		pass
 
@@ -14089,7 +14089,7 @@ class IFLine(IFGeometry):
 		r"""
 		Returns the mass of a line for a given loadcase. Only lines that have a mesh, section and density assigned actually have any mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of a line for a given loadcase
 		"""
@@ -14100,7 +14100,7 @@ class IFLine(IFGeometry):
 		r"""
 		Returns the volume of a line for a given loadcase Only lines that have a mesh and section assigned actually have any volume. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned volume of a line for a given loadcase
 		"""
@@ -14168,10 +14168,10 @@ class IFLine(IFGeometry):
 		Return line axes at the given normalised coords 
 		Params:
 			nrmCrds (float): specified normalised coord
-			origin (array of real numbers): coordinates of origin
-			xAxis (array of real numbers): coordinates of x-axis
-			yAxis (array of real numbers): coordinates of y-axis
-			zAxis (array of real numbers): coordinates of z-axis
+			origin (array of float): coordinates of origin
+			xAxis (array of float): coordinates of x-axis
+			yAxis (array of float): coordinates of y-axis
+			zAxis (array of float): coordinates of z-axis
 		Returns:
 			None: 
 		"""
@@ -14222,8 +14222,8 @@ class IFLine(IFGeometry):
 		calculate the centre and radius of curvature at the given normalised coordinate along this line 
 		Params:
 			nrmCrds (float): specified normalised coord
-			pPointOnLine (array of real numbers): coordinates of the point on this line
-			pCentreOfCurvature (array of real numbers): coordinates of the centre of curvature
+			pPointOnLine (array of float): coordinates of the point on this line
+			pCentreOfCurvature (array of float): coordinates of the centre of curvature
 			pRadiusOfCurvature (float): radius of curvature
 		Returns:
 			int: on exit, 0 = success, -1 = very large radius, all other values = error
@@ -14296,7 +14296,7 @@ class IFReferencePath(IFPolyline):
 		r"""
 		Sets the given local coordinate set. 
 		Params:
-			localCoord (local coord): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoord (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFReferencePath: 
 		"""
@@ -14346,7 +14346,7 @@ class IFSurface(IFGeometry):
 		pass
 
 
-	def getNormal(self, X=None, Y=None, Z=None) -> list:
+	def getNormal(self, X=None, Y=None, Z=None) -> list[float]:
 		r"""
 		returns the normal of this surface as a vector, represented by an array of three numbers. Optionally, the position (which must be on the surface) where the normal is required may also be given. If not given, the centre of the surface is used. 
 		Params:
@@ -14354,7 +14354,7 @@ class IFSurface(IFGeometry):
 			Y (object, optional): 
 			Z (object, optional): 
 		Returns:
-			array of real numbers: The returned vector as an array of three numbers
+			array of float: The returned vector as an array of three numbers
 		"""
 		pass
 
@@ -14395,11 +14395,11 @@ class IFSurface(IFGeometry):
 		pass
 
 
-	def getCentroid(self) -> object:
+	def getCentroid(self) -> list[float]:
 		r"""
 		Return the coords of the centroid of this surface 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -14423,7 +14423,7 @@ class IFSurface(IFGeometry):
 		r"""
 		Returns the mass of a surface for a given loadcase. Only surfaces that have a mesh, thickness and density assigned actually have any mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of a surface for a given loadcase
 		"""
@@ -14434,7 +14434,7 @@ class IFSurface(IFGeometry):
 		r"""
 		Returns the volume of a surface for a given loadcase. Only surfaces that have a mesh and thickness assigned actually have a volume. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned volume of a surface for a given loadcase
 		"""
@@ -14486,7 +14486,7 @@ class IFVolume(IFGeometry):
 		r"""
 		Returns the mass of a volume for a given loadcase. Only volumes that have a mesh and density assigned actually have mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of a volume for a given loadcase
 		"""
@@ -14665,7 +14665,7 @@ class IFNode(IFMeshFamily):
 			val (float): User results value
 			entity (str or int): Name or index of results entity
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -14759,12 +14759,12 @@ class IFNode(IFMeshFamily):
 		pass
 
 
-	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list:
+	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment made to this object. The array can be restricted by using the optional argument to specify a given attribute type, e.g. loading. If not given, all assignments are returned Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
 			attributeType (object, optional): "Loading", "Support", "Material", etc
-			loadset (loadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
 			andAssignedObjects (bool, optional): default false, if true add the assigned objects to the IFAssignment objects returned
 			singleLoadcase (object, optional): NOT YET,  <boolean>default true, if true return only assignments to the specific loadcase, if false assignments that apply to the given loadcase
 		Returns:
@@ -14791,7 +14791,7 @@ class IFNode(IFMeshFamily):
 		pass
 
 
-	def getEdges(self) -> list:
+	def getEdges(self) -> list[IFEdge]:
 		r"""
 		Returns array of IFEdge objects which define this node 
 		Returns:
@@ -14800,7 +14800,7 @@ class IFNode(IFMeshFamily):
 		pass
 
 
-	def getFaces(self) -> list:
+	def getFaces(self) -> list[IFFace]:
 		r"""
 		Returns array of IFFace objects which are defined by this node 
 		Returns:
@@ -14809,7 +14809,7 @@ class IFNode(IFMeshFamily):
 		pass
 
 
-	def getElements(self) -> list:
+	def getElements(self) -> list[IFElement]:
 		r"""
 		Creates and returns an array of all IFElement objects which are defined by this node 
 		Returns:
@@ -14822,7 +14822,7 @@ class IFNode(IFMeshFamily):
 		r"""
 		Returns the mass of a node for a given loadcase. Only nodes that belong to point mass elements and have mass material assigned actually have mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of a node for a given loadcase
 		"""
@@ -14895,7 +14895,7 @@ class IFEdge(IFMeshFamily):
 	 
 	"""
 
-	def getNodes(self) -> list:
+	def getNodes(self) -> list[IFNode]:
 		r"""
 		Returns array of IFNode objects which define this edge 
 		Returns:
@@ -14904,7 +14904,7 @@ class IFEdge(IFMeshFamily):
 		pass
 
 
-	def getFaces(self) -> list:
+	def getFaces(self) -> list[IFFace]:
 		r"""
 		Returns array of IFFace objects which are defined by this edge 
 		Returns:
@@ -14913,7 +14913,7 @@ class IFEdge(IFMeshFamily):
 		pass
 
 
-	def getElements(self) -> list:
+	def getElements(self) -> list[IFElement]:
 		r"""
 		Creates and returns an array of all IFElement objects which are defined by this edge 
 		Returns:
@@ -14936,7 +14936,7 @@ class IFFace(IFMeshFamily):
 	 
 	"""
 
-	def getNodes(self) -> list:
+	def getNodes(self) -> list[IFNode]:
 		r"""
 		Returns array of IFNode objects which define this face 
 		Returns:
@@ -14945,7 +14945,7 @@ class IFFace(IFMeshFamily):
 		pass
 
 
-	def getEdges(self) -> list:
+	def getEdges(self) -> list[IFEdge]:
 		r"""
 		Returns array of IFEdge objects which define this face 
 		Returns:
@@ -14954,7 +14954,7 @@ class IFFace(IFMeshFamily):
 		pass
 
 
-	def getElements(self) -> list:
+	def getElements(self) -> list[IFElement]:
 		r"""
 		Creates and returns an array of all IFElement objects which are defined by this face 
 		Returns:
@@ -14986,7 +14986,7 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getNodes(self) -> list:
+	def getNodes(self) -> list[IFNode]:
 		r"""
 		Returns array of IFNode objects which define this element 
 		Returns:
@@ -14995,7 +14995,7 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getFaces(self) -> list:
+	def getFaces(self) -> list[IFFace]:
 		r"""
 		Returns array of IFFace objects which define this element 
 		Returns:
@@ -15008,7 +15008,7 @@ class IFElement(IFMeshFamily):
 		r"""
 		Returns the mass of an element for a given loadcase. Only elements that have density assigned actually have mass. 
 		Params:
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			mass: The returned mass of an element for a given loadcase
 		"""
@@ -15149,7 +15149,7 @@ class IFElement(IFMeshFamily):
 			val (float): Results value
 			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -15164,7 +15164,7 @@ class IFElement(IFMeshFamily):
 			val (float): Results value
 			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -15302,7 +15302,7 @@ class IFElement(IFMeshFamily):
 			val (float): User results value
 			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -15317,7 +15317,7 @@ class IFElement(IFMeshFamily):
 			val (float): User results value
 			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -15420,12 +15420,12 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list:
+	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment made to this object. The array can be restricted by using the optional argument to specify a given attribute type, e.g. loading. If not given, all assignments are returned Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
 			attributeType (object, optional): "Loading", "Support", "Material", etc
-			loadset (loadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
 			andAssignedObjects (bool, optional): default false, if true add the assigned objects to the IFAssignment objects returned
 			singleLoadcase (object, optional): NOT YET,  <boolean>default true, if true return only assignments to the specific loadcase, if false assignments that apply to the given loadcase
 		Returns:
@@ -15519,7 +15519,7 @@ class IFElement(IFMeshFamily):
 		r"""
 		Retrieves attribute values that might vary across an element, like geometric thickness, or nodal attribute values such as support conditions Not to be used for properties that must be fixed across an element (such as material properties) 
 		Params:
-			node (node): The name or ID of a node, or a pointer to a IFNode object
+			node (IFNode): The name or ID of a node, or a pointer to a IFNode object
 			attrType (object): "Loading", "Support", "Material", etc
 			varName (str): 
 			loadcase (IFUnitSet, optional): 
@@ -15553,8 +15553,8 @@ class IFElement(IFMeshFamily):
 		r"""
 		Interpolate model space coordinates at the given normalised local coordinates 
 		Params:
-			pNrmCrdsIn (object): An array of 3 real numbers, representing 3d coordinates
-			pMdlCrdsOut (object): An array of 3 real numbers, representing 3d coordinates
+			pNrmCrdsIn (array of float): An array of 3 real numbers, representing 3d coordinates
+			pMdlCrdsOut (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			None: 
 		"""
@@ -15699,11 +15699,11 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getCentroid(self) -> object:
+	def getCentroid(self) -> list[float]:
 		r"""
 		Return the coords of the centroid of this element 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -15712,7 +15712,7 @@ class IFElement(IFMeshFamily):
 		r"""
 		Return the loadcase in which this element was "born" - i.e. the loadcase in which an activate attribute was most recently assigned. Note that it is possible for an element to be "born", "die", and be "born again" any number of times if multiple IFDeactivate and IFActivate assignments are made. In such cases, it will be necessary to pass in the loadcase of interest. This function will track backwards in time from that point, looking for the most recent activation. If the element is inactive in the loadcase of interest, an error is generated. If no activation exists, the first loadcase is returned (the element is assumed to be always active). 
 		Params:
-			loadcaseOfInterest (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcaseOfInterest (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			IFLoadcase: The returned loadcase
 		"""
@@ -15757,7 +15757,7 @@ class IFGroup(IFObjectSet):
 		r"""
 		return TRUE if this object is a member of the given group 
 		Params:
-			group (group): The name or ID of a group, or a pointer to a IFGroup object
+			group (IFGroup): The name or ID of a group, or a pointer to a IFGroup object
 		Returns:
 			bool: 
 		"""
@@ -15793,12 +15793,12 @@ class IFGroup(IFObjectSet):
 		pass
 
 
-	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list:
+	def getAssignments(self, attributeType=None, loadset=None, andAssignedObjects=None, singleLoadcase=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment made to this object. The array can be restricted by using the optional argument to specify a given attribute type, e.g. loading. If not given, all assignments are returned Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
 			attributeType (object, optional): "Loading", "Support", "Material", etc
-			loadset (loadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
+			loadset (IFLoadset, optional): The name or ID of a loadset, or a pointer to a IFLoadset object
 			andAssignedObjects (bool, optional): default false, if true add the assigned objects to the IFAssignment objects returned
 			singleLoadcase (object, optional): NOT YET,  <boolean>default true, if true return only assignments to the specific loadcase, if false assignments that apply to the given loadcase
 		Returns:
@@ -15956,7 +15956,7 @@ class IFBackgroundGrid(IFDatabaseMember):
 		r"""
 		Returns TRUE if this object is a member of the given group 
 		Params:
-			group (group): The name or ID of a group, or a pointer to a IFGroup object
+			group (IFGroup): The name or ID of a group, or a pointer to a IFGroup object
 		Returns:
 			bool: 
 		"""
@@ -16001,11 +16001,11 @@ class IFLayoutGrid(IFGeometry):
 		pass
 
 
-	def getOrigin(self) -> object:
+	def getOrigin(self) -> list[float]:
 		r"""
 		Returns the origin of the grid 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -16453,7 +16453,7 @@ class IFLayoutGridByOffset(IFLayoutGrid):
 		r"""
 		Sets the reference path for the grid 
 		Params:
-			refPath (reference path): The name or ID of a reference path, or a pointer to a IFReferencePath object
+			refPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 		Returns:
 			IFLayoutGridByOffset: grid object
 		"""
@@ -16475,8 +16475,8 @@ class IFLayoutGridByOffset(IFLayoutGrid):
 		r"""
 		add straight line to the grid 
 		Params:
-			start (object): An array of 3 real numbers, representing 3d coordinates
-			end (object): An array of 3 real numbers, representing 3d coordinates
+			start (array of float): An array of 3 real numbers, representing 3d coordinates
+			end (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFLayoutGridByOffset: grid object
 		"""
@@ -16487,9 +16487,9 @@ class IFLayoutGridByOffset(IFLayoutGrid):
 		r"""
 		add arc line to the grid 
 		Params:
-			centre (object): An array of 3 real numbers, representing 3d coordinates
-			hori (object): An array of 3 real numbers, representing 3d coordinates
-			vert (object): An array of 3 real numbers, representing 3d coordinates
+			centre (array of float): An array of 3 real numbers, representing 3d coordinates
+			hori (array of float): An array of 3 real numbers, representing 3d coordinates
+			vert (array of float): An array of 3 real numbers, representing 3d coordinates
 			sweptAngleDegs (float): swept angle in degrees
 		Returns:
 			IFLayoutGridByOffset: grid object
@@ -16506,7 +16506,7 @@ class IFLayoutGridByOffset(IFLayoutGrid):
 			isRational (bool): true if rational, false if non-rational
 			knots (float): knot array
 			multiplicity (float): knot multiplicity array
-			coords (object): An array of 3 real numbers, representing 3d coordinates
+			coords (array of float): An array of 3 real numbers, representing 3d coordinates
 			weights (float): weights if spline is rational
 		Returns:
 			IFLayoutGridByOffset: grid object
@@ -16559,7 +16559,7 @@ class IFObjsToDrape(IFDatabaseMember):
 		r"""
 		Returns TRUE if this object is a member of the given group 
 		Params:
-			group (group): The name or ID of a group, or a pointer to a IFGroup object
+			group (IFGroup): The name or ID of a group, or a pointer to a IFGroup object
 		Returns:
 			bool: 
 		"""
@@ -16754,7 +16754,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Set the units for this database. This function should only be called before any data has been entered, and should only be called once per new database. Once a value is entered, its numeric value never changes, therefore if the units change, for example, from m to mm, any value already in the database would correspondingly change - e.g. from 1m to 1mm. 
 		Params:
-			units (units): The name of a units, or a pointer to a IFUnitSet object
+			units (IFUnitSet): The name of a units, or a pointer to a IFUnitSet object
 		Returns:
 			None: 
 		"""
@@ -16855,7 +16855,7 @@ class IFDatabase(IFGroup):
 		Return true if lines define a continuous open loop 
 		Params:
 			lineArray (array of IFLine objects): On input, the lines can be given in any order. On output they will have been reordered such that they are in sequence. The input order will be disturbed as little as possible to achieve this.
-			reverseArray (array of boolean): This array is created and returned by the function. There will be one entry for each line. Each entry will be false if the corresponding line's direction is logically the same as the sense of the returned sequence, and will be true if they are opposite. E.g. Given two lines, 1, and 2, who share a common point, and where both line directions point towards the common point. If the returned array contains lines [1,2], the reverse array will contain [0,1] because line 1's direction is consistent with the direction [1,2]. However if the returned line array were to contain [2,1], the reverse array would contain [1,0] because now line 2's direction is consistent with the direction [2,1]
+			reverseArray (array of bool): This array is created and returned by the function. There will be one entry for each line. Each entry will be false if the corresponding line's direction is logically the same as the sense of the returned sequence, and will be true if they are opposite. E.g. Given two lines, 1, and 2, who share a common point, and where both line directions point towards the common point. If the returned array contains lines [1,2], the reverse array will contain [0,1] because line 1's direction is consistent with the direction [1,2]. However if the returned line array were to contain [2,1], the reverse array would contain [1,0] because now line 2's direction is consistent with the direction [2,1]
 		Returns:
 			bool: 
 		"""
@@ -16868,7 +16868,7 @@ class IFDatabase(IFGroup):
 		Params:
 			reportName (str): report name
 			reportTitle (str): report title
-			units (units): The name of a units, or a pointer to a IFUnitSet object
+			units (IFUnitSet): The name of a units, or a pointer to a IFUnitSet object
 			nSigFig (int): number of significant figures
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
@@ -16881,7 +16881,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Deletes a report The report may be specified by name, by ID, or as an object 
 		Params:
-			report (report): The name or ID of a report, or a pointer to a IFReport object
+			report (IFReport): The name or ID of a report, or a pointer to a IFReport object
 		Returns:
 			None: 
 		"""
@@ -16892,7 +16892,7 @@ class IFDatabase(IFGroup):
 		r"""
 		gets a report; the report may be specified by name or by ID 
 		Params:
-			report (report): The name or ID of a report, or a pointer to a IFReport object
+			report (IFReport): The name or ID of a report, or a pointer to a IFReport object
 		Returns:
 			IFReport: 
 		"""
@@ -17074,7 +17074,7 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def getLoadsets(self, IDs, resFiles=None, eigens=None, harms=None) -> list:
+	def getLoadsets(self, IDs, resFiles=None, eigens=None, harms=None) -> list[IFLoadset]:
 		r"""
 		Creates and returns an array of specified loadsets - may be loadcases, load curves, combinations, envelopes, all etc.  
 		Params:
@@ -17212,8 +17212,8 @@ class IFDatabase(IFGroup):
 			entity (str or int): Name or index of results entity
 			component ( str, optional): Name of results component
 			packedDim (int, optional): Dimensionality of the component
-			unitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
-			denominatatorUnitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
+			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
+			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 		Returns:
 			None: 
 		"""
@@ -17227,8 +17227,8 @@ class IFDatabase(IFGroup):
 			entity (str or int): Name or index of results entity
 			component ( str, optional): Name of results component
 			packedDim (int, optional): Dimensionality of the component
-			unitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
-			denominatatorUnitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
+			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
+			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 		Returns:
 			IFPrimaryScriptedResultsComponentSet: object which will hold results
 		"""
@@ -17681,7 +17681,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a static moving load analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			name (str): Analysis name
 			linear (bool): true for a linear branch, false to continue the parent analysis (NL / transient)
 		Returns:
@@ -17705,7 +17705,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a pedestrian moving load analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			name (str): Analysis name
 		Returns:
 			IFPedestrianMovingLoadAnalysis: 
@@ -17717,7 +17717,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cable tuning analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			name (str): Cable tuning analysis name
 			forceID (int, optional): The desired ID of the analysis results loadcase.
 		Returns:
@@ -17762,7 +17762,7 @@ class IFDatabase(IFGroup):
 			terminationValue (float): Termination time/increment
 			incrementValue (float): Segment size
 			assignmentFactor (float): Amplitude factor
-			variation ( variation): The name or ID of a  variation, or a pointer to a  IFVariationAttr object
+			variation (IFVariationAttr): The name or ID of a variation, or a pointer to a IFVariationAttr object
 			analysisName (str, optional): Name of analysis in which to create the new load curve
 			forceID (int, optional): The desired ID of the new loadcase
 		Returns:
@@ -17864,7 +17864,7 @@ class IFDatabase(IFGroup):
 		change the state of automatic gravity for all structural loadcases to that given. Note that this function will automatically skip any loadcases that inherit gravity from a previous loadcase by way of automatic incrementation. If an analysis is given, only that analysis will receive the change. 
 		Params:
 			isGravity (bool): on or off
-			analysis (analysis, optional): The name of a analysis, or a pointer to a IFAnalysis object
+			analysis (IFAnalysis, optional): The name of a analysis, or a pointer to a IFAnalysis object
 		Returns:
 			None: 
 		"""
@@ -18014,7 +18014,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Sets active the given local coordinate set. As a special case, calling this function with an empty string sets active the default global cartesian set 
 		Params:
-			localCoords (local coord): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			None: 
 		"""
@@ -18226,7 +18226,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create an empty branch, within a stage, ready to receive loadcases 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			branchName (str, optional): Branch name; if empty or not given, a default name will be generated
 			createInitialLoadcase (bool, optional): True (default) to create an initial loadcase. False to create an empty (and thus temporarily invalid) analysis
 			type (str, optional): "general" (default), "linear", "eigenvalue", "phi-c", "staged"
@@ -18286,13 +18286,13 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def getAnalyses(self, includeBranches=None) -> list:
+	def getAnalyses(self, includeBranches=None) -> list[IFAnalysisBaseClass]:
 		r"""
 		Return an array of all currently defined analyses. The items in the array will all be of type IFAnalysisBaseClass 
 		Params:
 			includeBranches (bool, optional): True to include branches within the array. False (default) to include only top level analyses
 		Returns:
-			array of analyses: Returned array
+			array of IFAnalysisBaseClass: Returned array
 		"""
 		pass
 
@@ -18312,7 +18312,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Deletes the given analysis The analysis may be specified by name or as an object 
 		Params:
-			analysis (analysis): The name of a analysis, or a pointer to a IFAnalysis object
+			analysis (IFAnalysis): The name of a analysis, or a pointer to a IFAnalysis object
 		Returns:
 			None: 
 		"""
@@ -18356,7 +18356,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create new Direct Method Influence Analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			analysisName (str, optional): Analysis name; if empty or not given, a default name will be generated
 		Returns:
 			IFDirectMethodInfAnalysis: Return created direct method influence analysis
@@ -18379,7 +18379,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create new Rail Direct Method Influence Analysis as a branch within the given stage 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			analysisName (str, optional): Analysis name; if empty or not given, a default name will be generated
 		Returns:
 			IFRailDMIAnalysis: Return created direct method influence analysis
@@ -18404,7 +18404,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a new run of VLO (and, if necessary, the analysis to contain it) as a branch within the given stage. VLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			runName (str): Name of this run of VLO, if empty string given then a default name will be generated
 			analysisName (str, optional): Name of containing analysis, if empty or not given then a default name will be generated
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
@@ -18444,7 +18444,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a new envlope run of TLO (and, if necessary, the analysis to contain it). TLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			runName (str): Name of the TLO envelope Run, if empty string given then a default name will be generated
 			isTLO (bool): if TRUE, a TLO Envelope Run is created
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
@@ -18458,7 +18458,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a new run of RLO (and, if necessary, the analysis to contain it) as a branch within the given stage. RLO run names need to be unique, it is not possible to have two runs with the same name, even if they are in different analyses 
 		Params:
-			loadcase (loadcase): The name of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name of a loadcase, or a pointer to a IFLoadcase object
 			runName (str): Name of this run of RLO, if empty string given then a default name will be generated
 			analysisName (str, optional): Name of containing analysis, if empty or not given then a default name will be generated
 			informPanel (bool, optional): if TRUE (default), the new run will appear in the loadcase panel
@@ -18574,7 +18574,7 @@ class IFDatabase(IFGroup):
 		Preserves a named array of strings in this database LUSAS will not examine the strings, or use them in any way, but it will preserve them in the mdl file for later retrieval using IFDatabase.loadStrArray Note that it is permitted to call saveDblArray with the same name as previously used in IFDatabase.saveStrArray or IFDatabase.saveIntArray, as data of other types is not lost or modified. 
 		Params:
 			name (str): unique name for the array
-			array (array of real numbers): The array of real numbers to save
+			array (array of float): The array of real numbers to save
 		Returns:
 			None: 
 		"""
@@ -18603,13 +18603,13 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def loadDblArray(self, name) -> list:
+	def loadDblArray(self, name) -> list[float]:
 		r"""
 		Retrieves an array saved previously using IFDatabase.saveDblArray. If array doesn't exist a null array is returned. 
 		Params:
 			name (str): name to search for
 		Returns:
-			array of real numbers: The returned array of real numbers
+			array of float: The returned array of real numbers
 		"""
 		pass
 
@@ -18664,8 +18664,8 @@ class IFDatabase(IFGroup):
 		Params:
 			inputLines (array of IFLine): 
 			linePaths (array of array of IFLine): linked together
-			lineDirections (array of arrays of booleans, optional): representing line directions for lines in a path
-			isClosedLoop (array of booleans, optional): one for each line path (true if the lines in a path form a closed loop, false for open)
+			lineDirections (array of arrays of bools, optional): representing line directions for lines in a path
+			isClosedLoop (array of bools, optional): one for each line path (true if the lines in a path form a closed loop, false for open)
 		Returns:
 			int: number of closed line paths
 		"""
@@ -18699,7 +18699,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Deletes the given attribute/utility The attribute may be specified by name, by ID, or as an object. It is an error to call this function if the attribute is assigned (you may wish to call IFAttribute.deassignFrom("All") first). It is an error to call this function if the given info is not unique. For example, deleteAttribute("fred") is OK if there is only one attribute in your model called "fred". However, it is possible to create attributes with the same name, as long as they have different types. So if you create both a load and support with the same name, this function cannot be used to delete by name - use getAttribute() to get the object, and then pass the object to this function. 
 		Params:
-			attr ( attribute): The name or ID of a  attribute, or a pointer to a  IFAttribute object
+			attr (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -18711,7 +18711,7 @@ class IFDatabase(IFGroup):
 		Sets the specified attribute as the default attribute for this type. This means that all new objects will automatically receive an assignment to this attribute. This function is also used to remove the default attribute (if any) of the given type - use (for example) setAsDefault("material", "none") 
 		Params:
 			attrType (object): "Loading", "Support", "Material", etc
-			attribute ( attribute): The name or ID of a  attribute, or a pointer to a  IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -18743,7 +18743,7 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def getAttributes(self, attrType, arg2=None) -> list:
+	def getAttributes(self, attrType, arg2=None) -> list[IFAttribute]:
 		r"""
 		Fetches all attributes/utilities of the given type as an array. The array can then be looped in the normal way. Note that if only a results file is loaded (i.e. without the corresponding model) only attribute IDs will be in the array. Otherwise the array will be filled with attribute objects Optionally, output can be restricted to only those with the given name(s) and/or in the given range of IDs. The array can then be looped in the normal way. 
 		Params:
@@ -18806,9 +18806,9 @@ class IFDatabase(IFGroup):
 			attrName (str): name of attribute
 			elementSize (float): Element size
 			firstStretch (float): 
-			firstVector (object): An array of 3 real numbers, representing 3d coordinates
+			firstVector (array of float): An array of 3 real numbers, representing 3d coordinates
 			secondStretch (float): 
-			secondVector (object): An array of 3 real numbers, representing 3d coordinates
+			secondVector (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPointSpacingMeshAttr: 
 		"""
@@ -18889,7 +18889,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCartLocalAttr: 
 		"""
@@ -18902,7 +18902,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCylLocalAttr: 
 		"""
@@ -18915,7 +18915,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationSphLocalAttr: 
 		"""
@@ -18928,7 +18928,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCartLocalAttr: 
 		"""
@@ -18941,7 +18941,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCylLocalAttr: 
 		"""
@@ -18954,7 +18954,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationSphLocalAttr: 
 		"""
@@ -18967,7 +18967,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCartLocalAttr: 
 		"""
@@ -18980,7 +18980,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationCylLocalAttr: 
 		"""
@@ -18993,7 +18993,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angle (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationSphLocalAttr: 
 		"""
@@ -19005,10 +19005,10 @@ class IFDatabase(IFGroup):
 		Creates a local Cartesian coordinate set 
 		Params:
 			attrName (str): name of attribute
-			offset (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol0 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol1 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol2 (object): An array of 3 real numbers, representing 3d coordinates
+			offset (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol2 (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCartLocalAttr: 
 		"""
@@ -19020,10 +19020,10 @@ class IFDatabase(IFGroup):
 		Creates a local cylindrical coordinate set 
 		Params:
 			attrName (str): name of attribute
-			offset (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol0 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol1 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol2 (object): An array of 3 real numbers, representing 3d coordinates
+			offset (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol2 (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCylLocalAttr: 
 		"""
@@ -19035,10 +19035,10 @@ class IFDatabase(IFGroup):
 		Creates a local spherical set 
 		Params:
 			attrName (str): name of attribute
-			offset (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol0 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol1 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol2 (object): An array of 3 real numbers, representing 3d coordinates
+			offset (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol2 (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationSphLocalAttr: 
 		"""
@@ -19050,8 +19050,8 @@ class IFDatabase(IFGroup):
 		Creates a local Cartesian coordinate set 
 		Params:
 			attrName (str): name of attribute
-			originPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
+			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCartLocalAttr: 
 		"""
@@ -19063,8 +19063,8 @@ class IFDatabase(IFGroup):
 		Creates a local cylindrical coordinate set 
 		Params:
 			attrName (str): name of attribute
-			originPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
+			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCylLocalAttr: 
 		"""
@@ -19076,8 +19076,8 @@ class IFDatabase(IFGroup):
 		Creates a local spherical set 
 		Params:
 			attrName (str): name of attribute
-			originPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
+			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationSphLocalAttr: 
 		"""
@@ -19089,9 +19089,9 @@ class IFDatabase(IFGroup):
 		Creates a local Cartesian coordinate set 
 		Params:
 			attrName (str): name of attribute
-			OriginPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XYplanePoint (object): An array of 3 real numbers, representing 3d coordinates
+			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCartLocalAttr: 
 		"""
@@ -19103,9 +19103,9 @@ class IFDatabase(IFGroup):
 		Creates a local cylindrical coordinate set 
 		Params:
 			attrName (str): name of attribute
-			OriginPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XYplanePoint (object): An array of 3 real numbers, representing 3d coordinates
+			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationCylLocalAttr: 
 		"""
@@ -19117,9 +19117,9 @@ class IFDatabase(IFGroup):
 		Creates a local spherical set 
 		Params:
 			attrName (str): name of attribute
-			OriginPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XaxisPoint (object): An array of 3 real numbers, representing 3d coordinates
-			XYplanePoint (object): An array of 3 real numbers, representing 3d coordinates
+			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
+			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationSphLocalAttr: 
 		"""
@@ -19131,8 +19131,8 @@ class IFDatabase(IFGroup):
 		Creates a local Cartesian coordinate set 
 		Params:
 			attrName (str): name of attribute
-			origin (object): An array of 3 real numbers, representing 3d coordinates
-			scales (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFScaleCartLocalAttr: 
 		"""
@@ -19144,8 +19144,8 @@ class IFDatabase(IFGroup):
 		Creates a local cylindrical coordinate set 
 		Params:
 			attrName (str): name of attribute
-			origin (object): An array of 3 real numbers, representing 3d coordinates
-			scales (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFScaleCylLocalAttr: 
 		"""
@@ -19157,8 +19157,8 @@ class IFDatabase(IFGroup):
 		Creates a local spherical set 
 		Params:
 			attrName (str): name of attribute
-			origin (object): An array of 3 real numbers, representing 3d coordinates
-			scales (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFScaleSphLocalAttr: 
 		"""
@@ -19181,7 +19181,7 @@ class IFDatabase(IFGroup):
 		Creates translation transformation attribute 
 		Params:
 			attrName (str): name of attribute
-			translation (object): An array of 3 real numbers, representing 3d coordinates
+			translation (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFTranslationTransAttr: 
 		"""
@@ -19194,7 +19194,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angleDegrees (float): angle in degrees
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationTransAttr: 
 		"""
@@ -19207,7 +19207,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angleDegrees (float): angle in degrees
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationTransAttr: 
 		"""
@@ -19220,7 +19220,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			angleDegrees (float): 
-			origin (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFPlanarRotationTransAttr: 
 		"""
@@ -19232,11 +19232,11 @@ class IFDatabase(IFGroup):
 		Creates rotation transformation attribute 
 		Params:
 			attrName (str): name of attribute
-			axis0 (object): An array of 3 real numbers, representing 3d coordinates
-			axis1 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol1 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol2 (object): An array of 3 real numbers, representing 3d coordinates
-			matrixCol3 (object): An array of 3 real numbers, representing 3d coordinates
+			axis0 (array of float): An array of 3 real numbers, representing 3d coordinates
+			axis1 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol2 (array of float): An array of 3 real numbers, representing 3d coordinates
+			matrixCol3 (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGenRotationTransAttr: 
 		"""
@@ -19248,8 +19248,8 @@ class IFDatabase(IFGroup):
 		Creates scale transformation attribute 
 		Params:
 			attrName (str): name of attribute
-			origin (object): An array of 3 real numbers, representing 3d coordinates
-			scales (object): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFScaleTransAttr: 
 		"""
@@ -19288,7 +19288,7 @@ class IFDatabase(IFGroup):
 		Creates mirror transformation attribute 
 		Params:
 			attrName (str): name of attribute
-			planeEquation (array of 4 real numbers): Array defining the coefficients of the plane equation
+			planeEquation (array of 4 float): Array defining the coefficients of the plane equation
 		Returns:
 			IFMirrorPlaneTransAttr: 
 		"""
@@ -20228,8 +20228,8 @@ class IFDatabase(IFGroup):
 		Creates a cyclic rotation constraint attribute 
 		Params:
 			attrName (str): name of attribute
-			Primary (coord): 
-			Secondary (coord): 
+			Primary (float): ordinate
+			Secondary (float): ordinate
 		Returns:
 			IFConstraintCyclic: 
 		"""
@@ -20258,8 +20258,8 @@ class IFDatabase(IFGroup):
 		Creates a cyclic translation constraint attribute 
 		Params:
 			attrName (str): name of attribute
-			Primary (coord): 
-			Secondary (coord): 
+			Primary (float): ordinate
+			Secondary (float): ordinate
 		Returns:
 			IFCyclicTranslation: 
 		"""
@@ -20564,7 +20564,7 @@ class IFDatabase(IFGroup):
 			attrName (str): name of attribute
 			massDensity (float): density
 			angle (float): Angle of orthotropy in degrees relative to reference axis
-			pMatrix (array of real numbers): Upper triangle of rigidity matrix
+			pMatrix (array of float): Upper triangle of rigidity matrix
 			temperature (float, optional): temperature
 			materialType (str, optional): rigidities type
 		Returns:
@@ -21210,7 +21210,7 @@ class IFDatabase(IFGroup):
 		Params:
 			attrName (str): name of attribute
 			layerName (str): layer name
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			isSymmetric (bool): symmetric layup flag
 		Returns:
 			IFCompositeBeam: 
@@ -21226,7 +21226,7 @@ class IFDatabase(IFGroup):
 			layerName (str): layer name
 			thickness (float): relative layer thickness
 			angle (float): angle of fibre to reference axis
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			isSymmetric (bool): symmetric layup flag
 			volumeFraction (float, optional): volume fraction for a non-draped composite
 		Returns:
@@ -21294,7 +21294,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Sets the longitudinal direction for influence lines as one of the global axis 
 		Params:
-			pLocalCoord (local coord): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			pLocalCoord (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			axisIndex (int): axis index, 0 based
 		Returns:
 			None: 
@@ -22182,7 +22182,7 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def getStoreyPrimaryNodes(self, ascendingHeight) -> list:
+	def getStoreyPrimaryNodes(self, ascendingHeight) -> list[IFNode]:
 		r"""
 		return array of the storey primary nodes 
 		Params:
@@ -22540,12 +22540,12 @@ class IFDatabase(IFGroup):
 			lines (array): Array of lines (name, line, IFLine) in face - must be in a single plane
 			widthFactor (array of floats): Array of extra width to be added to each entry in 'lines' (optional - empty array assumes 0.0)
 			widthExtra (array of floats): Array of width factor to be applied to each entry in 'lines' (optional - empty array assumes 1.0)
-			halfWidth (array of booleans): For each entry in 'lines': TRUE to use half width (line shared between 2 faces), FALSE for full width. (optional - empty array assumes FALSE)
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			halfWidth (array of bools): For each entry in 'lines': TRUE to use half width (line shared between 2 faces), FALSE for full width. (optional - empty array assumes FALSE)
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 			reporting (int): message detail: 0 - errors only, 1 - verbose output
 			Am (float): returned Am (area of members)
 			Ao (float): returned Ao (area enclosed by outline)
-			normal (object): An array of 3 real numbers, representing 3d coordinates
+			normal (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			int: status 0 = ok, > 0 for error
 		"""
@@ -22556,12 +22556,12 @@ class IFDatabase(IFGroup):
 		r"""
 		Calculate the solidity ratio factors Am (area of members) and Ao (area enclosed by outline) for selected lines. The lines are first projected onto a flat plane perpendicular to the specified 'dir' vector. It is assumed that the individual line elements are straight - use with caution if curved elements have been used. returned value: 0: OK 3: not all lines connected 4: invalid loadcase 5: incompatible cross section 
 		Params:
-			dir (object): An array of 3 real numbers, representing 3d coordinates
+			dir (array of float): An array of 3 real numbers, representing 3d coordinates
 			lines (array): Array of lines (name, line, IFLine) in face - must be in a single plane
 			widthFactor (array of floats): Array of extra width to be added to each entry in 'lines' (optional - empty array assumes 0.0)
 			widthExtra (array of floats): Array of width factor to be applied to each entry in 'lines' (optional - empty array assumes 1.0)
-			halfWidth (array of booleans): For each entry in 'lines': TRUE to use half width (line shared between 2 faces), FALSE for full width. (optional - empty array assumes FALSE)
-			loadset (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			halfWidth (array of bools): For each entry in 'lines': TRUE to use half width (line shared between 2 faces), FALSE for full width. (optional - empty array assumes FALSE)
+			loadset (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 			reporting (int): message detail: 0 - errors only, 1 - verbose output
 			Am (float): returned Am (area of members)
 			Ao (float): returned Ao (area enclosed by outline)
@@ -22772,7 +22772,7 @@ class IFResultsChapter(IFReportChapter):
 		r"""
 		Add a print results wizard utility that describes partial output for this chapter 
 		Params:
-			attr (name): The name or ID of a name, or a pointer to a IFPrintResultsWizard object
+			attr (IFPrintResultsWizard): The name or ID of a name, or a pointer to a IFPrintResultsWizard object
 		Returns:
 			None: 
 		"""
@@ -22783,7 +22783,7 @@ class IFResultsChapter(IFReportChapter):
 		r"""
 		Add a utility that describes partial output for this chapter 
 		Params:
-			attr (name): The name or ID of a name, or a pointer to a IFAttribute object
+			attr (IFAttribute): The name or ID of a name, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -23227,38 +23227,38 @@ class IFLocalCoord(IFAttribute):
 	 
 	"""
 
-	def getXVector(self) -> list:
+	def getXVector(self) -> list[float]:
 		r"""
 		 
 		Returns:
-			array of real numbers: The vector as an array of three numbers
+			array of float: The vector as an array of three numbers
 		"""
 		pass
 
 
-	def getYVector(self) -> list:
+	def getYVector(self) -> list[float]:
 		r"""
 		 
 		Returns:
-			array of real numbers: The vector as an array of three numbers
+			array of float: The vector as an array of three numbers
 		"""
 		pass
 
 
-	def getZVector(self) -> list:
+	def getZVector(self) -> list[float]:
 		r"""
 		 
 		Returns:
-			array of real numbers: The vector as an array of three numbers
+			array of float: The vector as an array of three numbers
 		"""
 		pass
 
 
-	def getOrigin(self) -> object:
+	def getOrigin(self) -> list[float]:
 		r"""
 		 
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -23525,7 +23525,7 @@ class IFCompoundTransAttr(IFTransformationAttr):
 		r"""
 		 
 		Params:
-			transAttr (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			transAttr (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFCompoundTransAttr: 
 		"""
@@ -23536,7 +23536,7 @@ class IFCompoundTransAttr(IFTransformationAttr):
 		r"""
 		 
 		Params:
-			transAttr (transformation): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
+			transAttr (IFTransformationAttr): The name or ID of a transformation, or a pointer to a IFTransformationAttr object
 		Returns:
 			IFCompoundTransAttr: 
 		"""
@@ -23565,7 +23565,7 @@ class IFDataset(IFAttribute):
 		r"""
 		Sets the array of numbers representing the curve. 
 		Params:
-			dataVec (array of real numbers): array of numbers representing the curve, initialised as in: Redim data(1) : data(0)=0 : data(1)=2
+			dataVec (array of float): array of numbers representing the curve, initialised as in: Redim data(1) : data(0)=0 : data(1)=2
 		Returns:
 			IFDataset: 
 		"""
@@ -23593,11 +23593,11 @@ class IFDataset(IFAttribute):
 		pass
 
 
-	def getValues(self) -> list:
+	def getValues(self) -> list[float]:
 		r"""
 		 
 		Returns:
-			array of real numbers: array of numbers representing the curve
+			array of float: array of numbers representing the curve
 		"""
 		pass
 
@@ -23682,7 +23682,7 @@ class IFVariationField(IFVariationAttr):
 		Sets the function expression and coord set. Also unsets all limits. 
 		Params:
 			function (str): any expression that evaluates to a number, e.g. '4','3+4x','y'. Note all numbers must be in US English, i.e. "1.2", not the current locale (e.g. Italian/Swedish/French "1,2")
-			localAttr (local coord): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localAttr (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFVariationField: 
 		"""
@@ -23788,7 +23788,7 @@ class IFVariationGrid(IFVariationAttr):
 		r"""
 		 
 		Params:
-			matrix (array of real numbers): 2D grid of values
+			matrix (array of float): 2D grid of values
 			xOrder (str, optional): 'Constant','linear','quadratic','cubic'. If unspecified, calculated from grid size (default = '')
 			yOrder (str, optional): 'Constant','linear','quadratic','cubic'. If unspecified, calculated from grid size (default = '')
 		Returns:
@@ -23807,7 +23807,7 @@ class IFVariationFactored(IFVariationAttr):
 		Sets the variation factor/multiplier. 
 		Params:
 			factor (float): numerical multiplier
-			variationAttr (variation): The name or ID of a variation, or a pointer to a IFVariationAttr object
+			variationAttr (IFVariationAttr): The name or ID of a variation, or a pointer to a IFVariationAttr object
 		Returns:
 			IFVariationFactored: 
 		"""
@@ -23878,7 +23878,7 @@ class IFVariationPriorResults(IFVariationAttr):
 		r"""
 		Uses the specified local coordinate as the results transformation for this variation. 
 		Params:
-			localCoords ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -23890,7 +23890,7 @@ class IFVariationPriorResults(IFVariationAttr):
 		r"""
 		Uses the specified path as the results transformation for this variation. 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -23951,7 +23951,7 @@ class IFProfileVariation(IFVariationAttr):
 		Set the variation direction 
 		Params:
 			type (str): direction type
-			localCoords (local coord, optional): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord, optional): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFProfileVariation: 
 		"""
@@ -23974,8 +23974,8 @@ class IFProfileVariation(IFVariationAttr):
 		r"""
 		add a profile to the set 
 		Params:
-			origin (object): An array of 3 real numbers, representing 3d coordinates
-			profile (variation): The name or ID of a variation, or a pointer to a  IFInterpolationVariation object
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			profile (IFInterpolationVariation): The name or ID of a variation, or a pointer to a IFInterpolationVariation object
 		Returns:
 			IFProfileVariation: 
 		"""
@@ -24047,7 +24047,7 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		Specifies the path that will be followed when this attribute's distance type is 'choose path at definition' For other distance types, this path will be ignored 
 		Params:
-			pPath (reference path): The name or ID of a reference path, or a pointer to a IFReferencePath object
+			pPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 		Returns:
 			IFGeometricLine: 
 		"""
@@ -24586,7 +24586,7 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		Set the attribute that describes the reinforcement of a section of this attribute 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFGeometricLine: 
 		"""
@@ -24616,7 +24616,7 @@ class IFGeometricLine(IFGeometric):
 		get the cooordinates defining the section trimming loops at a position alog a line to which this attribute is assigned 
 		Params:
 			subSectionIndex (int): index of the required sub-section
-			line (line): The name or ID of a line, or a pointer to a IFLine object
+			line (IFLine): The name or ID of a line, or a pointer to a IFLine object
 			normalisedCoord (float): normalise coordinate along the line 0 -> 1
 			nPointsPerTrimmingLoop (array of int): number of points defining each section trimming loop, outer boundary first
 			trimmingLoopCoords (array of float): x,y,x,y.. coords defining the section trimming loops, outer boundary first
@@ -24644,7 +24644,7 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		get the reinforcement section definition at the given internal point and element 
 		Params:
-			element (element): The name or ID of a element, or a pointer to a IFElement object
+			element (IFElement): The name or ID of a element, or a pointer to a IFElement object
 			internalPoint (int): internal point index
 			nrmCrd (float): normalised coordinate along the beam
 			sectionAttr (IFReinforcementSection): rebar section definition
@@ -24660,8 +24660,8 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		get the reinforcement section definition at the given node on the line 
 		Params:
-			line (line): The name or ID of a line, or a pointer to a IFLine object
-			node (node): The name or ID of a node, or a pointer to a IFNode object
+			line (IFLine): The name or ID of a line, or a pointer to a IFLine object
+			node (IFNode): The name or ID of a node, or a pointer to a IFNode object
 			nrmCrd (float): normalised coordinate along the beam
 			sectionAttr (IFReinforcementSection): rebar section definition
 			rebars (array of IFReinforcementSectionBar): objects
@@ -24676,8 +24676,8 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		get the reinforcement section definition at the given inspection location on the line 
 		Params:
-			line (line): The name or ID of a line, or a pointer to a IFLine object
-			inspection (inspection): The name or ID of a inspection, or a pointer to a IFInspectionLine object
+			line (IFLine): The name or ID of a line, or a pointer to a IFLine object
+			inspection (IFInspectionLine): The name or ID of a inspection, or a pointer to a IFInspectionLine object
 			index (int): index
 			nrmCrd (float): normalised coordinate along the beam
 			sectionAttr (IFReinforcementSection): rebar section definition
@@ -25081,7 +25081,7 @@ class IFGeometricLine(IFGeometric):
 		Params:
 			lineID (str or int): name or ID of line
 			nrmCoordOnLine (float): normalised coord w.r.t the line
-			Dir (object): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			float: projected width
 		"""
@@ -25112,7 +25112,7 @@ class IFGeometricLine(IFGeometric):
 		r"""
 		Set the beam optimisation pool attribute for the geometric line. If no attribute is set the 'Same library as Current section' will be used. 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFGeometricLine: 
 		"""
@@ -25520,7 +25520,7 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		r"""
 		Adds one geometric line to this utility 
 		Params:
-			section (name): The name or ID of a name, or a pointer to a IFGeometricLine object
+			section (IFGeometricLine): The name or ID of a name, or a pointer to a IFGeometricLine object
 		Returns:
 			IFGeomBeamOptimUtil: 
 		"""
@@ -25536,7 +25536,7 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		pass
 
 
-	def getAllGeometricLines(self) -> list:
+	def getAllGeometricLines(self) -> list[IFGeometricLine]:
 		r"""
 		Returns all the geometric lines in this utility as an array of IFGeometricLine 
 		Returns:
@@ -25614,7 +25614,7 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		r"""
 		Adds one loadcase to this utility 
 		Params:
-			section (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			section (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			IFGeomBeamOptimUtil: 
 		"""
@@ -25630,7 +25630,7 @@ class IFGeomBeamOptimUtil(IFAttribute):
 		pass
 
 
-	def getAllLoadcases(self) -> list:
+	def getAllLoadcases(self) -> list[IFLoadcase]:
 		r"""
 		Returns all the loadcases in this utility as an array of IFGeometricLine 
 		Returns:
@@ -25729,7 +25729,7 @@ class IFSurfaceRadiation(IFAttribute):
 		r"""
 		Adds a surface if it is valid 
 		Params:
-			Surface (thermal surface): The name or ID of a thermal surface, or a pointer to a IFThermalSurface object
+			Surface (IFThermalSurface): The name or ID of a thermalsurface, or a pointer to a IFThermalSurface object
 			isShading (bool): boolean: does the associated thermal surface eclipse the view of other thermal surfaces?
 		Returns:
 			IFSurfaceRadiation: 
@@ -25741,7 +25741,7 @@ class IFSurfaceRadiation(IFAttribute):
 		r"""
 		Adds a symmetry 
 		Params:
-			Attr (thermal surface): The name or ID of a thermal surface, or a pointer to a IFThermalSurface object
+			Attr (IFThermalSurface): The name or ID of a thermalsurface, or a pointer to a IFThermalSurface object
 		Returns:
 			IFSurfaceRadiation: 
 		"""
@@ -25752,7 +25752,7 @@ class IFSurfaceRadiation(IFAttribute):
 		r"""
 		Adds a symmetry 
 		Params:
-			abcd (array of real numbers): array containing the four equation parameters
+			abcd (array of float): array containing the four equation parameters
 		Returns:
 			IFSurfaceRadiation: 
 		"""
@@ -25777,7 +25777,7 @@ class IFSurfaceRadiation(IFAttribute):
 		r"""
 		Adds a symmetry 
 		Params:
-			Perp (object): An array of 3 real numbers, representing 3d coordinates
+			Perp (array of float): An array of 3 real numbers, representing 3d coordinates
 			constant (float): plane of symmetry equation: ax + by + cz = d
 		Returns:
 			IFSurfaceRadiation: 
@@ -25883,7 +25883,7 @@ class IFSlide(IFAttribute):
 		r"""
 		Modifies the slideline type for the given loadcase and all subsequent loadcases. Typically a slideline might be defined with a starting type of 'Null' and then be modified at a certain point in the analysis to be of type 'Sliding'. It is quite legal to call this function repeatedly, setting up (for example) a change from 'Null' to 'Sliding' to 'Tied' 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			type (str): 'No friction', 'Friction', 'Null','Tied', or 'Sliding'
 		Returns:
 			IFSlide: 
@@ -25900,8 +25900,8 @@ class IFThermalSurfaceGap(IFAttribute):
 		r"""
 		Sets up a thermal gap attribute. 
 		Params:
-			surf1Attr ( thermal surface): The name or ID of a  thermal surface, or a pointer to a  IFThermalSurface object
-			surf2Attr ( thermal surface): The name or ID of a  thermal surface, or a pointer to a  IFThermalSurface object
+			surf1Attr (IFThermalSurface): The name or ID of a thermalsurface, or a pointer to a IFThermalSurface object
+			surf2Attr (IFThermalSurface): The name or ID of a thermalsurface, or a pointer to a IFThermalSurface object
 			update (bool, optional): geometry update flag (default = TRUE)
 			shading (bool, optional): element shading flag (default = TRUE)
 			active (bool, optional): active gap flag (default = TRUE)
@@ -25945,7 +25945,7 @@ class IFThermalSurfaceGap(IFAttribute):
 		r"""
 		Modifies the gap type for the given loadcase and all subsequent loadcases. 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			type (str): 'ACTIVE', or 'INACTIVE'
 		Returns:
 			IFThermalSurfaceGap: 
@@ -26173,7 +26173,7 @@ class IFInspectionPoint(IFAttribute):
 			value (float): value to assign
 			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
-			loadcase (loadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			None: 
 		"""
@@ -26703,12 +26703,12 @@ class IFBeamShellSlice(IFInspectionLine):
 		pass
 
 
-	def getAllResults(self, option=None, context=None, units=None) -> list:
+	def getAllResults(self, option=None, context=None, units=None) -> list[float]:
 		r"""
 		return all the results of this slice. The returned array contains 'n' sets of 7 values (Fx,Fy,Fz,Mx,My,Mz,distance). 'n' in this context is the number of unique values of results as returned by IFBeamShellSlice.getNumberLocations, which may be fewer than that returned by IFBeamShellSlice.getNumberResults and therefore refers to original user input When called, modeller will calculate and cache all Beam/Shell slices in the given context (not just the requested slice). This can be changed by modifying the "Beam/Shell Slicing" objects in the context CalcResultsSet. 
 		Params:
 			option (str or int, optional): Dictates behaviour of this function when more than one slice exists at a location "error" (default), "max", "min", "abs"
-			context (context, optional): The name or ID of a context, or a pointer to a IFResultsContext object
+			context (IFResultsContext, optional): The name or ID of a context, or a pointer to a IFResultsContext object
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
 		Returns:
 			array of float: 
@@ -26716,13 +26716,13 @@ class IFBeamShellSlice(IFInspectionLine):
 		pass
 
 
-	def getSingleResult(self, locnIndex, option=None, context=None, units=None) -> list:
+	def getSingleResult(self, locnIndex, option=None, context=None, units=None) -> list[float]:
 		r"""
 		return all the results of a single slice. The returned array contains 7 values Fx,Fy,Fz,Mx,My,Mz,distance When called, modeller will calculate and cache all Beam/Shell slices in the given context (not just the requested slice). This can be changed by modifying the "Beam/Shell Slicing" objects in the context CalcResultsSet. 
 		Params:
 			locnIndex (int): ID of the location of interest. Note that this is 0..IFBeamShellSlice.getNumberResults - 1 and NOT 0..IFBeamShellSlice.getNumberLocations - 1
 			option (str or int, optional): Dictates behaviour of this function when more than one slice exists at a location "error" (default), "max", "min", "abs"
-			context (context, optional): The name or ID of a context, or a pointer to a IFResultsContext object
+			context (IFResultsContext, optional): The name or ID of a context, or a pointer to a IFResultsContext object
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
 		Returns:
 			array of float: 
@@ -27066,7 +27066,7 @@ class IFLoadingTendon(IFLoading):
 		r"""
 		Set the profile attribute 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFLoadingTendon: 
 		"""
@@ -27077,7 +27077,7 @@ class IFLoadingTendon(IFLoading):
 		r"""
 		Set the property attribute 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFLoadingTendon: 
 		"""
@@ -27448,7 +27448,7 @@ class IFLoadingDiscretePoint(IFLoadingDiscrete):
 		Sets up a discrete point loading attribute. 
 		Params:
 			dirType (str): untransformed load direction 'X','Y','Z','Normal','None','globalXYZ','transformXYZ'
-			Dir (object): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float): An array of 3 real numbers, representing 3d coordinates
 			nGridX (int, optional): number of grid points in X (default = 0)
 			nGridY (int, optional): number of grid points in Y (default = 0)
 		Returns:
@@ -27468,7 +27468,7 @@ class IFLoadingDiscretePatch(IFLoadingDiscrete):
 		Params:
 			type (str): 'surf8','surf4','line3','line2','multiQuad','multiStraight'
 			dirType (str): untransformed load direction 'X','Y','Z','Normal','None','patchX','patchY','globalXYZ','transformXYZ'
-			Dir (object, optional): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float, optional): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFLoadingDiscretePatch: 
 		"""
@@ -27557,7 +27557,7 @@ class IFDiscreteCompoundLoading(IFLoadingDiscreteBase):
 		Add discrete loading attribute to this compound attribute 
 		Params:
 			pLoadingAttr (IFLoading): discrete loading attribute to add
-			pOffsetCoord (object, optional): An array of 3 real numbers, representing 3d coordinates
+			pOffsetCoord (array of float, optional): An array of 3 real numbers, representing 3d coordinates
 			pTransAttr (IFTransformationAttr, optional): optional transformation to apply
 			haveTrans (bool, optional): optional boolean to indicate if using transformation attribute
 			factor (float, optional): optional factor on the load, default 1.0
@@ -27578,13 +27578,13 @@ class IFDiscreteCompoundLoading(IFLoadingDiscreteBase):
 		pass
 
 
-	def getOffsetCoordinates(self, index) -> list:
+	def getOffsetCoordinates(self, index) -> list[float]:
 		r"""
 		get the offset coordinates given the index into the defining loads array 
 		Params:
 			index (int): zero base index
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -27707,7 +27707,7 @@ class IFSurfDistrLoading(IFLoading):
 		set the loading direction type 
 		Params:
 			type (str): type, "globalX", ....
-			localCoords (local coord, optional): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord, optional): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFSurfDistrLoading: 
 		"""
@@ -27719,7 +27719,7 @@ class IFSurfDistrLoading(IFLoading):
 		set the reference direction type 
 		Params:
 			type (str): type, "surfaceZ", ....
-			localCoords (local coord, optional): The name or ID of a local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord, optional): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFSurfDistrLoading: 
 		"""
@@ -27865,8 +27865,8 @@ class IFTemperatureProfileLoad(IFLoading):
 		integrate this temperature profile over the given beam section and return the stress profile for each material in the section 
 		Params:
 			nrmCrd (float): normalised coord along the beam
-			beamSectionAttr (name): The name or ID of a name, or a pointer to a IFGeometricLine object
-			materialAttr (name): The name or ID of a name, or a pointer to a IFMaterial object
+			beamSectionAttr (IFGeometricLine): The name or ID of a name, or a pointer to a IFGeometricLine object
+			materialAttr (IFMaterial): The name or ID of a name, or a pointer to a IFMaterial object
 			numberPoints (int): number of point at which to evaluate the profile, <= 0 for the default
 			pForce (float): axial force in the beam
 			pMoment (float): moment about the neutral axis
@@ -27981,8 +27981,8 @@ class IFStrainProfileLoad(IFLoading):
 		integrate this strain profile over the given beam section and return the stress profile for each material in the section 
 		Params:
 			nrmCrd (float): normalised coord along the beam
-			beamSectionAttr (name): The name or ID of a name, or a pointer to a IFGeometricLine object
-			materialAttr (name): The name or ID of a name, or a pointer to a IFMaterial object
+			beamSectionAttr (IFGeometricLine): The name or ID of a name, or a pointer to a IFGeometricLine object
+			materialAttr (IFMaterial): The name or ID of a name, or a pointer to a IFMaterial object
 			numberPoints (int): number of point at which to evaluate the profile, <= 0 for the default
 			pForce (float): axial force in the beam
 			pMoment (float): moment about the neutral axis
@@ -28026,7 +28026,7 @@ class IFWaterPressureDistrLoad(IFLoading):
 		r"""
 		Set the phreatic attribute and assignment type 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 			assignType (str, optional): "faces" or "continuum"
 		Returns:
 			IFWaterPressureDistrLoad: 
@@ -28038,7 +28038,7 @@ class IFWaterPressureDistrLoad(IFLoading):
 		r"""
 		Set the profile attribute 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFWaterPressureDistrLoad: 
 		"""
@@ -28055,7 +28055,7 @@ class IFBeamProjectedPressureLoad(IFLoading):
 		set the loading direction type 
 		Params:
 			type (str): type, "globalX", ....
-			localCoords ( local coord, optional): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord, optional): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 		Returns:
 			IFBeamProjectedPressureLoad: 
 		"""
@@ -28141,7 +28141,7 @@ class IFConstraintConstant(IFConstraint):
 		r"""
 		Sets the optional primary point object. Renamed from setMasterPoint() (P768). 
 		Params:
-			point (point): The name or ID of a point, or a pointer to a IFPoint object
+			point (IFPoint): The name or ID of a point, or a pointer to a IFPoint object
 		Returns:
 			IFConstraintConstant: 
 		"""
@@ -28470,7 +28470,7 @@ class IFRigiditiesMaterial(IFMaterial):
 		Params:
 			massDensity (float): density
 			angle (float): 
-			Matrix (array of real numbers): 
+			Matrix (array of float): 
 			temperature (float, optional): temperature
 		Returns:
 			IFRigiditiesMaterial: 
@@ -28626,7 +28626,7 @@ class IFPiecewiseLinearJointMaterial(IFMaterial):
 		r"""
 		Adds the moment angles to a Piecewise Linear joint material for PMM analysis 
 		Params:
-			momentAngles (array of real numbers): array of moments angles in degrees
+			momentAngles (array of float): array of moments angles in degrees
 		Returns:
 			IFPiecewiseLinearJointMaterial: 
 		"""
@@ -28650,7 +28650,7 @@ class IFPiecewiseLinearJointMaterial(IFMaterial):
 		Params:
 			dof (int): degree of freedom
 			curve (int): material data curve index
-			parameters (array of real numbers): array of displacements
+			parameters (array of float): array of displacements
 		Returns:
 			IFPiecewiseLinearJointMaterial: 
 		"""
@@ -28663,7 +28663,7 @@ class IFPiecewiseLinearJointMaterial(IFMaterial):
 		Params:
 			momAngle (int): moment angle index (call setAnglesForPMM first)
 			curve (int): material data curve index
-			parameters (array of real numbers): array of displacements
+			parameters (array of float): array of displacements
 		Returns:
 			IFPiecewiseLinearJointMaterial: 
 		"""
@@ -28849,7 +28849,7 @@ class IFPlasticHingePMMJointMaterial(IFMaterial):
 		r"""
 		Adds the moment angles to a Piecewise Linear joint material for PMM analysis 
 		Params:
-			momentAngles (array of real numbers): array of moments angles in degrees
+			momentAngles (array of float): array of moments angles in degrees
 		Returns:
 			IFPlasticHingePMMJointMaterial: 
 		"""
@@ -28860,7 +28860,7 @@ class IFPlasticHingePMMJointMaterial(IFMaterial):
 		r"""
 		Gets the defined moment angles 
 		Params:
-			momentAngles (array of real numbers): array of moments angles in degrees
+			momentAngles (array of float): array of moments angles in degrees
 		Returns:
 			IFPlasticHingePMMJointMaterial: 
 		"""
@@ -29051,7 +29051,7 @@ class IFMaterialTropicSet(IFMaterial):
 			component (str): 
 			modelID (int): 
 			nState (int): 
-			Value (array of real numbers): 
+			Value (array of float): 
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialTropicSet: 
@@ -29064,7 +29064,7 @@ class IFMaterialTropicSet(IFMaterial):
 		 
 		Params:
 			type (str): 
-			Graph (array of real numbers): 
+			Graph (array of float): 
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialTropicSet: 
@@ -29077,8 +29077,8 @@ class IFMaterialTropicSet(IFMaterial):
 		 
 		Params:
 			type (str): 
-			Tension (array of real numbers): 
-			Compression (array of real numbers): 
+			Tension (array of float): 
+			Compression (array of float): 
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialTropicSet: 
@@ -32145,7 +32145,7 @@ class IFCompositeBeam(IFComposite):
 		 
 		Params:
 			layerName (str): Layer name
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 		Returns:
 			IFCompositeBeam: 
 		"""
@@ -32164,7 +32164,7 @@ class IFCompositeShell(IFComposite):
 			layerName (str): Layer name
 			thickness (float): Relative thickness
 			angle (float): Angle of fibre relative to reference axis
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			volumeFraction (float, optional): volume fraction for a non-draped composite
 		Returns:
 			IFCompositeShell: 
@@ -32184,9 +32184,9 @@ class IFCompositeWoven(IFComposite):
 			layerName (str): 
 			thickness (float): 
 			volumeFraction (float): 
-			startPoint (point): The name or ID of a point, or a pointer to a IFPoint object
-			startDirection (object): An array of 3 real numbers, representing 3d coordinates
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			startPoint (IFPoint): The name or ID of a point, or a pointer to a IFPoint object
+			startDirection (array of float): An array of 3 real numbers, representing 3d coordinates
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			lyrOffsetDir (str, optional): layer drape offset direction "default", "positive" or "negative"
 		Returns:
 			IFCompositeWoven: 
@@ -32206,7 +32206,7 @@ class IFCompositeFiberSIM(IFComposite):
 			layerName (str): name of the layer to change
 			thickness (float): thickness of the layer
 			volumeFraction (float): initial volume fibre fraction
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			refOffsetLayerName (str, optional): name of the layer from which this layer is offset
 			lyrOffsetDir (str, optional): layer drape offset direction "default", "positive" or "negative"
 		Returns:
@@ -32227,7 +32227,7 @@ class IFCompositeSimulayt(IFComposite):
 			layerName (str): name of the layer to change
 			thickness (float): thickness of the layer
 			volumeFraction (float): initial volume fibre fraction
-			material (material): The name or ID of a material, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			refOffsetLayerName (str, optional): name of the layer from which this layer is offset
 			lyrOffsetDir (str, optional): layer drape offset direction "default", "positive" or "negative"
 		Returns:
@@ -32292,7 +32292,7 @@ class IFInfluenceEnvelope(IFAttribute):
 		pass
 
 
-	def getAllInfluenceAssignsToAnalyse(self, pIEnvRun, determineHoggingFlags) -> list:
+	def getAllInfluenceAssignsToAnalyse(self, pIEnvRun, determineHoggingFlags) -> list[IFVLOInfluenceAssignEntry]:
 		r"""
 		Returns all influence assignments to be analysed 
 		Params:
@@ -32370,7 +32370,7 @@ class IFInfluenceEnvelope(IFAttribute):
 		r"""
 		Uses the specified local coordinate as the results transformation for this attribute. 
 		Params:
-			localCoords ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -32382,7 +32382,7 @@ class IFInfluenceEnvelope(IFAttribute):
 		r"""
 		Uses the specified path as the results transformation for this attribute. 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -32483,7 +32483,7 @@ class IFDirectMethodInfluence(IFAttribute):
 		r"""
 		Uses the specified local coordinate as the results transformation for this attribute. 
 		Params:
-			localCoords ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -32495,7 +32495,7 @@ class IFDirectMethodInfluence(IFAttribute):
 		r"""
 		Uses the specified path as the results transformation for this attribute. 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -32668,7 +32668,7 @@ class IFTendonProperties(IFAttribute):
 		Set the design code for this properties object Design codes currently supported for "time inputs" are:, "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:2004 / 2014 Eurocode 2", "IRC:112-2011", "CEB-FIP Model Code 1990", "JTG 3362-2018", "fib Model Code 2010" and "AS5100-2017" Design codes currently supported for "input stresses" are: "AASHTO LRFD 2nd Edition", "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:1992 Eurocode 2", "EN1992-1-1:2004 / 2014 Eurocode 2", "BS5400-4:1990", "JTG D62-2004"  
 		Params:
 			designCode (str): 
-			timeEffects ( boolean, optional): True: Losses based on time inputs and calculated stresses. False: Approximate losses, requiring input of estimated stresses
+			timeEffects ( bool, optional): True: Losses based on time inputs and calculated stresses. False: Approximate losses, requiring input of estimated stresses
 		Returns:
 			None: 
 		"""
@@ -32715,7 +32715,7 @@ class IFTendonProfile(IFAttribute):
 		r"""
 		Return an array of tendon coordinates 
 		Returns:
-			array of arrays of real numbers: vector of coordinates ((x1, y1, z1), ... (xn, yn, zn)) Each coordinate is an array of three numbers
+			array of arrays of float: vector of coordinates ((x1, y1, z1), ... (xn, yn, zn)) Each coordinate is an array of three numbers
 		"""
 		pass
 
@@ -33753,7 +33753,7 @@ class IFCompoundMaterial(IFMaterial):
 		r"""
 		Add a material to this compound material 
 		Params:
-			material (loadset): The name or ID of a loadset, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a loadset, or a pointer to a IFMaterial object
 			nameReference (str, optional): A simple name to reference the material within this attribute
 		Returns:
 			IFCompoundMaterial: 
@@ -33776,7 +33776,7 @@ class IFCompoundMaterial(IFMaterial):
 		r"""
 		Choose which material within this compound material is considered active. The choice is made by specifying the material directly. 
 		Params:
-			material (loadset): The name or ID of a loadset, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a loadset, or a pointer to a IFMaterial object
 		Returns:
 			IFCompoundMaterial: 
 		"""
@@ -33809,7 +33809,7 @@ class IFCompoundMaterial(IFMaterial):
 		Set the material at a particular position within this. This method is provided to make changes to an existing compound material, therefore it is an error if the given index / reference name is not already in use. (i.e. you must call IFCompoundMaterial.addMaterial() before you can call IFCompoundMaterial.setMaterial() with the same position or reference name) 
 		Params:
 			refIndex (str or int): index(integer) or reference name(string)
-			material (loadset): The name or ID of a loadset, or a pointer to a IFMaterial object
+			material (IFMaterial): The name or ID of a loadset, or a pointer to a IFMaterial object
 			affectsSolution (bool, optional): Default true. Usually any change to any assigned attribute causes modeller to think that one or more analyses need to be solved. This flag allows you to indicate that the material being modified does not, in fact, affect solution (e.g. a reinforcing material which is only used in design calcs)
 		Returns:
 			IFCompoundMaterial: 
@@ -33964,7 +33964,7 @@ class IFPileMaterialLayup(IFMaterial):
 		r"""
 		add a PY curve and level to the layup 
 		Params:
-			pyCurve (local coordinate): The name or ID of a local coordinate, or a pointer to a IFPYCurve object
+			pyCurve (IFPYCurve): The name or ID of a localcoordinate, or a pointer to a IFPYCurve object
 			topOfLayer (float): 
 		Returns:
 			IFPileMaterialLayup: 
@@ -34408,7 +34408,7 @@ class IFPreLoadset(IFLoadset):
 		r"""
 		change the load factors on the loadcase assignments from the given value to the given value 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 			fromLoadFactor (float or str): existing load factor (may be a number, or a quoted expression that resolves to a number)
 			toLoadFactor (float or str): new load factor (may be a number, or a quoted expression that resolves to a number)
 		Returns:
@@ -34426,7 +34426,7 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Move this loadcase to be below the given loadcase in the LUSAS datafile 
 		Params:
-			ID (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			ID (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			updateCombs (bool, optional): update combinations and envelopes to reflect the change?
 		Returns:
 			IFLoadcase: 
@@ -34579,7 +34579,7 @@ class IFLoadcase(IFPreLoadset):
 		pass
 
 
-	def getAssignments(self, attributeType=None, andAssignedObjects=None) -> list:
+	def getAssignments(self, attributeType=None, andAssignedObjects=None) -> list[IFAssignment]:
 		r"""
 		Creates and returns an array of IFAssignment objects, each of which represents one attribute assignment within this loadcase. The array can be restricted by using the optional argument to specify a given attribute type, e.g. "loading". If not given, all loadcase dependant assignments are returned. Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
@@ -34626,7 +34626,7 @@ class IFLoadcase(IFPreLoadset):
 		pass
 
 
-	def getResultsLoadcases(self) -> list:
+	def getResultsLoadcases(self) -> list[IFResultsLoadset]:
 		r"""
 		Return an array of all the results loadcases (IFResultsLoadset) that were created by solving this loadcase (will be empty if results are not loaded or not appropriate) 
 		Returns:
@@ -34712,8 +34712,8 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Creates a clone loadcase 
 		Params:
-			analysis ("Analysis"): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
-			loadcase ("Loadcase", optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
+			analysis (IFAnalysisBaseClass): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
+			loadcase (IFLoadcase, optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
 			update (bool, optional): Set this to true to update combinations and envelopes to reflect the re-ordering change
 			copyMaterials (str, optional): "copy","no copy","inherit" material and composite assignments
 		Returns:
@@ -34797,7 +34797,7 @@ class IFLoadCurve(IFPreLoadset):
 			terminationValue (float): 
 			incrementValue (float): 
 			assignmentFactor (float): 
-			variation (variation): The name or ID of a variation, or a pointer to a IFVariationAttr object
+			variation (IFVariationAttr): The name or ID of a variation, or a pointer to a IFVariationAttr object
 		Returns:
 			IFLoadCurve: 
 		"""
@@ -34841,8 +34841,8 @@ class IFLoadCurve(IFPreLoadset):
 		r"""
 		Use the given arrays to set all the shape of this table load curve. Equivalent to the entire contents of the table on the definition dialog. 
 		Params:
-			x (array of real numbers): 
-			y (array of real numbers): 
+			x (array of float): 
+			y (array of float): 
 		Returns:
 			IFLoadCurve: 
 		"""
@@ -34858,7 +34858,7 @@ class IFLoadCurve(IFPreLoadset):
 		pass
 
 
-	def getAssignments(self, andAssignedObjects=None) -> list:
+	def getAssignments(self, andAssignedObjects=None) -> list[IFAssignment]:
 		r"""
 		creates and returns an array of IFAssignment objects, each of which represents one loading assignment within this load curve. Note that the IFAssignment objects returned are copies of the ones in actual use - modifying them will have no effect. If you wish to modify assignment details it is necessary to re-assign the attribute to the object 
 		Params:
@@ -34903,7 +34903,7 @@ class IFLoadCurve(IFPreLoadset):
 		r"""
 		Creates a clone load curve 
 		Params:
-			analysis ("Analysis"): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
+			analysis (IFAnalysisBaseClass): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
 		Returns:
 			IFLoadCurve: the new load curve that has been created
 		"""
@@ -34968,7 +34968,7 @@ class IFBasicCombination(IFLoadset):
 		r"""
 		Add the specified loadsets.  
 		Params:
-			factors (array of real numbers): 
+			factors (array of float): 
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): 
 			eigens (array of ints, optional): 
@@ -35015,11 +35015,11 @@ class IFBasicCombination(IFLoadset):
 		pass
 
 
-	def getFactors(self) -> list:
+	def getFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the factors applied to the loadcases within this combination 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -35118,8 +35118,8 @@ class IFSmartCombination(IFLoadset):
 		r"""
 		Add the specified loadsets. Note that the factors are given in the old "permanent" and "variable" factor style. To use the more recent "beneficial" and "adverse" style, simply enter each factor as "beneficial + adverse".  
 		Params:
-			factors (array of real numbers): 
-			variableFactors (array of real numbers): 
+			factors (array of float): 
+			variableFactors (array of float): 
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): 
 			eigens (array of ints, optional): 
@@ -35196,20 +35196,20 @@ class IFSmartCombination(IFLoadset):
 		pass
 
 
-	def getPermanentFactors(self) -> list:
+	def getPermanentFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the permanent factors applied to the loadcases within this combination 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
 
-	def getVariableFactors(self) -> list:
+	def getVariableFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the variable factors applied to the loadcases within this combination 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -35522,8 +35522,8 @@ class IFFatigue(IFLoadset):
 		r"""
 		Add several spectrum entries in array form.  
 		Params:
-			factor (array of real numbers): 
-			cycles (array of real numbers): 
+			factor (array of float): 
+			cycles (array of float): 
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): 
 			eigens (array of ints, optional): 
@@ -35559,8 +35559,8 @@ class IFFatigue(IFLoadset):
 		r"""
 		Set the SN Curve for this loadset, replacing any previous SN curve data. 
 		Params:
-			stress (array of real numbers): 
-			cycle (array of real numbers): 
+			stress (array of float): 
+			cycle (array of float): 
 		Returns:
 			IFFatigue: 
 		"""
@@ -35603,20 +35603,20 @@ class IFFatigue(IFLoadset):
 		pass
 
 
-	def getFactors(self) -> list:
+	def getFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the factors of the loadcases within this loadcase 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
 
-	def getCycles(self) -> list:
+	def getCycles(self) -> list[float]:
 		r"""
 		Return, as an array, the cycles of the loadcases within this loadcase 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -35735,7 +35735,7 @@ class IFIMD(IFLoadset):
 		 
 		Params:
 			type (str): "Force", "Displacement", "Velocity", or "Acceleration"
-			node (node): The name or ID of a node, or a pointer to a IFNode object
+			node (IFNode): The name or ID of a node, or a pointer to a IFNode object
 			largeMass (float): large mass
 			component (str): Sx, Sy, Sxy, etc.. See element reference manual for details
 			amplitude (float, optional): amplitude
@@ -35777,8 +35777,8 @@ class IFIMD(IFLoadset):
 		r"""
 		 
 		Params:
-			real ( loadset): The name or ID of a  loadset, or a pointer to a  IFLoadset object
-			imaginary ( loadset): The name or ID of a  loadset, or a pointer to a  IFLoadset object
+			real (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			imaginary (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFIMD: 
 		"""
@@ -35817,7 +35817,7 @@ class IFIMD(IFLoadset):
 		r"""
 		 
 		Params:
-			psd ( PSD): The name or ID of a  PSD, or a pointer to a  IFPSD object
+			psd (IFPSD): The name or ID of a PSD, or a pointer to a IFPSD object
 		Returns:
 			IFIMD: 
 		"""
@@ -35828,7 +35828,7 @@ class IFIMD(IFLoadset):
 		r"""
 		 
 		Params:
-			spectrum ( spectral curve): The name or ID of a  spectral curve, or a pointer to a  IFSpectralCurve object
+			spectrum (IFSpectralCurve): The name or ID of a spectralcurve, or a pointer to a IFSpectralCurve object
 		Returns:
 			IFIMD: 
 		"""
@@ -35958,8 +35958,8 @@ class IFLoadsetResultsContainer(IFLoadset):
 			entity (str): Name of results entity
 			component (str): Name of results component
 			packedDim (int, optional): Dimensionality of the component
-			unitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
-			denominatatorUnitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
+			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
+			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 			hasSeparator (bool, optional): has a separator after the component name in the components droplits
 		Returns:
 			IFPrimaryScriptedResultsComponentSet: object which will hold results
@@ -36055,8 +36055,8 @@ class IFLoadsetTargetValues(IFLoadset):
 		Params:
 			factorTypes (array of strs): array of factor types
 			signTypes (array of strs): array of sign types
-			constantFactors (array of real numbers): array of multipliers
-			variableFactors (array of real numbers): array of multipliers
+			constantFactors (array of float): array of multipliers
+			variableFactors (array of float): array of multipliers
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): array of results files ID
 			eigens (array of ints, optional): array of eigens ID
@@ -36101,7 +36101,7 @@ class IFLoadsetTargetValues(IFLoadset):
 			entitys (array of strs): array of results entities
 			components (array of strs): array of results components
 			conditions (array of strs): array of target values
-			values (array of real numbers): 
+			values (array of float): 
 		Returns:
 			IFLoadsetTargetValues: 
 		"""
@@ -36117,7 +36117,7 @@ class IFLoadsetTargetValues(IFLoadset):
 			entitys (array of strs): array of results entities
 			components (array of strs): array of results components
 			conditions (array of strs): array of target values
-			values (array of real numbers): 
+			values (array of float): 
 		Returns:
 			IFLoadsetTargetValues: 
 		"""
@@ -36178,20 +36178,20 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getConstantFactors(self) -> list:
+	def getConstantFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the target constant factors applied to the loadcases within this target value loadset 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
 
-	def getVariableFactors(self) -> list:
+	def getVariableFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the target variable factors applied to the loadcases within this target value loadset 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -36377,7 +36377,7 @@ class IFCableTuningLoadcase(IFLoadset):
 			entitys (array of strs): array of results entities
 			components (array of strs): array of results components
 			conditions (array of strs): array of target values
-			values (array of real numbers): 
+			values (array of float): 
 		Returns:
 			IFCableTuningLoadcase: 
 		"""
@@ -36512,7 +36512,7 @@ class IFCableTuningLoadcase(IFLoadset):
 		r"""
 		Move this loadcase to be below the given loadcase in the LUSAS datafile 
 		Params:
-			ID (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			ID (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			updateCombs (bool, optional): update combinations and envelopes to reflect the change?
 		Returns:
 			IFCableTuningLoadcase: 
@@ -36524,8 +36524,8 @@ class IFCableTuningLoadcase(IFLoadset):
 		r"""
 		Creates a clone loadcase 
 		Params:
-			analysis ("Analysis"): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
-			loadcase ("Loadcase", optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
+			analysis (IFAnalysisBaseClass): The name or ID of a "Analysis", or a pointer to a IFAnalysisBaseClass object
+			loadcase (IFLoadcase, optional): The name or ID of a "Loadcase", or a pointer to a IFLoadcase object
 			update (bool, optional): Set this to true to update combinations and envelopes to reflect the re-ordering change
 			copyMaterials (str, optional): "copy","no copy","inherit" material and composite assignments
 		Returns:
@@ -36645,8 +36645,8 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		Params:
 			factorTypes (array of strs): array of factor types
 			signTypes (array of strs): array of sign types
-			constantFactors (array of real numbers): array of multipliers
-			variableFactors (array of real numbers): array of multipliers
+			constantFactors (array of float): array of multipliers
+			variableFactors (array of float): array of multipliers
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): array of results files ID
 			eigens (array of ints, optional): array of eigens ID
@@ -36691,7 +36691,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 			entitys (array of strs): array of results entities
 			components (array of strs): array of results components
 			conditions (array of strs): array of target values
-			values (array of real numbers): 
+			values (array of float): 
 		Returns:
 			IFCableTuningAnalysis: 
 		"""
@@ -36707,7 +36707,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 			entitys (array of strs): array of results entities
 			components (array of strs): array of results components
 			conditions (array of strs): array of target values
-			values (array of real numbers): 
+			values (array of float): 
 		Returns:
 			IFCableTuningAnalysis: 
 		"""
@@ -36768,20 +36768,20 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getConstantFactors(self) -> list:
+	def getConstantFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the target constant factors applied to the loadcases within this cable tuning analysis 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
 
-	def getVariableFactors(self) -> list:
+	def getVariableFactors(self) -> list[float]:
 		r"""
 		Return, as an array, the target variable factors applied to the loadcases within this cable tuning analysis 
 		Returns:
-			array of real numbers: 
+			array of float: 
 		"""
 		pass
 
@@ -36891,7 +36891,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		Add the specified cables. 
 		Params:
 			names (array of strs): array of cable names
-			weightCoefs (array of real numbers): array of weight coefficients
+			weightCoefs (array of float): array of weight coefficients
 		Returns:
 			IFCableTuningAnalysis: 
 		"""
@@ -36903,7 +36903,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		Get the specified cables. 
 		Params:
 			names (array of strs): array of cable names
-			weightCoefs (array of real numbers): array of weight coefficients
+			weightCoefs (array of float): array of weight coefficients
 		Returns:
 			IFCableTuningAnalysis: 
 		"""
@@ -36979,7 +36979,7 @@ class IFGraphWizard(IFGraphBase):
 		sets curve style and curve's visibility option 
 		Params:
 			style (str): 
-			showArray (array of booleans): 
+			showArray (array of bools): 
 		Returns:
 			None: 
 		"""
@@ -37075,8 +37075,8 @@ class IFGraphWizard(IFGraphBase):
 		r"""
 		 
 		Params:
-			xGraphDataset (dataset): The name or ID of a dataset, or a pointer to a IFAttribute object
-			yGraphDataset (dataset): The name or ID of a dataset, or a pointer to a IFAttribute object
+			xGraphDataset (IFAttribute): The name or ID of a dataset, or a pointer to a IFAttribute object
+			yGraphDataset (IFAttribute): The name or ID of a dataset, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -37087,7 +37087,7 @@ class IFGraphWizard(IFGraphBase):
 		r"""
 		 
 		Params:
-			graphDataset (dataset): The name or ID of a dataset, or a pointer to a IFAttribute object
+			graphDataset (IFAttribute): The name or ID of a dataset, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -37247,8 +37247,8 @@ class IFGraph(IFGraphBase):
 		r"""
 		Add a curve to an existing graph. If no input is given, an empty curve is added for later modification. If either x or y is specified, both must be. In each case, data can be specified as the name, ID, or a pointer to an IFDataset object, or a raw array of real numbers. There is no requirement to provide x data in the same format as y data, but the number of data points must be the same. Optionally a multiplication factor may be given, which can be used to exaggerate the y values (it has no effect on the x values) 
 		Params:
-			X ( graph dataset, optional): The name or ID of a  graph dataset, or a pointer to a  IFDataset object
-			Y ( graph dataset, optional): The name or ID of a  graph dataset, or a pointer to a  IFDataset object
+			X (IFDataset, optional): The name or ID of a graphdataset, or a pointer to a IFDataset object
+			Y (IFDataset, optional): The name or ID of a graphdataset, or a pointer to a IFDataset object
 			factorX (float, optional): multiplier for X
 			factorY (float, optional): multiplier for Y
 		Returns:
@@ -37277,7 +37277,7 @@ class IFGraph(IFGraphBase):
 		pass
 
 
-	def getCurves(self) -> list:
+	def getCurves(self) -> list[IFCurve]:
 		r"""
 		Return an array containing all the curves currently present within this graph 
 		Returns:
@@ -37625,7 +37625,7 @@ class IFPrintResultsWizard(IFAttribute):
 		r"""
 		Uses the specified local coordinate as the results transformation in print results output. 
 		Params:
-			localCoords ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -37637,7 +37637,7 @@ class IFPrintResultsWizard(IFAttribute):
 		r"""
 		Uses the specified path as the results transformation for this sub-chapter. 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -37985,7 +37985,7 @@ class IFArbitrarySection(IFAttribute):
 		Params:
 			pDatabase (IFDatabase): 
 			surfacesToExclude (array of ints, optional): surface numbers to exclude from the calculation
-			haveExpectedValues (array of booleans, optional): if true compare the expected value to the calculated section property
+			haveExpectedValues (array of bools, optional): if true compare the expected value to the calculated section property
 			expectedValues (array of floats, optional): expected section property value
 		Returns:
 			IFArbitrarySection: 
@@ -37993,7 +37993,7 @@ class IFArbitrarySection(IFAttribute):
 		pass
 
 
-	def getSectionProperties(self) -> list:
+	def getSectionProperties(self) -> list[float]:
 		r"""
 		Returns an array on property values The return value is an array of real values 
 		Returns:
@@ -38069,7 +38069,7 @@ class IFParametricSection(IFAttribute):
 		pass
 
 
-	def getSectionProperties(self) -> list:
+	def getSectionProperties(self) -> list[float]:
 		r"""
 		Returns an array on property values The return value is an array of real values 
 		Returns:
@@ -38139,8 +38139,8 @@ class IFCurve(IFGraphWizardCurve):
 		r"""
 		Add an array of x,y points to the curve. Data pairs must be in the desired order, they will NOT be sorted automatically (as this would be erroneous in some graphs). 
 		Params:
-			X (array of real numbers): 
-			Y (array of real numbers): 
+			X (array of float): 
+			Y (array of float): 
 		Returns:
 			None: 
 		"""
@@ -38234,7 +38234,7 @@ class IFSelectLoadsetsDialog(IFDialog):
 		pass
 
 
-	def getLoadsets(self) -> list:
+	def getLoadsets(self) -> list[IFLoadset]:
 		r"""
 		Retrieves the loadsets selected by the user (assuming they pressed OK) 
 		Returns:
@@ -38584,8 +38584,8 @@ class IFPrimaryScriptedResultsComponentSet(IFScriptedResultsComponentSet):
 		Params:
 			component (str): Name of results component
 			packedDim (int, optional): Dimensionality of the component
-			unitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
-			denominatatorUnitSet (Unit set, optional): The name or ID of a Unit set, or a pointer to a IFUnitSet object
+			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
+			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 			hasSeparator (bool, optional): has a separator after the component name in the components droplist
 		Returns:
 			None: 
@@ -39797,8 +39797,8 @@ class IFView(IFResultsContext):
 		Select everything inside the given polygon. The selection mechanism can be modified to include only certain object types, and/or to add, toggle or set the selection, and/or to perform an enclosed or intersecting selection. Coordinates are given in rotated model units. 
 		Params:
 			nPoints (int): 
-			xArray (array of real numbers): 
-			yArray (array of real numbers): 
+			xArray (array of float): 
+			yArray (array of float): 
 			selType (str, optional): "Set", "Add", "Toggle","Set_Intersecting", "Add_Intersecting", or "Toggle_Intersecting"
 			objectType (str, optional): "All", "Geometry", "Mesh", "Annotation" or "Point", "Line" etc
 			axisType (str, optional): "All", "Vertical", "Horizontal", "X", "Y", "Z", "XY", "YZ" or "XZ"
@@ -39937,20 +39937,20 @@ class IFView(IFResultsContext):
 		pass
 
 
-	def getRotationVector(self) -> list:
+	def getRotationVector(self) -> list[float]:
 		r"""
 		Creates and returns an array with the values of the current rotation vector: (xCoord, yCoord, zCoord) 
 		Returns:
-			array of real numbers: The returned array
+			array of float: The returned array
 		"""
 		pass
 
 
-	def getRotationMatrix(self) -> list:
+	def getRotationMatrix(self) -> list[float]:
 		r"""
 		Creates and returns an array with the values of the current rotation matrix: (r11, r21, r31, r41, r12, r22, r32, r42, r13, r23, r33, r43, r14, r24, r34, r44) 
 		Returns:
-			array of real numbers: The returned array
+			array of float: The returned array
 		"""
 		pass
 
@@ -40111,8 +40111,8 @@ class IFView(IFResultsContext):
 		Set the magnitude, in mm, of the largest deformation shown. In page layout mode, this size is mm on the paper. In working mode, this size is mm on the screen. This allows the deformation to be exaggerated to a known size for visualisation. 
 		Params:
 			mmMagnitude (float): 
-			exaggerateInitPos ( boolean, optional): true to also exaggerate initial deformations. False to view them unexaggerated
-			exaggerateCableSag ( boolean, optional): true to also exaggerate cable sag. False to view them unexaggerated
+			exaggerateInitPos ( bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
+			exaggerateCableSag ( bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
 		Returns:
 			None: 
 		"""
@@ -40124,8 +40124,8 @@ class IFView(IFResultsContext):
 		Set the factor by which all deformations will be multiplied before being drawn on the screen. This allows a known uniform exaggeration to be applied. 
 		Params:
 			factor (float): 
-			exaggerateInitPos ( boolean, optional): true to also exaggerate initial deformations. False to view them unexaggerated
-			exaggerateCableSag ( boolean, optional): true to also exaggerate cable sag. False to view them unexaggerated
+			exaggerateInitPos ( bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
+			exaggerateCableSag ( bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
 		Returns:
 			None: 
 		"""
@@ -40136,7 +40136,7 @@ class IFView(IFResultsContext):
 		r"""
 		Set active the given path For each visible point, a label is added to show its distance along this path. 
 		Params:
-			path (composite): The name or ID of a composite, or a pointer to a IFComposite object
+			path (IFComposite): The name or ID of a composite, or a pointer to a IFComposite object
 		Returns:
 			None: 
 		"""
@@ -41944,7 +41944,7 @@ class IFResultsLayer(IFLayer):
 		r"""
 		Uses the specified local coordinate as the results transformation for this drawing layer. When a combination or envelope is active in the view, it is an error if the individual transformation settings of the individual layers are not same as the settings of the parent view 
 		Params:
-			localCoords ( local coord): The name or ID of a  local coord, or a pointer to a  IFLocalCoord object
+			localCoords (IFLocalCoord): The name or ID of a localcoord, or a pointer to a IFLocalCoord object
 			shellPlane (int): Shell plane for resultants (1, 2 or 3)
 		Returns:
 			None: 
@@ -41956,7 +41956,7 @@ class IFResultsLayer(IFLayer):
 		r"""
 		Uses the specified path as the results transformation for this drawing layer. When a combination or envelope is active in the view, it is an error if the individual transformation settings of the individual layers are not same as the settings of the parent view 
 		Params:
-			path ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
+			path (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
 			skew (bool, optional): True if local y = transverse
 		Returns:
 			None: 
@@ -42374,7 +42374,7 @@ class IFContoursLayer(IFResultsLayer):
 		r"""
 		 
 		Params:
-			attr (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attr (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			None: 
 		"""
@@ -43084,7 +43084,7 @@ class IFStoreyGroup(IFGroup):
 			mx (float): }
 			my (float): } moments about the axes
 			mz (float): }
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			IFStoreyGroup: 
 		"""
@@ -43095,7 +43095,7 @@ class IFStoreyGroup(IFGroup):
 		r"""
 		remove the building storey primary location loads for the given loadcase 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			IFStoreyGroup: 
 		"""
@@ -43231,13 +43231,13 @@ class IFStoreyGroup(IFGroup):
 		pass
 
 
-	def getSymbolCoords(self, symbolId) -> object:
+	def getSymbolCoords(self, symbolId) -> list[float]:
 		r"""
 		return the symbol location from the symbol ID 
 		Params:
 			symbolId (int): symbol Id
 		Returns:
-			object: An array of 3 real numbers, representing 3d coordinates
+			array of float: An array of 3 real numbers, representing 3d coordinates
 		"""
 		pass
 
@@ -43380,7 +43380,7 @@ class IFStoreyGroup(IFGroup):
 		r"""
 		return the building storey primary location loads for a loadcase 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
 			array: 
 		"""
@@ -43485,7 +43485,7 @@ class IFRailTrackLayout(IFDatabaseMember):
 		r"""
 		Add a track definition to the rail layout 
 		Params:
-			trackDefVar (trackdefinition): The name of a trackdefinition, or a pointer to a IFRailTrackDefinition object
+			trackDefVar (IFRailTrackDefinition): The name of a trackdefinition, or a pointer to a IFRailTrackDefinition object
 		Returns:
 			None: 
 		"""
@@ -44130,7 +44130,7 @@ class IFTabulateDataObj(IFExportDataObj):
 		r"""
 		Sets up the influence line attribute to be used, therefore specifying an influence line analysis 
 		Params:
-			influenceLine (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
+			influenceLine (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
 		Returns:
 			IFTabulateDataObj: 
 		"""
@@ -44152,8 +44152,8 @@ class IFTabulateDataObj(IFExportDataObj):
 		r"""
 		Sets up the influence line assignment to be used, therefore specifying an influence line analysis 
 		Params:
-			influenceLine (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
-			assignment (assignment): The name or ID of a assignment, or a pointer to a IFAssignment object
+			influenceLine (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
+			assignment (IFAssignment): The name or ID of a assignment, or a pointer to a IFAssignment object
 		Returns:
 			IFTabulateDataObj: 
 		"""
@@ -44193,7 +44193,7 @@ class IFTabulateDataObj(IFExportDataObj):
 		r"""
 		Sets up the search area attribute to be used in an influence line analysis 
 		Params:
-			searchArea (search area): The name or ID of a search area, or a pointer to a IFSearchArea object
+			searchArea (IFSearchArea): The name or ID of a searcharea, or a pointer to a IFSearchArea object
 		Returns:
 			IFTabulateDataObj: 
 		"""
@@ -44278,7 +44278,7 @@ class IFTabulateDataObj(IFExportDataObj):
 		r"""
 		add loadcase to tabulate 
 		Params:
-			ID (loadset): The name or ID of a loadset, or a pointer to a IFLoadset object
+			ID (IFLoadset): The name or ID of a loadset, or a pointer to a IFLoadset object
 		Returns:
 			IFTabulateDataObj: 
 		"""
@@ -44289,7 +44289,7 @@ class IFTabulateDataObj(IFExportDataObj):
 		r"""
 		add loadcurves to tabulate 
 		Params:
-			ID (loadcurve): The name or ID of a loadcurve, or a pointer to a IFLoadCurve object
+			ID (IFLoadCurve): The name or ID of a loadcurve, or a pointer to a IFLoadCurve object
 		Returns:
 			IFTabulateDataObj: 
 		"""
@@ -44944,7 +44944,7 @@ class IFAnalysis(IFAnalysisBaseClass):
 		r"""
 		Sets up the loadset from which the starting deformations for this analysis will be taken, and the factor that will be applied to those deformations. Calling this function clears any settings previously set using IFAnalysisBaseClass.setRestartFromDump or IFAnalysisBaseClass.setRestartFromLoadcase 
 		Params:
-			loadcase (loadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
+			loadcase (IFLoadcase): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 			timestep (int): Index of time step, increment or eigenvalue within the results of given loadcase (-1 means "last")
 			factor (float): factor
 		Returns:
@@ -44966,7 +44966,7 @@ class IFAnalysis(IFAnalysisBaseClass):
 		r"""
 		Sets up the coupling relationship between two analyses. Note - coupled analyses in LUSAS are currently limited to just one structural analysis and just one thermal analysis. Pass in false to indicate that this analysis is not coupled with any other. 
 		Params:
-			analysis ( analysis): The name or ID of a  analysis, or a pointer to a  IFAnalysis object
+			analysis (IFAnalysis): The name or ID of a analysis, or a pointer to a IFAnalysis object
 		Returns:
 			IFAnalysis: Return this object
 		"""
@@ -45026,15 +45026,15 @@ class IFAnalysis(IFAnalysisBaseClass):
 			PriFriction (bool): Provide primary effects associated with friction
 			PriAnchorage (bool): Provide primary effects associated with anchorage
 			PriElastic (bool): Provide primary effects associated with elastic shortening
-			PriCreep ( boolean, optional): Provide primary effects associated with creep
-			PriShrinkage ( boolean, optional): Provide primary effects associated with shrinkage
-			PriRelax ( boolean, optional): Provide primary effects associated with relaxation
-			SecFriction ( boolean, optional): Provide secondary effects associated with friction
-			SecAnchorage ( boolean, optional): Provide secondary effects associated with anchorage
-			SecElastic ( boolean, optional): Provide secondary effects associated with elastic shortening
-			SecCreep ( boolean, optional): Provide secondary effects associated with creep
-			SecShrinkage ( boolean, optional): Provide secondary effects associated with shrinkage
-			SecRelax ( boolean, optional): Provide secondary effects associated with relaxation
+			PriCreep ( bool, optional): Provide primary effects associated with creep
+			PriShrinkage ( bool, optional): Provide primary effects associated with shrinkage
+			PriRelax ( bool, optional): Provide primary effects associated with relaxation
+			SecFriction ( bool, optional): Provide secondary effects associated with friction
+			SecAnchorage ( bool, optional): Provide secondary effects associated with anchorage
+			SecElastic ( bool, optional): Provide secondary effects associated with elastic shortening
+			SecCreep ( bool, optional): Provide secondary effects associated with creep
+			SecShrinkage ( bool, optional): Provide secondary effects associated with shrinkage
+			SecRelax ( bool, optional): Provide secondary effects associated with relaxation
 			nSolves ( int, optional): Number of solves to determine post-installation losses
 			percent ( float, optional): Percentage reduction of length for end load placement
 		Returns:
@@ -45052,15 +45052,15 @@ class IFAnalysis(IFAnalysisBaseClass):
 			PriFriction (bool): Provide primary effects associated with friction
 			PriAnchorage (bool): Provide primary effects associated with anchorage
 			PriElastic (bool): Provide primary effects associated with elastic shortening
-			PriCreep ( boolean, optional): Provide primary effects associated with creep
-			PriShrinkage ( boolean, optional): Provide primary effects associated with shrinkage
-			PriRelax ( boolean, optional): Provide primary effects associated with relaxation
-			SecFriction ( boolean, optional): Provide secondary effects associated with friction
-			SecAnchorage ( boolean, optional): Provide secondary effects associated with anchorage
-			SecElastic ( boolean, optional): Provide secondary effects associated with elastic shortening
-			SecCreep ( boolean, optional): Provide secondary effects associated with creep
-			SecShrinkage ( boolean, optional): Provide secondary effects associated with shrinkage
-			SecRelax ( boolean, optional): Provide secondary effects associated with relaxation
+			PriCreep ( bool, optional): Provide primary effects associated with creep
+			PriShrinkage ( bool, optional): Provide primary effects associated with shrinkage
+			PriRelax ( bool, optional): Provide primary effects associated with relaxation
+			SecFriction ( bool, optional): Provide secondary effects associated with friction
+			SecAnchorage ( bool, optional): Provide secondary effects associated with anchorage
+			SecElastic ( bool, optional): Provide secondary effects associated with elastic shortening
+			SecCreep ( bool, optional): Provide secondary effects associated with creep
+			SecShrinkage ( bool, optional): Provide secondary effects associated with shrinkage
+			SecRelax ( bool, optional): Provide secondary effects associated with relaxation
 			nSolves ( int, optional): Number of solves to determine post-installation losses
 			percent ( float, optional): Percentage reduction of length for end load placement
 		Returns:
@@ -45207,7 +45207,7 @@ class IFRLOEnvelopeRun(IFTLOEnvelopeRun):
 		r"""
 		Set the railway layout used for this RLO 
 		Params:
-			trackLayout ("track definition"): The name or ID of a "track definition", or a pointer to a IFRailTrackDefinition object
+			trackLayout (IFRailTrackDefinition): The name or ID of a "trackdefinition", or a pointer to a IFRailTrackDefinition object
 		Returns:
 			None: 
 		"""
@@ -45263,7 +45263,7 @@ class IFVLORun(IFTLORunBase):
 		r"""
 		Adds an influence assignment to be analysed by this VLO run 
 		Params:
-			infObj (influence): The name or ID of a influence, or a pointer to a IFInfluence object
+			infObj (IFInfluence): The name or ID of a influence, or a pointer to a IFInfluence object
 			loadPositive (bool): true if positive area should be loaded by TLO
 			loadNegative (bool): false if positive area should be loaded by TLO
 			includeAditionalPatterns (bool): AASHTO codes only
@@ -45275,7 +45275,7 @@ class IFVLORun(IFTLORunBase):
 		pass
 
 
-	def getAllInfluenceAssignsToAnalyse(self) -> list:
+	def getAllInfluenceAssignsToAnalyse(self) -> list[IFVLOInfluenceAssignEntry]:
 		r"""
 		Returns all influence assignments to be analysed by this VLO run 
 		Returns:
@@ -45337,7 +45337,7 @@ class IFVLORun(IFTLORunBase):
 		r"""
 		Creates a clone VLO Run 
 		Params:
-			analysis ("VLO analysis"): The name or ID of a "VLO analysis", or a pointer to a IFVLOAnalysis object
+			analysis (IFVLOAnalysis): The name or ID of a "VLOanalysis", or a pointer to a IFVLOAnalysis object
 		Returns:
 			IFVLORun: the new VLO run that has been created
 		"""
@@ -45498,7 +45498,7 @@ class IFRLORun(IFVLORun):
 		r"""
 		Set the railway layout used for this RLO 
 		Params:
-			trackLayout ("track definition"): The name or ID of a "track definition", or a pointer to a IFRailTrackDefinition object
+			trackLayout (IFRailTrackDefinition): The name or ID of a "trackdefinition", or a pointer to a IFRailTrackDefinition object
 		Returns:
 			None: 
 		"""
@@ -45559,7 +45559,7 @@ class IFReciprocalMethodInfAnalysis(IFAnalysisBaseClass):
 		r"""
 		Follows the internal knowledge of "this" to tabulate and solve the given influence. If you set ignoreModified to be true, then LUSAS's internal knowledge is ignored, and the analysis will be solved whether LUSAS thinks it necessary or not. To solve all influences, use IFAnalysisBaseClass.solve. Returns 0 for success, or a failure code from LUSAS solver. 
 		Params:
-			influenceLine (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
+			influenceLine (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
 			ignoreModified (bool, optional): default false. Can be set true to ignore the modification state of this and its prerequisites
 		Returns:
 			int: 
@@ -45571,8 +45571,8 @@ class IFReciprocalMethodInfAnalysis(IFAnalysisBaseClass):
 		r"""
 		Follows the internal knowledge of "this" to tabulate and solve the given influence assignment. If you set ignoreModified to be true, then LUSAS's internal knowledge is ignored, and the analysis will be solved whether LUSAS thinks it necessary or not. To solve all influences, use IFAnalysisBaseClass.solve. Returns 0 for success, or a failure code from LUSAS solver. 
 		Params:
-			influenceLine (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
-			assignment (assignment): The name or ID of a assignment, or a pointer to a IFAssignment object
+			influenceLine (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
+			assignment (IFAssignment): The name or ID of a assignment, or a pointer to a IFAssignment object
 			ignoreModified (bool, optional): default false. Can be set true to ignore the modification state of this and its prerequisites
 		Returns:
 			int: 
@@ -45584,7 +45584,7 @@ class IFReciprocalMethodInfAnalysis(IFAnalysisBaseClass):
 		r"""
 		Open results for the given influence for this analysis. Note - there is no error for any results which are missing, or need to be solved, or need updating from a previous version. Nonetheless, such files will not be loaded. Optionally (default true) skip any results that LUSAS considers to be out of date. To open results for all influences, use IFAnalysisBaseClass.openResults. 
 		Params:
-			influence (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
+			influence (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
 			scanOutputFiles (bool, optional): default true. Can be set false to skip parsing output files and repeating errors and warnings into the text output window
 			skipOutOfDate (bool, optional): default true. Can be set false to force LUSAS to load results files it believes to be out of date
 		Returns:
@@ -45597,8 +45597,8 @@ class IFReciprocalMethodInfAnalysis(IFAnalysisBaseClass):
 		r"""
 		Open results for the given influence assignment for this analysis. Note - there is no error for any results which are missing, or need to be solved, or need updating from a previous version. Nonetheless, such files will not be loaded. Optionally (default true) skip any results that LUSAS considers to be out of date. To open results for all influences, use IFAnalysisBaseClass.openResults. 
 		Params:
-			influenceLine (influence line): The name or ID of a influence line, or a pointer to a IFInfluence object
-			assignment (assignment): The name or ID of a assignment, or a pointer to a IFAssignment object
+			influenceLine (IFInfluence): The name or ID of a influenceline, or a pointer to a IFInfluence object
+			assignment (IFAssignment): The name or ID of a assignment, or a pointer to a IFAssignment object
 			scanOutputFiles (bool, optional): default true. Can be set false to skip parsing output files and repeating errors and warnings into the text output window
 			skipOutOfDate (bool, optional): default true. Can be set false to force LUSAS to load results files it believes to be out of date
 		Returns:
@@ -45881,7 +45881,7 @@ class IFReinforcementSection(IFAttribute):
 		r"""
 		Set the geometric attribute used in the dialog to visualise and validate the reinforcement properties 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFReinforcementSection: 
 		"""
@@ -46012,7 +46012,7 @@ class IFReinforcementLine(IFAttribute):
 		r"""
 		Set the attribute that describes the advanced shear and torsion properites of this attribute 
 		Params:
-			attribute (attribute): The name or ID of a attribute, or a pointer to a IFAttribute object
+			attribute (IFAttribute): The name or ID of a attribute, or a pointer to a IFAttribute object
 		Returns:
 			IFReinforcementLine: 
 		"""
@@ -46063,9 +46063,9 @@ class IFStaticMovingLoadAnalysis(IFAnalysis):
 		r"""
 		Conveniently set all inputs 
 		Params:
-			loadAttr ( load): The name or ID of a  load, or a pointer to a  IFLoadingDiscreteBase object
-			refPath ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
-			searchArea ( search area): The name or ID of a  search area, or a pointer to a  IFSearchArea object
+			loadAttr (IFLoadingDiscreteBase): The name or ID of a load, or a pointer to a IFLoadingDiscreteBase object
+			refPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
+			searchArea (IFSearchArea): The name or ID of a searcharea, or a pointer to a IFSearchArea object
 			projectionType (str): "area" or "line"
 			includeProjectionMoments (int or str): "none" (0), "all" (1), "Except those caused by projection" (2), "About X" (3), "About Y" (4), "About Z" (5), "About X and Y" (6), "About X and Z" (7), or "About Y and Z" (8)
 			pathPatchTransform (int or str): "none" (0), "horizontal" (1), or "3D" (2)
@@ -46208,9 +46208,9 @@ class IFPedestrianMovingLoadAnalysis(IFAnalysis):
 		r"""
 		Conveniently set all inputs 
 		Params:
-			defn ( pedestrian load definition): The name or ID of a  pedestrian load definition, or a pointer to a  IFPedestrianLoadDefinition object
-			refPath ( reference path): The name or ID of a  reference path, or a pointer to a  IFReferencePath object
-			searchArea ( search area): The name or ID of a  search area, or a pointer to a  IFSearchArea object
+			defn (IFPedestrianLoadDefinition): The name or ID of a pedestrianloaddefinition, or a pointer to a IFPedestrianLoadDefinition object
+			refPath (IFReferencePath): The name or ID of a referencepath, or a pointer to a IFReferencePath object
+			searchArea (IFSearchArea): The name or ID of a searcharea, or a pointer to a IFSearchArea object
 			projectionType (str): "area" or "line"
 			includeProjectionMoments (int or str): "none" (0), "all" (1), "Except those caused by projection" (2), "About X" (3), "About Y" (4), "About Z" (5), "About X and Y" (6), "About X and Z" (7), or "About Y and Z" (8)
 			timeStep (float): The analysis' timestep in seconds
@@ -48726,7 +48726,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getSectionProperties(self, libraryName, libraryType, sectionName) -> list:
+	def getSectionProperties(self, libraryName, libraryType, sectionName) -> list[float]:
 		r"""
 		Returns an array on property values from the specified section. The return value is an array of real values 
 		Params:
