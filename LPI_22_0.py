@@ -13430,7 +13430,7 @@ class IFGeometry(IFDatabaseOperations):
 
 	def getInternalPoints(self) -> list[IFPoint]:
 		r"""
-		Creates and returns an array of embedded points in a surface. Use 
+		Creates and returns an array of embedded points in a surface. 
 		Returns:
 			array of IFPoint objects: The returned array
 		"""
@@ -20146,17 +20146,6 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def createLoadingConcreteHydration(self, attrName) -> IFLoadingConcreteHydration:
-		r"""
-		Creates a load to represent heat of concrete hydration 
-		Params:
-			attrName (str): name of attribute
-		Returns:
-			IFLoadingConcreteHydration: newly created attribute
-		"""
-		pass
-
-
 	def createSurfaceDistributedLoad(self, attrName) -> IFSurfDistrLoading:
 		r"""
 		Creates a surface distributed loading attribute 
@@ -22244,17 +22233,6 @@ class IFDatabase(IFGroup):
 			strs (array of strs): strings to be used
 		Returns:
 			None: 
-		"""
-		pass
-
-
-	def getModuleResultsOutput(self, attrName) -> IFModuleResultsOutput:
-		r"""
-		Returns a module results output utility by searching for the given sub type and name/ID 
-		Params:
-			attrName (str or int): name or ID of the requested note
-		Returns:
-			IFModuleResultsOutput: returned utility
 		"""
 		pass
 
@@ -45872,6 +45850,85 @@ class IFUserDefinedResult(IFAttribute):
 		pass
 
 
+class IFWoodArmerAttr(IFAttribute):
+	"""
+	Wood Armer Attribute 
+	"""
+
+	def setGeometry(self, rAngle, rXTopCover, rAlphaTopCover, rXBottomCover, rAlphaBottomCover) -> IFWoodArmerAttr:
+		r"""
+		Sets the Wood-Armer geometry. 
+		Params:
+			rAngle (float): The skew angle between x and y reinforcements
+			rXTopCover (float): The cover depth of the top x reinforcements
+			rAlphaTopCover (float): The cover depth of the top alpha reinforcements
+			rXBottomCover (float): The cover depth of the bottom x reinforcements
+			rAlphaBottomCover (float): The cover depth of the bottom alpha reinforcements
+		Returns:
+			IFWoodArmerAttr: 
+		"""
+		pass
+
+
+	def setActive(self, active) -> IFWoodArmerAttr:
+		r"""
+		Activates Wood-Armer and/or Clark-Nielsen calculations 
+		Params:
+			active (int): The enum determining which of Wood-Armer/Clark-Nielsen calculations are active
+		Returns:
+			IFWoodArmerAttr: 
+		"""
+		pass
+
+
+class IFResultsTransformationAttr(IFAttribute):
+	"""
+	Results Transformation Attribute 
+	"""
+
+	def setTransformation(self, type, XYAngle=None, shellIdx=None, isSkewedPath=None, attributeType=None, localCoordSetID=None, pathID=None) -> IFResultsTransformationAttr:
+		r"""
+		Sets the transformation. 
+		Params:
+			type (str): The type of the transformation. Valid options are "None", "Element Local", "Local", "Nodal", "Material", "XY Angle", "Local Coords","Path", "Feature", "Global"
+			XYAngle (float, optional): The XY angle (only relevant when type is XY angle)
+			shellIdx (int, optional): The shell index (only relevant when type is local coords, and a cylindrical or spherical set is chosen)
+			isSkewedPath (bool, optional): Is the path transformation skewed? (only relevant when type is path)
+			attributeType (str, optional): The attribute type (currently only material is allowed)
+			localCoordSetID (int, optional): The local coordinate set identifier (only relevant when type is local coord)
+			pathID (IFReferencePath, optional): The name or ID of a path, or a pointer to a IFReferencePath object
+		Returns:
+			IFResultsTransformationAttr: 
+		"""
+		pass
+
+
+	def getTransformation(self, type, XYAngle, shellIdx, isSkewedPath, attributeType, localCoordSetID, pathID) -> None:
+		r"""
+		Gets the options most recently set with setTransformation(). Note that "old" values should not be relied upon once no longer relevant. For example consider this simple sequence: <code> attr.setTransformation("XY Angle", 45.0) attr.setTransformation("Element Local") attr.getTransformation(t, a, s, i, a, l, p) </code> The angle is not used by element local transformations. Its value, returned by this function, is therefore undefined and should not be relied upon. The same principle applies to all other inputs - shell index, path ID, etc 
+		Params:
+			type (str): The type of the transformation
+			XYAngle (float): The XY angle (only relevant when type is XY angle)
+			shellIdx (int): The shell index (only relevant when type is local coords, and a cylindrical or spherical set is chosen)
+			isSkewedPath (bool): Is the path transformation skewed? (only relevant when type is path)
+			attributeType (str): The attribute type (currently only material is allowed)
+			localCoordSetID (int): The ID of the chosen local coordinate (only relevant when type is local coord)
+			pathID (int): The ID of the chosen path (only relevant when type is path)
+		Returns:
+			None: 
+		"""
+		pass
+
+
+	def getShellIndex(self) -> int:
+		r"""
+		When the type is local coord and the chosen local coord is cylindrical or spherical, then this routine returns the shell index previously set with setTransformation(). For other kinds of transformation, including cartesian local coords, this routine returns -1 
+		Returns:
+			int: 
+		"""
+		pass
+
+
 class IFReinforcementSection(IFAttribute):
 	"""
 	Representation of the reinforcement of one cross section 
@@ -48659,35 +48716,6 @@ All other objects in the LPI are accessed through these global variables and fun
 			force (bool, optional): If true Modeller will close regardless of whether there are unsaved changes (false by default).
 		Returns:
 			None: 
-		"""
-		pass
-
-
-	def udrOptions(self) -> IFUserDefinedResultOptions:
-		r"""
-		Return data object that can be used for defining expressions in User Defined Results Attributes 
-		Synonyms:
-			getUDROptions
-		Returns:
-			IFUserDefinedResultOptions: 
-		"""
-		pass
-
-
-	def getUDROptions(self) -> IFUserDefinedResultOptions:
-		r"""
-		Return data object that can be used for defining expressions in User Defined Results Attributes 
-		Returns:
-			IFUserDefinedResultOptions: 
-		"""
-		pass
-
-
-	def newUDROptions(self) -> IFUserDefinedResultOptions:
-		r"""
-		Create new data object that can be used for defining expressions in User Defined Results Attributes 
-		Returns:
-			IFUserDefinedResultOptions: 
 		"""
 		pass
 
