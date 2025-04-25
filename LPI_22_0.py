@@ -2125,11 +2125,11 @@ class IFProject(IFDispatch):
 		pass
 
 
-	def getSubModels(self) -> list:
+	def getSubModels(self) -> list[IFDatabase]:
 		r"""
 		Return an array of all sub-models in this project 
 		Returns:
-			Array of IFDatabase objects: 
+			array of IFDatabase objects: 
 		"""
 		pass
 
@@ -2233,7 +2233,7 @@ class IFProject(IFDispatch):
 		pass
 
 
-	def listFilesInProjectFile(self, key) -> list:
+	def listFilesInProjectFile(self, key) -> list[str]:
 		r"""
 		Lists the files that are to be saved inside the project file having previously been added using addFileToProjectFile. 
 		Params:
@@ -2327,7 +2327,7 @@ class IFReportChapter(IFDispatch):
 		r"""
 		Sets this chapter to use the specified number of decimal places to display real numbers 
 		Params:
-			nDecimalPlaces (short): number of decimal places
+			nDecimalPlaces (int): number of decimal places
 		Returns:
 			IFReportChapter: 
 		"""
@@ -2338,7 +2338,7 @@ class IFReportChapter(IFDispatch):
 		r"""
 		Sets this chapter to use the specified number of significant figures to display real numbers 
 		Params:
-			nSigFig (short): number of significant figures
+			nSigFig (int): number of significant figures
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			IFReportChapter: 
@@ -2630,7 +2630,7 @@ class IFReport(IFDispatch):
 		r"""
 		Sets this report to use the specified number of decimal places to display real numbers 
 		Params:
-			nDecimalPlaces (short): number of decimal places
+			nDecimalPlaces (int): number of decimal places
 		Returns:
 			IFReport: 
 		"""
@@ -2641,7 +2641,7 @@ class IFReport(IFDispatch):
 		r"""
 		Sets the number of significant figures in the report 
 		Params:
-			nSigFig (short): number of significant figures
+			nSigFig (int): number of significant figures
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			IFReport: 
@@ -2665,7 +2665,7 @@ class IFReport(IFDispatch):
 		Adds an attribute chapter in the report 
 		Params:
 			chapterName (str): chapter name
-			nSigFig (short): number of significant figures for this chapter
+			nSigFig (int): number of significant figures for this chapter
 			type (str): dataset type(e.g mesh/material, etc)
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 		Returns:
@@ -2679,7 +2679,7 @@ class IFReport(IFDispatch):
 		Adds a geometry chapter in the report 
 		Params:
 			chapterName (str): chapter name
-			nSigFig (short): number of significant figures for this chapter
+			nSigFig (int): number of significant figures for this chapter
 			type (str): geometry type(e.g point/line, etc)
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 		Returns:
@@ -2693,7 +2693,7 @@ class IFReport(IFDispatch):
 		Adds a loadset chapter in the report 
 		Params:
 			chapterName (str): chapter name
-			nSigFig (short): number of significant figures for this chapter
+			nSigFig (int): number of significant figures for this chapter
 			type (str): loadset type (e.g loadcase/envelope, etc)
 			position (int, optional): position where this chapter will be added; if not specified, will be added at the end
 		Returns:
@@ -2807,7 +2807,7 @@ class IFReport(IFDispatch):
 		r"""
 		Specifies the size of paper, and margins, that will be used to print the report 
 		Params:
-			paperSize (short): paper size(9 for A4, 8 for A3, etc)
+			paperSize (int): paper size(9 for A4, 8 for A3, etc)
 			isPageLandscape (bool): true if the orientation is landscape
 			left (int): left margin (in mm)
 			bottom (int): bottom margin (in mm)
@@ -3219,7 +3219,7 @@ class IFAttribute(IFDispatch):
 		r"""
 		Deassigns this attribute from the object(s) given Optionally also pass in assignment data giving extra details about the assignment, such as loadcase, local coordinates, load factor etc. If such an object is given, deassignment will only be performed on those assignments that match the details given - e.g. only those assignments with a particular loadcase. The assignment info, if given, must always be last. 
 		Params:
-			arg1 (deassignArg): 
+			arg1 (object): Can be any database object capable of having assignments, or an array or objectset, containing any such objects. Alternatively specify an object type such as 'Volume'. Subsequent arguments can provide more context, typically with and assignment object
 			arg2 (object, optional): 
 			arg3 (object, optional): 
 		Returns:
@@ -3232,7 +3232,7 @@ class IFAttribute(IFDispatch):
 		r"""
 		Assigns this attribute to the object(s) given Optionally also pass in assignment data giving extra details about the assignment, such as loadcase, local coordinates, load factor etc. There are two ways to call this function. For most attributes only a single object, IFObjectSet, or array is required, and the attribute will be assigned to that. However, for interface mesh, it is necessary to indicate both primaries and secondaries at the same time. Thus, two objects, IFObjectSet, or arrays must be given. In the case of IFObjectSet and arrays, the same number of objects must be given in each, and the primary secondary pairing will be assumed from the order. E.g. item 1 in the first array will be the primary of item 1 in the second array, and so on. The assignment info, if given, must always be last. 
 		Params:
-			arg1 (assignArg): 
+			arg1 (object): Can be any database object capable of having assignments, or an array or objectset, containing any such objects. Alternatively specify an object type such as 'Volume'. Subsequent arguments can provide more context, typically with and assignment object
 			arg2 (object, optional): 
 			arg3 (object, optional): 
 			arg4 (object, optional): 
@@ -3294,7 +3294,7 @@ class IFAttribute(IFDispatch):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFAttribute.setValue and IFAttribute.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -5071,7 +5071,7 @@ class IFControl(IFDispatch):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFControl.setValue and IFControl.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -5367,7 +5367,7 @@ class IFLoadset(IFDispatch):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFLoadset.setValue and IFLoadset.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -6213,7 +6213,7 @@ class IFGeometryData(IFDispatch):
 		r"""
 		Defines a plane by a perpendicular vector and a point in the plane. 
 		Params:
-			perpendicular (coordarray): Vector perpendicular to the plane
+			perpendicular (array of float): An array of 3 real numbers, representing a 3d vector
 			pointInPlane (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFGeometryData: 
@@ -9492,7 +9492,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def getAveragedResultsArray(self, componentNumber, element, units) -> list:
+	def getAveragedResultsArray(self, componentNumber, element, units) -> list[float]:
 		r"""
 		equivalent to element.IFElement.getAveragedNodeResultsArray(node, this object, componentNumber) 
 		Params:
@@ -9500,7 +9500,7 @@ class IFResultsComponentSet(IFDispatch):
 			element (IFElement): Element at which results are required
 			units (IFUnitSet): The units in which results are required
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -9520,7 +9520,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def getElementNodalResultsArray(self, componentNumber, element, units) -> list:
+	def getElementNodalResultsArray(self, componentNumber, element, units) -> list[float]:
 		r"""
 		equivalent to element.IFElement.getNodeResultsArray(node, this object, componentNumber) 
 		Params:
@@ -9528,7 +9528,7 @@ class IFResultsComponentSet(IFDispatch):
 			element (IFElement): Element at which results are required
 			units (IFUnitSet): The units in which results are required
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -9548,7 +9548,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def getGaussResultsArray(self, componentNumber, element, units) -> list:
+	def getGaussResultsArray(self, componentNumber, element, units) -> list[float]:
 		r"""
 		equivalent to element.IFElement.getGaussResultsArray(this object, componentNumber) 
 		Params:
@@ -9556,7 +9556,7 @@ class IFResultsComponentSet(IFDispatch):
 			element (IFElement): Element at which results are required
 			units (IFUnitSet): The units in which results are required
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -9576,7 +9576,7 @@ class IFResultsComponentSet(IFDispatch):
 		pass
 
 
-	def getInternalResultsArray(self, componentNumber, element, units) -> list:
+	def getInternalResultsArray(self, componentNumber, element, units) -> list[float]:
 		r"""
 		equivalent to element.IFElement.getInternalResultsArray(this object, componentNumber) 
 		Params:
@@ -9584,7 +9584,7 @@ class IFResultsComponentSet(IFDispatch):
 			element (IFElement): Element at which results are required
 			units (IFUnitSet): The units in which results are required
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -9667,7 +9667,7 @@ class IFResultsComponentSet(IFDispatch):
 			filename2 (str): "body" file to write, which contains the actual data
 			filename3 (str): "error" file to write, which contains any errors that may apply to the data (e.g. when a design check has been applied to an inappropriate member)
 			locationType (str): "Gauss"/"Internal", "Nodal", "ElementNodal", "FeatureMax", "FeatureMin", "FeatureAbs", or "FeatureExt"
-			fileType ( str, optional): "text" or "binary". Only used for filename2. filename1 is always written in text format
+			fileType (str, optional): "text" or "binary". Only used for filename2. filename1 is always written in text format
 		Returns:
 			None: 
 		"""
@@ -9680,8 +9680,8 @@ class IFResultsComponentSet(IFDispatch):
 		Params:
 			componentNumber (int): number of component (as returned by IFResultsComponentSet.getComponentNumber())
 			pLine (IFInspectionLine): location of the graph
-			distances (array of reals): distances along graph (x axis)
-			values (array of reals): values of component (y axis) setContinuousResult(componentNumber, node, value);            use node.setScriptedResults setAveragedResult(componentNumber, element, node, value);     use ele.setAveragedScriptedResults setElementNodalResult(componentNumber, element, node, value); use ele.setNodeScriptedResults setGaussResult(componentNumber, element, gp, value);          use ele.setGaussScriptedResults setInternalResult(componentNumber, element, gp, value);       use ele.setInternalScriptedResults
+			distances (array of float): distances along graph (x axis)
+			values (array of float): values of component (y axis) setContinuousResult(componentNumber, node, value);            use node.setScriptedResults setAveragedResult(componentNumber, element, node, value);     use ele.setAveragedScriptedResults setElementNodalResult(componentNumber, element, node, value); use ele.setNodeScriptedResults setGaussResult(componentNumber, element, gp, value);          use ele.setGaussScriptedResults setInternalResult(componentNumber, element, gp, value);       use ele.setInternalScriptedResults
 		Returns:
 			None: 
 		"""
@@ -9874,7 +9874,7 @@ class IFResultsContext(IFDispatch):
 		pass
 
 
-	def getResultsEntityNames(self) -> list:
+	def getResultsEntityNames(self) -> list[str]:
 		r"""
 		Creates and returns an array of valid entity names. Which names are returned will be affected by which elements are currently visible, as well as the current loadset, current lamina, current fibre settings and current results transformation 
 		Returns:
@@ -9883,7 +9883,7 @@ class IFResultsContext(IFDispatch):
 		pass
 
 
-	def getResultsComponentNames(self, resType) -> list:
+	def getResultsComponentNames(self, resType) -> list[str]:
 		r"""
 		Creates and returns an array of valid component names for the given results entity. Which names are returned will be affected by which elements are currently visible, as well as the current loadset, current lamina, current fibre settings and current results transformation 
 		Params:
@@ -11082,7 +11082,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		pass
 
 
-	def loadDblArray(self, name) -> list:
+	def loadDblArray(self, name) -> list[float]:
 		r"""
 		Retrieves an array saved previously using saveDblArray. If array doesn't exist a null array is returned. This mechanism is independent from the getValue / setValue system 
 		Params:
@@ -11236,7 +11236,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		pass
 
 
-	def getAnalysisResultsFilenames(self) -> list:
+	def getAnalysisResultsFilenames(self) -> list[str]:
 		r"""
 		return an array of all of the results filenames associated with this analysis (usually there will be only one). Filenames will be returned in a tokenised format e.g. "%DBFolder%\%Modelname%_analysis.mys". Tokens can be expanded, and full valid windows pathname obtained, by using IFModeller.expandPath 
 		Returns:
@@ -11245,7 +11245,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		pass
 
 
-	def getAnalysisResultsFileIDs(self) -> list:
+	def getAnalysisResultsFileIDs(self) -> list[int]:
 		r"""
 		return an array of all of the results file IDs associated with this analysis (usually there will be only one). These IDs are used to identify loadcases in the definitions of envelopes and combinations 
 		Returns:
@@ -11279,7 +11279,7 @@ class IFAnalysisBaseClass(IFDispatch):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFAnalysisBaseClass.setValue and IFAnalysisBaseClass.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -13191,7 +13191,7 @@ As well as interacting with Modeller's own intrinsic set objects, the script pro
 		r"""
 		Adds to this set all elements and lower order features of objects already in this set. Optionally the operation may be filtered to only add objects of a specific type, and with specific name(s), or that have a particular attribute assignment. (Check full documentation for argument details). 
 		Params:
-			arg1 (object, optional): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent argument can provide specifc names or ids of the first argument type
+			arg1 (object, optional): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent arguments can provide specifc names or ids of the first argument type
 			arg2 (object, optional): 
 		Returns:
 			IFObjectSet: 
@@ -13203,7 +13203,7 @@ As well as interacting with Modeller's own intrinsic set objects, the script pro
 		r"""
 		Adds to this set all higher order features of objects already in this set. Also adds parent features of any elements in the set. Optionally the operation may be filtered to only add objects of a specific type, and with specific name(s), or that have a particular attribute assignment. (Check full documentation for argument details). 
 		Params:
-			arg1 (object, optional): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent argument can provide specifc names or ids of the first argument type
+			arg1 (object, optional): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent arguments can provide specifc names or ids of the first argument type
 			arg2 (object, optional): 
 		Returns:
 			IFObjectSet: 
@@ -13581,7 +13581,7 @@ class IFGeometry(IFDatabaseOperations):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFGeometry.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -14169,9 +14169,9 @@ class IFLine(IFGeometry):
 		Params:
 			nrmCrds (float): specified normalised coord
 			origin (array of float): coordinates of origin
-			xAxis (array of float): coordinates of x-axis
-			yAxis (array of float): coordinates of y-axis
-			zAxis (array of float): coordinates of z-axis
+			xAxis (array of float): Vector of x-axis
+			yAxis (array of float): Vector of y-axis
+			zAxis (array of float): Vector of z-axis
 		Returns:
 			None: 
 		"""
@@ -14773,7 +14773,7 @@ class IFNode(IFMeshFamily):
 		pass
 
 
-	def getFreedoms(self) -> list:
+	def getFreedoms(self) -> list[int]:
 		r"""
 		Creates and returns an array of all freedoms at this node Each item in the array is a freedom number 
 		Returns:
@@ -15101,7 +15101,7 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getGaussResultsArray(self, entity, component, units=None, context=None) -> list:
+	def getGaussResultsArray(self, entity, component, units=None, context=None) -> list[float]:
 		r"""
 		Return result values of specified type and component at all Gauss points for element. All options (loadcase, transformation, active fibre, active composite layer, etc) will be taken from the given context. If a context is not given, the current view will be used for all those options and settings instead.
  Asking for a set of values using this function, subsequently changing a setting in the context (e.g. active loadcase or transformation), and then asking for the same values again will yield two different sets of values - except in some very specific circumstances that are explained in IFResultsComponentSet.
@@ -15116,12 +15116,12 @@ class IFElement(IFMeshFamily):
 			units (IFUnitSet, optional): 
 			context (IFResultsContext, optional): If this variable is given, settings such as active loadcase, and active elements will be taken from this context, instead of the current view
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
 
-	def getInternalResultsArray(self, entity, component, units=None, context=None) -> list:
+	def getInternalResultsArray(self, entity, component, units=None, context=None) -> list[float]:
 		r"""
 		Return result values of specified type and component at all internal points for element. All options (loadcase, transformation, active fibre, active composite layer, etc) will be taken from the given context. If a context is not given, the current view will be used for all those options and settings instead.
  Asking for a set of values using this function, subsequently changing a setting in the context (e.g. active loadcase or transformation), and then asking for the same values again will yield two different sets of values - except in some very specific circumstances that are explained in IFResultsComponentSet.
@@ -15136,7 +15136,7 @@ class IFElement(IFMeshFamily):
 			units (IFUnitSet, optional): 
 			context (IFResultsContext, optional): If this variable is given, settings such as active loadcase, and active elements will be taken from this context, instead of the current view
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -15147,7 +15147,7 @@ class IFElement(IFMeshFamily):
 		Params:
 			iGauss (int): Gauss point index
 			val (float): Results value
-			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
+			entity (str or int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
 			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -15162,7 +15162,7 @@ class IFElement(IFMeshFamily):
 		Params:
 			iPoint (int): internal point index
 			val (float): Results value
-			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
+			entity (str or int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
 			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -15255,7 +15255,7 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def getNodeResultsArray(self, entity, component, units=None, context=None) -> list:
+	def getNodeResultsArray(self, entity, component, units=None, context=None) -> list[float]:
 		r"""
 		Return results values of specified type at all nodes for element. All options (loadcase, transformation, active fibre, active composite layer, etc) will be taken from the given context. If a context is not given, the current view will be used for all those options and settings instead.
  Asking for a set of values using this function, subsequently changing a setting in the context (e.g. active loadcase or transformation), and then asking for the same values again will yield two different sets of values - except in some very specific circumstances that are explained in IFResultsComponentSet.
@@ -15269,12 +15269,12 @@ class IFElement(IFMeshFamily):
 			units (IFUnitSet, optional): 
 			context (IFResultsContext, optional): If this variable is given, settings such as active loadcase, and active elements will be taken from this context, instead of the current view
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
 
-	def getAveragedNodeResultsArray(self, entity, component, units=None, context=None) -> list:
+	def getAveragedNodeResultsArray(self, entity, component, units=None, context=None) -> list[float]:
 		r"""
 		Return results values of specified type at all nodes for element. All options (loadcase, transformation, active fibre, active composite layer, etc) will be taken from the given context. If a context is not given, the current view will be used for all those options and settings instead.
  Asking for a set of values using this function, subsequently changing a setting in the context (e.g. active loadcase or transformation), and then asking for the same values again will yield two different sets of values - except in some very specific circumstances that are explained in IFResultsComponentSet.
@@ -15289,7 +15289,7 @@ class IFElement(IFMeshFamily):
 			units (IFUnitSet, optional): 
 			context (IFResultsContext, optional): If this variable is given, settings such as active loadcase, and active elements will be taken from this context, instead of the current view
 		Returns:
-			array: returned array
+			array of float: returned array
 		"""
 		pass
 
@@ -15300,7 +15300,7 @@ class IFElement(IFMeshFamily):
 		Params:
 			node (int or IFNode): local node (0..nNodes-1) or node pointer
 			val (float): User results value
-			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
+			entity (str or int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
 			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -15315,7 +15315,7 @@ class IFElement(IFMeshFamily):
 		Params:
 			node (int or IFNode): local node (0..nNodes-1) or node pointer
 			val (float): User results value
-			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
+			entity (str or int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
 			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -15351,10 +15351,10 @@ class IFElement(IFMeshFamily):
 		Return element axes at the given node 
 		Params:
 			iNode (int): specified local node index
-			origin (coordarray): coordinates of origin
-			xAxis (coordarray): coordinates of x-axis
-			yAxis (coordarray): coordinates of y-axis
-			zAxis (coordarray): coordinates of z-axis
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			xAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			yAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			zAxis (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			None: 
 		"""
@@ -15366,10 +15366,10 @@ class IFElement(IFMeshFamily):
 		Return element axes at the given Gauss point 
 		Params:
 			iGauss (int): specified local Gauss point index
-			origin (coordarray): coordinates of origin
-			xAxis (coordarray): coordinates of x-axis
-			yAxis (coordarray): coordinates of y-axis
-			zAxis (coordarray): coordinates of z-axis
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			xAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			yAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			zAxis (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			None: 
 		"""
@@ -15381,10 +15381,10 @@ class IFElement(IFMeshFamily):
 		Return element axes at the given internal point 
 		Params:
 			iPoint (int): specified local internal point index
-			origin (coordarray): coordinates of origin
-			xAxis (coordarray): coordinates of x-axis
-			yAxis (coordarray): coordinates of y-axis
-			zAxis (coordarray): coordinates of z-axis
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			xAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			yAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			zAxis (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			None: 
 		"""
@@ -15395,10 +15395,10 @@ class IFElement(IFMeshFamily):
 		r"""
 		Return element axes at the element centroid 
 		Params:
-			origin (coordarray): coordinates of origin
-			xAxis (coordarray): coordinates of x-axis
-			yAxis (coordarray): coordinates of y-axis
-			zAxis (coordarray): coordinates of z-axis
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			xAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			yAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			zAxis (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			None: 
 		"""
@@ -15409,11 +15409,11 @@ class IFElement(IFMeshFamily):
 		r"""
 		Return element axes at the given normalised coords 
 		Params:
-			nrmCrds (coordarray): specified normalised coords
-			origin (coordarray): coordinates of origin
-			xAxis (coordarray): coordinates of x-axis
-			yAxis (coordarray): coordinates of y-axis
-			zAxis (coordarray): coordinates of z-axis
+			nrmCrds (array of float): An array of 3 real numbers, representing 3d coordinates
+			origin (array of float): An array of 3 real numbers, representing 3d coordinates
+			xAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			yAxis (array of float): An array of 3 real numbers, representing a 3d vector
+			zAxis (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			None: 
 		"""
@@ -15438,7 +15438,7 @@ class IFElement(IFMeshFamily):
 		r"""
 		Return specified element variable 
 		Params:
-			varName (str): elementVariable
+			varName (str): Element variable
 		Returns:
 			int: value of specified element variable
 		"""
@@ -15645,7 +15645,7 @@ class IFElement(IFMeshFamily):
 		pass
 
 
-	def solverGeometricValueNames(self) -> list:
+	def solverGeometricValueNames(self) -> list[str]:
 		r"""
 		Retrieves the names of the geometric properties that will actually be used by LUSAS Solver for this element. E.g for a BAR, Solver uses A, for a 2d beam Solver uses A, Izz, Asy and ey, etc. This is often only a small subset of the full list of properties available. These names can be passed into (for example) IFElement.getAttributeValue 
 		Returns:
@@ -15902,7 +15902,7 @@ class IFGroup(IFObjectSet):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFGroup.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -16314,7 +16314,7 @@ class IFLayoutGrid(IFGeometry):
 		pass
 
 
-	def getCustomSpacingU(self) -> list:
+	def getCustomSpacingU(self) -> list[float]:
 		r"""
 		Returns the spacing between the grid lines in local u direction if this is custom. 
 		Returns:
@@ -16334,7 +16334,7 @@ class IFLayoutGrid(IFGeometry):
 		pass
 
 
-	def getCustomSpacingV(self) -> list:
+	def getCustomSpacingV(self) -> list[float]:
 		r"""
 		Returns the spacing between the grid lines in local v direction if this is custom. 
 		Returns:
@@ -17161,7 +17161,7 @@ class IFDatabase(IFGroup):
 		Params:
 			filename (str): Name of script to be run
 			entity (str or int): Name or index of results entity
-			component ( str, optional): Name of results component
+			component (str, optional): Name of results component
 		Returns:
 			None: 
 		"""
@@ -17173,7 +17173,7 @@ class IFDatabase(IFGroup):
 		returns true if the given named component exists within the scripted results 
 		Params:
 			entity (str or int): Name or index of results entity
-			component ( str, optional): Name of results component
+			component (str, optional): Name of results component
 		Returns:
 			bool: 
 		"""
@@ -17186,7 +17186,7 @@ class IFDatabase(IFGroup):
  Additionally, this routine cleans up all memory used to cache results that have been accessed in the current script using IFNode.getResults(), or any of the corresponding IFElement routines. This can be useful when writing scripts for large models, which might otherwise run out of memory. By default, LUSAS Modeller caches any results that have been asked for until the end of the script, in case they are asked for again. Once this function has been called, a further attempt to access the same results again will simply cause a re-calculation of those results. It is an error to flush results that do not exist - check first with IFDatabase.existsScriptedResults Note that this routine does not delete the entity name or component names added with functions like IFDatabase.createScriptedResults. If you want to permanently remove an entity/component, use IFDatabase.deleteScriptedResults 
 		Params:
 			entity (str or int, optional): Name or index of results entity. If not specified, all user results will be flushed
-			component ( str, optional): Name of results component
+			component (str, optional): Name of results component
 		Returns:
 			None: 
 		"""
@@ -17210,7 +17210,7 @@ class IFDatabase(IFGroup):
 		Set a value of 0.0 for every node, element node, and element Gauss point. This is useful if you don't want to receive an error message when asking for scripted results that have not yet been set - instead the answer will be 0.0. The entity may be given either as a name, or as an index previously registered using IFDatabase.addScriptedResultsEntity. If the entity is given as a string and does not already exist, it will be created. If the component does not already exist within the given entity, a new component is created within the given entity. If you do not wish to initialise all values to 0.0, but still wish to create a component and assign its dimensionality and units, use IFDatabase.createScriptedResults instead 
 		Params:
 			entity (str or int): Name or index of results entity
-			component ( str, optional): Name of results component
+			component (str, optional): Name of results component
 			packedDim (int, optional): Dimensionality of the component
 			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
@@ -17225,7 +17225,7 @@ class IFDatabase(IFGroup):
 		As IFDatabase.initialiseScriptedResults but leaves the result for each node, element node and element Gauss point marked internally as 'not available'. This allows you, for example, to specify results only for a subset of elements (or nodes) and then draw contours - the contours will only appear where results have actually been specified. Note - the returned object will represent the "primary" results. These are the results that will be used if you do not specify an update script, and if you do not respond to updateScriptedResults() in a LUSAS module. However, if you do specify an update script, or do respond to updateScriptedResults() then a different, temporary, IFScriptedResultsCallbackComponent object will be created specially for the purpose and you must use that temporary object in preference to the primary object. In this mode of operation, the primary object is only used for registration / configuration purposes. 
 		Params:
 			entity (str or int): Name or index of results entity
-			component ( str, optional): Name of results component
+			component (str, optional): Name of results component
 			packedDim (int, optional): Dimensionality of the component
 			unitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
 			denominatatorUnitSet (IFUnitSet, optional): The name or ID of a Unitset, or a pointer to a IFUnitSet object
@@ -17744,8 +17744,8 @@ class IFDatabase(IFGroup):
 		Creates load curve based on standard shape. Call IFLoadCurve.setStandardLoadCurve() on the returned object to complete its initialisation 
 		Params:
 			name (str): Load curve name
-			curveType ( str): Curve type "Cosine", "Sine", "Square"
-			analysisName ( str, optional): Name of analysis in which to create the new load curve
+			curveType (str): Curve type "Cosine", "Sine", "Square"
+			analysisName (str, optional): Name of analysis in which to create the new load curve
 			forceID (int, optional): The desired ID of the new loadcase
 		Returns:
 			IFLoadCurve: 
@@ -18581,7 +18581,7 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def loadStrArray(self, name) -> list:
+	def loadStrArray(self, name) -> list[str]:
 		r"""
 		Retrieves an array saved previously using IFDatabase.saveStrArray. If array doesn't exist a null array is returned. 
 		Params:
@@ -18592,7 +18592,7 @@ class IFDatabase(IFGroup):
 		pass
 
 
-	def loadIntArray(self, name) -> list:
+	def loadIntArray(self, name) -> list[int]:
 		r"""
 		Retrieves an array saved previously using IFDatabase.saveIntArray. If array doesn't exist a null array is returned. 
 		Params:
@@ -18803,7 +18803,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a point mesh attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			elementSize (float): Element size
 			firstStretch (float): 
 			firstVector (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -18819,7 +18819,7 @@ class IFDatabase(IFGroup):
 		r"""
 		 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			elementSize (float): Element size
 		Returns:
 			IFPointSpacingMeshAttr: 
@@ -18831,7 +18831,7 @@ class IFDatabase(IFGroup):
 		r"""
 		 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			elementName (str): 
 		Returns:
 			IFPointElementMeshAttr: 
@@ -18843,7 +18843,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a line mesh attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMeshLine: Newly created attribute
 		"""
@@ -18854,7 +18854,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface mesh attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMeshSurface: Newly created attribute
 		"""
@@ -18865,7 +18865,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a volume mesh attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMeshVolume: Newly created attribute
 		"""
@@ -18876,7 +18876,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a phreatic surface mesh attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMeshPhreatic: Newly created attribute
 		"""
@@ -18887,7 +18887,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18900,7 +18900,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18913,7 +18913,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18926,7 +18926,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18939,7 +18939,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18952,7 +18952,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18965,7 +18965,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18978,7 +18978,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -18991,7 +18991,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angle (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19004,7 +19004,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			offset (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19019,7 +19019,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			offset (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19034,7 +19034,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			offset (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol0 (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19049,7 +19049,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19062,7 +19062,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19075,7 +19075,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			originPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19088,7 +19088,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19102,7 +19102,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19116,7 +19116,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XaxisPoint (array of float): An array of 3 real numbers, representing 3d coordinates
 			XYplanePoint (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19130,7 +19130,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local Cartesian coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19143,7 +19143,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local cylindrical coordinate set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19156,7 +19156,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local spherical set 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19169,7 +19169,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates local coordinate set normal to assigned surface 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSurfaceAxesLocalAttr: 
 		"""
@@ -19180,7 +19180,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates translation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			translation (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
 			IFTranslationTransAttr: 
@@ -19192,7 +19192,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angleDegrees (float): angle in degrees
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19205,7 +19205,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angleDegrees (float): angle in degrees
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19218,7 +19218,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			angleDegrees (float): 
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19231,7 +19231,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			axis0 (array of float): An array of 3 real numbers, representing 3d coordinates
 			axis1 (array of float): An array of 3 real numbers, representing 3d coordinates
 			matrixCol1 (array of float): An array of 3 real numbers, representing 3d coordinates
@@ -19247,7 +19247,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates scale transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			origin (array of float): An array of 3 real numbers, representing 3d coordinates
 			scales (array of float): An array of 3 real numbers, representing 3d coordinates
 		Returns:
@@ -19260,7 +19260,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (IFPoint): 
 			XaxisPoint (IFPoint): 
 		Returns:
@@ -19273,7 +19273,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates rotation transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (IFPoint): 
 			XaxisPoint (IFPoint): 
 			XYplanePoint (IFPoint): 
@@ -19287,7 +19287,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates mirror transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			planeEquation (array of 4 float): Array defining the coefficients of the plane equation
 		Returns:
 			IFMirrorPlaneTransAttr: 
@@ -19299,7 +19299,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates mirror transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (IFPoint): 
 			XaxisPoint (IFPoint): 
 		Returns:
@@ -19312,7 +19312,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates mirror transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			OriginPoint (IFPoint): 
 			XaxisPoint (IFPoint): 
 			XYplanePoint (IFPoint): 
@@ -19326,7 +19326,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates mirror transformation attribute that works perpendicular to the current screen rotation The screen rotation is obtained at the time the attribute is used, not at the time it is defined. Thus the same attribute can be used for any number of different screen rotations. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFScreenMirrorTransAttr: 
 		"""
@@ -19337,7 +19337,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates compound transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			TranAttrs (array of IFTransformationAttr objects): Array, in the order in which they should be applied
 		Returns:
 			IFCompoundTransAttr: 
@@ -19349,7 +19349,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a holder for a named generic array of values. This array of values is typically used for graphing, but could potentially have other uses. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDataset: newly created attribute
 		"""
@@ -19371,7 +19371,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a PSD dataset attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPSD: newly created attribute
 		"""
@@ -19382,7 +19382,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a Pedestrian Load Definition attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPedestrianLoadDefinition: newly created attribute
 		"""
@@ -19393,7 +19393,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a spectral response dataset attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSpectralCurve: newly created attribute
 		"""
@@ -19404,7 +19404,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a field variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationField: newly created attribute
 		"""
@@ -19415,7 +19415,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a line variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationLine: newly created attribute
 		"""
@@ -19439,7 +19439,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an unequal interpolation variation 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			type (str): "Actual" or "Parametric"
 			distance (float): 
 			function (str): 
@@ -19453,7 +19453,7 @@ class IFDatabase(IFGroup):
 		r"""
 		 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			order (str): "Constant", "Linear", "Quadratic", or "Cubic"
 			type (str): "Actual" or "Parametric"
 			function (str): 
@@ -19467,7 +19467,7 @@ class IFDatabase(IFGroup):
 		r"""
 		 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			order (str): "Constant", "Linear", "Quadratic", or "Cubic"
 			type (str): "Actual" or "Parametric"
 			distance (float): 
@@ -19482,7 +19482,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationSurface: newly created attribute
 		"""
@@ -19493,7 +19493,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface boundary variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationBoundary: newly created attribute
 		"""
@@ -19504,7 +19504,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface grid variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationGrid: newly created attribute
 		"""
@@ -19515,7 +19515,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a factored variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationFactored: newly created attribute
 		"""
@@ -19526,7 +19526,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a line profile variation for use in defining a profile set variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFInterpolationVariation: newly created attribute
 		"""
@@ -19537,7 +19537,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a profile set variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFProfileVariation: newly created attribute
 		"""
@@ -19548,7 +19548,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cylindrical profile set variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFProfileVariation: newly created attribute
 		"""
@@ -19559,7 +19559,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a prior results set variation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFVariationPriorResults: newly created attribute
 		"""
@@ -19570,7 +19570,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface geometric properties attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeometricSurface: newly created attribute
 		"""
@@ -19581,7 +19581,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a joint geometric properties attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeometricJoint: newly created attribute
 		"""
@@ -19592,7 +19592,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal link geometric properties attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeometricThermalLink: newly created attribute
 		"""
@@ -19603,7 +19603,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a beam geometric properties attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeometricLine: newly created attribute
 		"""
@@ -19614,7 +19614,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an activate attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFActivate: newly created attribute
 		"""
@@ -19625,7 +19625,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a deactivate attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			percent (float, optional): percentage reduction factor
 			stiffness (float, optional): stiffness reduction factor
 		Returns:
@@ -19638,7 +19638,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a structural or viscous damping attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDamping: newly created attribute
 		"""
@@ -19649,7 +19649,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a reset deformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFResetDeformation: newly created attribute
 		"""
@@ -19660,7 +19660,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a dimension lines attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDimensionLines: newly created attribute
 		"""
@@ -19671,7 +19671,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a geometric section optimisation pool utility 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeomBeamOptimPool: newly created utility
 		"""
@@ -19682,7 +19682,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a geometric section optimisation utility 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGeomBeamOptimUtil: newly created utility
 		"""
@@ -19693,7 +19693,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an equivalence attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFEquivalence: newly created attribute
 		"""
@@ -19704,7 +19704,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an age attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFAge: newly created attribute
 		"""
@@ -19715,7 +19715,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a radiation surface attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSurfaceRadiation: newly created attribute
 		"""
@@ -19726,7 +19726,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a search area attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSearchArea: 
 		"""
@@ -19737,7 +19737,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a slideline attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			slideType (str): "Friction", "No Friction", "Null", "Sliding" or "Tied"
 			slideRigidType (str): "Non-rigid slideline surface", "Rigid slideline master surface" or "Rigid slideline slave surface"
 			slideGeometryType (str): "Linear or bilinear slideline surface" or "Quadratic slideline surface"
@@ -19761,7 +19761,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal gap attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFThermalSurfaceGap: newly created attribute
 		"""
@@ -19772,7 +19772,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal surface attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFThermalSurface: newly created attribute
 		"""
@@ -19783,7 +19783,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal support attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSupportThermal: newly created attribute
 		"""
@@ -19794,7 +19794,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a structural support attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSupportStructural: newly created attribute
 		"""
@@ -19805,7 +19805,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a beam distributed loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingBeamDistributed: newly created attribute
 		"""
@@ -19816,7 +19816,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a beam point loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingBeamPoint: newly created attribute
 		"""
@@ -19827,7 +19827,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a concentrated structural loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingConcentrated: newly created attribute
 		"""
@@ -19838,7 +19838,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a body force loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingBody: newly created attribute
 		"""
@@ -19849,7 +19849,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a body force loading specifically to represent gravity 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingGravity: newly created attribute
 		"""
@@ -19860,7 +19860,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a temperature loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingTemperature: newly created attribute
 		"""
@@ -19871,7 +19871,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an initial stress/strain loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingStressStrain: newly created attribute
 		"""
@@ -19882,7 +19882,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a face loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingFace: newly created attribute
 		"""
@@ -19893,7 +19893,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a field face loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			flux (object, optional): IFVariationAttr or double
 		Returns:
 			IFFieldFaceLoading: 
@@ -19905,7 +19905,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a hygro-thermal face loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFFieldFaceLoading: 
 		"""
@@ -19916,7 +19916,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a global distributed loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingGlobalDistributed: newly created attribute
 		"""
@@ -19927,7 +19927,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a local distributed loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingLocalDistributed: newly created attribute
 		"""
@@ -19938,7 +19938,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a prescribed displacement loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			type (str): "Total" or "Incremental"
 		Returns:
 			IFPrescribedDisplacementLoad: 
@@ -19950,7 +19950,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an initial acceleration loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFInitialAccelerationLoad: 
 		"""
@@ -19961,7 +19961,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a prescribed acceleration loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPrescribedAccelerationLoad: 
 		"""
@@ -19972,7 +19972,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an initial velocity loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFInitialVelocityLoad: 
 		"""
@@ -19983,7 +19983,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a prescribed velocity loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPrescribedVelocityLoad: 
 		"""
@@ -19994,7 +19994,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a concentrated flux loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingFlux: newly created attribute
 		"""
@@ -20005,7 +20005,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a prescribed temperature loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPrescribedTemperatureLoad: 
 		"""
@@ -20016,7 +20016,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an initial temperature loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingInitialTemperature: 
 		"""
@@ -20027,7 +20027,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an environmental loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingEnvironmental: newly created attribute
 		"""
@@ -20038,7 +20038,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an internal heat loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFInternalHeatLoading: 
 		"""
@@ -20049,7 +20049,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an internal heat user attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			UserDataArray (array of realvariation): 
 			temperature (float): 
 		Returns:
@@ -20062,7 +20062,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete point loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingDiscretePoint: newly created attribute
 		"""
@@ -20073,7 +20073,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete flux point loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteFluxPointLoading: newly created attribute
 		"""
@@ -20084,7 +20084,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete internal heat point loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteHeatPointLoading: newly created attribute
 		"""
@@ -20095,7 +20095,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete patch loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingDiscretePatch: newly created attribute
 		"""
@@ -20106,7 +20106,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete ENVT patch loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteENVTLoading: newly created attribute
 		"""
@@ -20117,7 +20117,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete flux patch loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteFluxPatchLoading: newly created attribute
 		"""
@@ -20128,7 +20128,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete internal heat patch loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteHeatPatchLoading: newly created attribute
 		"""
@@ -20139,7 +20139,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a discrete compound loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDiscreteCompoundLoading: newly created attribute
 		"""
@@ -20150,7 +20150,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a surface distributed loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSurfDistrLoading: newly created attribute
 		"""
@@ -20161,7 +20161,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a temperature profile loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFTemperatureProfileLoad: newly created attribute
 		"""
@@ -20172,7 +20172,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a strain profile loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFStrainProfileLoad: newly created attribute
 		"""
@@ -20183,7 +20183,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a water pressure distribution loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFWaterPressureDistrLoad: newly created attribute
 		"""
@@ -20194,7 +20194,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a viscous support (velocity) loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFViscousSupportLoad: newly created attribute
 		"""
@@ -20205,7 +20205,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a constant constraint equation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFConstraintConstant: newly created attribute
 		"""
@@ -20216,7 +20216,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cyclic rotation constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			Primary (float): ordinate
 			Secondary (float): ordinate
 		Returns:
@@ -20229,7 +20229,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cyclic rotation constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			primaryX (float): 
 			primaryY (float): 
 			primaryZ (float): 
@@ -20246,7 +20246,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cyclic translation constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			Primary (float): ordinate
 			Secondary (float): ordinate
 		Returns:
@@ -20259,7 +20259,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cyclic translation constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			primaryX (float): 
 			primaryY (float): 
 			primaryZ (float): 
@@ -20276,7 +20276,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a normal tied mesh constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFNormalTiedMeshConstraint: 
 		"""
@@ -20287,7 +20287,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a path constraint equation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFConstraintPath: newly created attribute
 		"""
@@ -20298,7 +20298,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a planar surface constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPlanarSurfaceConstraint: 
 		"""
@@ -20309,7 +20309,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rigid displacement constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRigidDisplacementConstraint: 
 		"""
@@ -20320,7 +20320,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rigid link constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRigidLinkConstraint: 
 		"""
@@ -20331,7 +20331,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a specified constraint equation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFConstraintEquation: newly created attribute
 		"""
@@ -20342,7 +20342,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a specified tied mesh constraint equation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFConstraintTied: newly created attribute
 		"""
@@ -20353,7 +20353,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a straight line constraint attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFStraightLineConstraint: 
 		"""
@@ -20364,7 +20364,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rigid floor constraint equation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRigidFloorConstraintEqu: newly created attribute
 		"""
@@ -20375,7 +20375,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a structural retained freedom attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRetainedStructural: newly created attribute
 		"""
@@ -20386,7 +20386,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal retained freedom attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRetainedThermal: newly created attribute
 		"""
@@ -20397,11 +20397,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an isotropic material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
-			alpha (IFVariationAttr or float, optional): coefficient of thermal expansion
+			Density (IFVariationAttr or float): Density
+			alpha (IFVariationAttr or float, optional): Coefficient of thermal expansion
 			massDamping (IFVariationAttr or float, optional): Mass Rayleigh damping constant
 			stiffDamping (IFVariationAttr or float, optional): Stiffness Rayleigh damping constant
 			temp (float, optional): temperature
@@ -20415,13 +20415,13 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an orthotropic material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			ShearXY (object): IFVariationAttr or double
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 			defnPageType (str, optional): "Plane stress", "Axisymmetric shell"
 		Returns:
@@ -20434,7 +20434,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an orthotropic plane strain material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			YoungZ (IFVariationAttr or float): Young's modulus
@@ -20443,7 +20443,7 @@ class IFDatabase(IFGroup):
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialOrthotropic: 
@@ -20455,12 +20455,12 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an orthotropic sheet material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialOrthotropic: 
@@ -20472,7 +20472,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an orthotropic thick material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			ShearXY (object): IFVariationAttr or double
@@ -20480,7 +20480,7 @@ class IFDatabase(IFGroup):
 			ShearXZ (object): IFVariationAttr or double
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialOrthotropic: 
@@ -20492,7 +20492,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an axisymmetric orthotropic material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			YoungZ (IFVariationAttr or float): Young's modulus
@@ -20501,7 +20501,7 @@ class IFDatabase(IFGroup):
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialOrthotropic: 
@@ -20513,7 +20513,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a solid orthotropic material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungX (IFVariationAttr or float): Young's modulus
 			YoungY (IFVariationAttr or float): Young's modulus
 			YoungZ (IFVariationAttr or float): Young's modulus
@@ -20523,7 +20523,7 @@ class IFDatabase(IFGroup):
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialOrthotropic: 
@@ -20535,8 +20535,8 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an anisotropic material attribute 
 		Params:
-			attrName (str): name of attribute
-			MassDensity (IFVariationAttr or float): density
+			attrName (str): The unique name of this attribute
+			MassDensity (IFVariationAttr or float): Density
 			Angle (object): IFVariationAttr or double
 			Matrix (object): IFVariationAttr or double
 			temperature (float, optional): temperature
@@ -20550,7 +20550,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rigidity matrix attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			massDensity (float): density
 			angle (float): Angle of orthotropy in degrees relative to reference axis
 			pMatrix (array of float): Upper triangle of rigidity matrix
@@ -20566,7 +20566,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a frictional joint attribute (Mdl=34) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			FrictionCoeff (object): IFVariationAttr or double
 			InitialGap (object): IFVariationAttr or double
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
@@ -20583,7 +20583,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a general joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
 			Mass (array of realvariation): 
@@ -20597,7 +20597,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a nonlinear joint material (mdl=32) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
 			Mass (array of realvariation): 
@@ -20615,7 +20615,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a nonlinear smooth joint attribute (mdl=33) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
 			Mass (array of realvariation): 
@@ -20633,7 +20633,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a linear joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			Stiffness (array of realvariation): 
 		Returns:
 			IFSpringJointMaterial: 
@@ -20645,7 +20645,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a nonlinear joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
 			Mass (array of realvariation): 
@@ -20661,7 +20661,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a viscous joint attribute (Mdl=35) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
 			Mass (array of realvariation): 
@@ -20678,7 +20678,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a lead rubber bearing joint attribute (Mdl=36) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			BiaxialCoef (object): IFVariationAttr or double
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
 			Stiffness (array of realvariation): 
@@ -20696,7 +20696,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a frictional pendulum joint attribute (Mdl=37) 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			ContactArea (object): IFVariationAttr or double
 			RadiusSlide (object): IFVariationAttr or double
 			BiaxialCoef (object): IFVariationAttr or double
@@ -20714,7 +20714,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a non-linear user joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			ModelID (object): IFVariationAttr or double
 			NStateVar (object): IFVariationAttr or double
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
@@ -20732,9 +20732,9 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a Piecewise linear joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			MassPosition (str): Mass Position "Between nodes", "At first node" or "At second node"
-			CouplingType (couplingType): direction used to define axial force: "Uncoupled", "Local X", "Local Y", "Local Z"
+			CouplingType (str): Direction used to define axial force: "Uncoupled", "Local X", "Local Y", "Local Z"
 			Stiffness (array of realvariation): Elastic spring stiffesses for each freedom
 			Mass (array of realvariation): Mass for each freedom
 		Returns:
@@ -20747,7 +20747,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a plastic hinge joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 		Returns:
 			IFPlasticHingeJointMaterial: 
 		"""
@@ -20758,7 +20758,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a plastic hinge PMM joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 			hingeType (int): 1=Fx-My, 2=Fx-Mz, 3=My-Mz, 4=Fx-My-Mz
 		Returns:
 			IFPlasticHingePMMJointMaterial: 
@@ -20770,7 +20770,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a matrix joint attribute 
 		Params:
-			AttrName (str): name of attribute
+			AttrName (str): The unique name of this attribute
 		Returns:
 			IFMatrixJointMaterial: 
 		"""
@@ -20781,7 +20781,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a isotropic field material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMaterialIsotropic: 
 		"""
@@ -20792,7 +20792,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a orthotropic field material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMaterialOrthotropic: 
 		"""
@@ -20803,7 +20803,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a 2D interface material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			energy1 (float): critical fracture energy in 1 direction
 			strength1 (float): tensile threshold strength in 1 direction
 			disp1 (float): maximum relative displacement in 1 direction
@@ -20822,7 +20822,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a 3D interface material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			energy1 (float): critical fracture energy in 1 direction
 			strength1 (float): tensile threshold strength in 1 direction
 			disp1 (float): maximum relative displacement in 1 direction
@@ -20845,12 +20845,12 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Mooney Rivlin rubber model 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			rubberConst1 (float): Mooney Rivlin rubber constant
 			rubberConst2 (float): Mooney Rivlin rubber constant
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			massDensity (float): density
-			thermalExp (float): coefficient of thermal expansion
+			thermalExp (float): Coefficient of thermal expansion
 			massR (float): Mass Rayleigh damping constant
 			stiffnessR (float): Stiffness Rayleigh damping constant
 		Returns:
@@ -20863,11 +20863,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for NeoHookean rubber model 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			rubberConst (float): Neo Hookena rubber constant
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			massDensity (float): density
-			thermalExp (float): coefficient of thermal expansion
+			thermalExp (float): Coefficient of thermal expansion
 			massR (float): Mass Rayleigh damping constant
 			stiffnessR (float): Stiffness Rayleigh damping constant
 		Returns:
@@ -20880,11 +20880,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Hencky rubber model 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			shearModulus (float): Shear modulus
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			massDensity (float): density
-			thermalExp (float): coefficient of thermal expansion
+			thermalExp (float): Coefficient of thermal expansion
 			massR (float): Mass Rayleigh damping constant
 			stiffnessR (float): Stiffness Rayleigh damping constant
 		Returns:
@@ -20897,10 +20897,10 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Ogden rubber model 
 		Params:
-			attrName (str): name of attribute
-			bulkModulus (float): bulk modulus
+			attrName (str): The unique name of this attribute
+			bulkModulus (float): Bulk modulus
 			massDensity (float): density
-			thermalExp (float): coefficient of thermal expansion
+			thermalExp (float): Coefficient of thermal expansion
 			massR (float): Mass Rayleigh damping constant
 			stiffnessR (float): Stiffness Rayleigh damping constant
 		Returns:
@@ -20913,12 +20913,12 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for volumetric crushing model (Mdl=81) 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			bIsVolumetric (bool): volumetric crushing indicator
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			shearModulus (float): Shear modulus
 			massDensity (float): density
-			thermalExp (float): coefficient of thermal expansion
+			thermalExp (float): Coefficient of thermal expansion
 			massRayleigh (float): Mass Rayleigh damping constant
 			stiffRayleigh (float): Stiffness Rayleigh damping constant
 			heatFraction (float): Heat fraction coefficient
@@ -20936,7 +20936,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a 2D mass material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			MassX (object): IFVariationAttr or double
 			MassY (object): IFVariationAttr or double
 			type (str, optional): distribution type
@@ -20950,7 +20950,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a 3D mass material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			MassX (object): IFVariationAttr or double
 			MassY (object): IFVariationAttr or double
 			MassZ (object): IFVariationAttr or double
@@ -20965,10 +20965,10 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for nonlinear user material 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 		Returns:
 			IFMaterialNonlinearUser: 
 		"""
@@ -20979,10 +20979,10 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for nonlinear resultant material 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float, optional): temperature
 		Returns:
 			IFMaterialResultantUser: 
@@ -20994,11 +20994,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for CEB-FIP material (Mdl=86) 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungsModulus (IFVariationAttr or float): Young's modulus
 			PoissonsRatio (IFVariationAttr or float): Poisson's ratio
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			MassRaleighDampingConst (IFVariationAttr or float): Mass Rayleigh damping constant
 			StiffRaleighDampingConst (IFVariationAttr or float): Stiffness Rayleigh damping constant
 			HeatFractionCoeff (IFVariationAttr or float): Heat fraction coefficient
@@ -21020,11 +21020,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Eurocode2 material (Mdl=86) 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungsModulus (IFVariationAttr or float): Young's modulus
 			PoissonsRatio (IFVariationAttr or float): Poisson's ratio
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			MassRaleighDampingConst (IFVariationAttr or float): Mass Rayleigh damping constant
 			StiffRaleighDampingConst (IFVariationAttr or float): Stiffness Rayleigh damping constant
 			HeatFractionCoeff (IFVariationAttr or float): Heat fraction coefficient
@@ -21048,11 +21048,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for India IRC:112-2011 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungsModulus (IFVariationAttr or float): Young's modulus
 			PoissonsRatio (IFVariationAttr or float): Poisson's ratio
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			MassRaleighDampingConst (IFVariationAttr or float): Mass Rayleigh damping constant
 			StiffRaleighDampingConst (IFVariationAttr or float): Stiffness Rayleigh damping constant
 			HeatFractionCoeff (IFVariationAttr or float): Heat fraction coefficient
@@ -21075,11 +21075,11 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Chinese creep material (Mdl=86) 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			YoungsModulus (IFVariationAttr or float): Young's modulus
 			PoissonsRatio (IFVariationAttr or float): Poisson's ratio
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			A (object): IFVariationAttr or double
 			B (object): IFVariationAttr or double
 			F1 (object): IFVariationAttr or double
@@ -21105,16 +21105,16 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a material attribute for Generic Polymer material model (Mdl=88) 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			activationEnergyTension (float): activation energy in tension
 			activationVolumeTension (float): activation volume in tension
 			externalStringStiffnessTension (float): external tensile spring stiffness
 			activationEnergyCompression (float): activation energy in compression
 			activationVolumeCompression (float): activation volume in compression
 			externalStringStiffnessCompression (float): external compressive spring stiffness
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			density (float): density
-			thermalExpansion (float): coefficient of thermal expansion
+			thermalExpansion (float): Coefficient of thermal expansion
 			massDamping (float): Mass Rayleigh damping constant
 			stiffnessDamping (float): Stiffness Rayleigh damping constant
 		Returns:
@@ -21127,7 +21127,7 @@ class IFDatabase(IFGroup):
 		r"""
 		 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			damageModel_E (int): idam
 			tensionFuncId_E (int): itdam
 			compressionFuncId_E (int): icdam
@@ -21157,7 +21157,7 @@ class IFDatabase(IFGroup):
 			constant6 (float): C6
 			constant7 (float): C7
 			constant8 (float): C8
-			bulkModulus (float): bulk modulus
+			bulkModulus (float): Bulk modulus
 			density (float): density
 			thermal (float): alpha
 			mass (float): ar
@@ -21197,7 +21197,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a beam composite attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			layerName (str): layer name
 			material (IFMaterial): The name or ID of a material, or a pointer to a IFMaterial object
 			isSymmetric (bool): symmetric layup flag
@@ -21211,7 +21211,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a composite attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			layerName (str): layer name
 			thickness (float): relative layer thickness
 			angle (float): angle of fibre to reference axis
@@ -21295,7 +21295,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a prestress tendon properties object. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFTendonProperties: 
 		"""
@@ -21306,7 +21306,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Create a tendon profile utility defining the geometry of a tendon for use with prestress loads. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFTendonProfile: 
 		"""
@@ -21317,7 +21317,7 @@ class IFDatabase(IFGroup):
 		r"""
 		
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFFailureComposite: 
 		"""
@@ -21328,7 +21328,7 @@ class IFDatabase(IFGroup):
 		r"""
 		
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDesignFactor: 
 		"""
@@ -21339,7 +21339,7 @@ class IFDatabase(IFGroup):
 		r"""
 		
 		Params:
-			name (str): name of attribute
+			name (str): The unique name of this attribute
 		Returns:
 			IFVLOVehicleLibrary: 
 		"""
@@ -21350,7 +21350,7 @@ class IFDatabase(IFGroup):
 		r"""
 		
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBeamStressRecovery: 
 		"""
@@ -21361,7 +21361,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Design Attribute / Utility The only difference between an attribute and a utility is that utilities cannot be assigned and are shown in a different panel in the UI 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			typeName (str): Full SubType name as it appears in the tree
 			scopeName (str): SubType name used as User Defined Results scope
 			assignType (str, optional): list of features the attribute can be assign to : "Lines", "Surfaces", "Volumes" etc
@@ -21376,7 +21376,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new advanced shear and torsion properties utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFShearTorsionAdvPropsDefinition: returned attribute
 		"""
@@ -21387,7 +21387,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Masonry Bridge Wizard definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMBWDefinition: returned attribute
 		"""
@@ -21398,7 +21398,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Tank definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFTankDefinition: returned attribute
 		"""
@@ -21409,7 +21409,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new KOGAS Tank definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFKogasTankDefinition: returned attribute
 		"""
@@ -21420,7 +21420,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Tank reinforcement definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFTankReinforcementDefinition: returned attribute
 		"""
@@ -21431,7 +21431,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Bridge definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardBridgeDefinition: returned attribute
 		"""
@@ -21442,7 +21442,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Support definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardSupportDefinition: returned attribute
 		"""
@@ -21453,7 +21453,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Stiffener definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardStiffenerDefinition: returned attribute
 		"""
@@ -21464,7 +21464,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Span definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardSpanDefinition: returned attribute
 		"""
@@ -21475,7 +21475,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Section definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardSectionDefinition: returned attribute
 		"""
@@ -21486,7 +21486,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Not implemented 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardTubSectionDefinition: returned attribute
 		"""
@@ -21497,7 +21497,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Girder definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardGirderDefinition: returned attribute
 		"""
@@ -21508,7 +21508,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Bracing Assembly definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardBracingDefinition: returned attribute
 		"""
@@ -21519,7 +21519,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Bridge Wizard Bracing Run definition utility. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeWizardBracingRunDefinition: returned attribute
 		"""
@@ -21530,7 +21530,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Composite bridge design material definition. Describes the various materials used in a composite design 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeDesignGirderMaterial: returned attribute
 		"""
@@ -21541,7 +21541,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Transverse stiffener definition used in bridge design 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeDesignTransverseStiffener: returned attribute
 		"""
@@ -21552,7 +21552,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Longitudinal stiffener definition used in bridge design 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeDesignLongitudinalStiffener: returned attribute
 		"""
@@ -21563,7 +21563,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Pushover Curve 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPushoverCurve: returned attribute
 		"""
@@ -21574,7 +21574,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new Storey Loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBuildingLoading: returned attribute
 		"""
@@ -21585,7 +21585,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new eismic Storey Loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBuildingLoading: returned attribute
 		"""
@@ -21596,7 +21596,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a new attribute / utility with no initial behaviour. The only difference between an attribute and a utility is that utilities cannot be assigned and are shown in a different panel in the UI. LUSAS will not visualise or tabulate this attribute / utility, but it may be created, edited and assigned just like any other attribute / utility. It is the user's responsibility to attach any meaning, calculation, behaviour etc. A sub type is allowed to distinguish between different types of scripted attribute / utility. Values 0, 1 and 2 are reserved by LUSAS. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			subType (int): sub type must be in range 3-10
 			isUtility (bool, optional): true for utility, false (default) for attribute
 		Returns:
@@ -21609,7 +21609,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a crack tip attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFCrackTip: newly created attribute
 		"""
@@ -21620,7 +21620,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an element type attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFElementTypeAttr: newly created attribute
 		"""
@@ -21651,7 +21651,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rail track definition 
 		Params:
-			trackName (railTrackName): 
+			trackName (str): Name of the track definition utility
 		Returns:
 			IFRailTrackDefinition: newly created track
 		"""
@@ -21662,18 +21662,18 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a rail track layout 
 		Params:
-			trackLayoutName (trackLayoutName): 
+			trackLayoutName (str): Name of the track layout utility
 		Returns:
 			IFRailTrackLayout: newly created track layout
 		"""
 		pass
 
 
-	def getRailwayLayoutsForTLO(self) -> list:
+	def getRailwayLayoutsForTLO(self) -> list[IFRailTrackLayout]:
 		r"""
 		Return an array of all railway layouts that are used in a Rail DMI analysis 
 		Returns:
-			array of railway layouts: Returned array
+			array of IFRailTrackLayout: Returned array
 		"""
 		pass
 
@@ -21693,7 +21693,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a nonlinear user thermal material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 			modelId (int): model number
 			nState (int): number of state variables
 		Returns:
@@ -21706,7 +21706,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a modified Cam-Clay material set attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFCamClayMaterialSet: 
 		"""
@@ -21717,7 +21717,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a multi linear bar material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPiecewiseLinearBarMaterial: 
 		"""
@@ -21728,7 +21728,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a thermal link material 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFThermalLinkMaterial: 
 		"""
@@ -21739,7 +21739,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a soil structure interface material set attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSoilStructureMaterialSet: 
 		"""
@@ -21750,7 +21750,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a Duncan-Chang soil material set attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDuncanChangMaterialSet: 
 		"""
@@ -21761,7 +21761,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates AASHTO creep material 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFMaterialIsotropic: 
 		"""
@@ -21772,7 +21772,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a P-Y curve material 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPYCurve: 
 		"""
@@ -21783,7 +21783,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an embedded pile material layup 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPileMaterialLayup: 
 		"""
@@ -21794,7 +21794,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a Elasto platic interface material set attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFElastoPlasticInterfaceSet: 
 		"""
@@ -21962,7 +21962,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a graph wizard attribute which can be used to create graphs that can be re-created or edited at any time. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFGraphWizard: newly created attribute
 		"""
@@ -21984,7 +21984,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a print results wizard utility object 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPrintResultsWizard: newly created attribute
 		"""
@@ -21995,7 +21995,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a model view utility which can be used to store and restore the view settings. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFSavedView: newly created utility
 		"""
@@ -22017,7 +22017,7 @@ class IFDatabase(IFGroup):
 		r"""
 		creates an User Defined Result attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFUserDefinedResult: 
 		"""
@@ -22072,7 +22072,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a note utility which can be used to store and restore plain text. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFNote: newly created utility
 		"""
@@ -22186,7 +22186,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an inspection point attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFInspectionPoint: newly created attribute
 		"""
@@ -22261,7 +22261,7 @@ class IFDatabase(IFGroup):
 		r"""
 		creates a Wood Armer attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFWoodArmerAttr: 
 		"""
@@ -22272,7 +22272,7 @@ class IFDatabase(IFGroup):
 		r"""
 		creates a results transformation attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFResultsTransformationAttr: 
 		"""
@@ -22283,7 +22283,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a section property modifier attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPropertyModifier: newly created attribute
 		"""
@@ -22294,7 +22294,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a tendon loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFLoadingTendon: newly created attribute
 		"""
@@ -22314,7 +22314,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a compound material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFCompoundMaterial: newly created attribute
 		"""
@@ -22325,7 +22325,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a bridge deck material attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBridgeDeckMaterial: newly created attribute
 		"""
@@ -22336,7 +22336,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a reinforcement section attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFReinforcementSection: newly created attribute
 		"""
@@ -22347,7 +22347,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a reinforcement line attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFReinforcementLine: newly created attribute
 		"""
@@ -22358,7 +22358,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a cable shape attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFCableShape: newly created attribute
 		"""
@@ -22369,7 +22369,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an phi c reduction attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFPhiCReduction: newly created attribute
 		"""
@@ -22380,7 +22380,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a drained attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFDrained: newly created attribute
 		"""
@@ -22391,7 +22391,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an undrained attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFUndrained: newly created attribute
 		"""
@@ -22413,7 +22413,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a Barcelona Basic material set attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBarcelonaBasicMaterialSet: newly created attribute
 		"""
@@ -22424,7 +22424,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a section utility which describes the type and and the dimension data of a parametric section. 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFParametricSection: newly created utility
 		"""
@@ -22446,7 +22446,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates an arbitrary section utility which holds the properties needed for the geometric attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFArbitrarySection: newly created utility
 		"""
@@ -22482,7 +22482,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Zero or Reduced Longitudinal Resistance properties for use in Rail Track Analysis 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRailTrackAnalysisZlrRlrProperties: returned attribute
 		"""
@@ -22493,7 +22493,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Zero or Reduced Longitudinal Resistance regions for use in Rail Track Analysis 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFRailTrackAnalysisZlrRlrRegions: returned attribute
 		"""
@@ -22504,7 +22504,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Creates a beam projected pressure loading attribute 
 		Params:
-			attrName (str): name of attribute
+			attrName (str): The unique name of this attribute
 		Returns:
 			IFBeamProjectedPressureLoad: newly created attribute
 		"""
@@ -22841,7 +22841,7 @@ class IFMeshAttr(IFAttribute):
 		pass
 
 
-	def getElementNames(self) -> list:
+	def getElementNames(self) -> list[str]:
 		r"""
 		Fetches an array of all the element types in this attribute Most mesh attributes will only store one element type, e.g. "HX20", however, in a coupled analysis, it is possible to have structural and thermal equivalents, e.g. "HX20" and "HF20" 
 		Returns:
@@ -25002,7 +25002,7 @@ class IFGeometricLine(IFGeometric):
 		pass
 
 
-	def getSectionDimensions(self, normalisedCoord, shapeCode) -> list:
+	def getSectionDimensions(self, normalisedCoord, shapeCode) -> list[float]:
 		r"""
 		Return section dimensions at the given normalised distance along the attribute if returned shape code is -1, the cross section shape cannot be interpolated 
 		Params:
@@ -25014,7 +25014,7 @@ class IFGeometricLine(IFGeometric):
 		pass
 
 
-	def getTopSlabDimensions(self, normalisedCoord) -> list:
+	def getTopSlabDimensions(self, normalisedCoord) -> list[float]:
 		r"""
 		Return bridge deck slab dimensions at the given normalised distance along the attribute 
 		Params:
@@ -25059,7 +25059,7 @@ class IFGeometricLine(IFGeometric):
 		Params:
 			lineID (str or int): name or ID of line
 			nrmCoordOnLine (float): normalised coord w.r.t the line
-			Dir (array of float): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			float: projected width
 		"""
@@ -25451,7 +25451,7 @@ class IFGeomBeamOptimPool(IFAttribute):
 		pass
 
 
-	def getAllSections(self) -> list:
+	def getAllSections(self) -> list[str]:
 		r"""
 		Returns all the sections in this pool as a 2d array of strings. If there are seven sections in the pool, the array will be dimensioned as [7][3] 
 		Returns:
@@ -26149,7 +26149,7 @@ class IFInspectionPoint(IFAttribute):
 			feature (IFDatabaseMember): feature to which to attach value (this attribute must be assigned to that feature)
 			index (int): index of location within this (corresponds to a row in the definition dialog)
 			value (float): value to assign
-			entity (str int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
+			entity (str or int or IFScriptedResultsComponentSet): Name or index of results entity, or object in which to store results
 			component (str, optional): Name of results component (if 'entity' is an IFScriptedResultsComponentSet, then this is expected to be an integer)
 			loadcase (IFLoadcase, optional): The name or ID of a loadcase, or a pointer to a IFLoadcase object
 		Returns:
@@ -26304,7 +26304,7 @@ class IFInspectionLine(IFDatabaseMember):
 		pass
 
 
-	def getValueNames(self) -> list:
+	def getValueNames(self) -> list[str]:
 		r"""
 		Allows user to inquire the names of values which are valid to be used in IFInspectionLine.getValue The return value is an array of strings, each of which is a valid value name. 
 		Returns:
@@ -26972,7 +26972,7 @@ class IFLoadingStressStrain(IFLoading):
 		Params:
 			type (str): 'Initial' or 'Residual'
 			values (array of realvariation): see above
-			eleType1 ( str, optional): feature type - e.g. "line", "surface" etc or element type - e.g. "BMS3", "QTS8" etc
+			eleType1 (str, optional): feature type - e.g. "line", "surface" etc or element type - e.g. "BMS3", "QTS8" etc
 			eleType2 (str, optional): Only needed if 'eleType1' above is given as a feature type, in which case further clarifies element type, e.g. "Thick nonlinear beam"
 			eleType3 (int, optional): Only needed if 'eleType1' above is given as a feature type, in which case further clarifies 2d or 3d (by value 2 or 3)
 		Returns:
@@ -27426,7 +27426,7 @@ class IFLoadingDiscretePoint(IFLoadingDiscrete):
 		Sets up a discrete point loading attribute. 
 		Params:
 			dirType (str): untransformed load direction 'X','Y','Z','Normal','None','globalXYZ','transformXYZ'
-			Dir (array of float): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float): An array of 3 real numbers, representing a 3d vector
 			nGridX (int, optional): number of grid points in X (default = 0)
 			nGridY (int, optional): number of grid points in Y (default = 0)
 		Returns:
@@ -27446,7 +27446,7 @@ class IFLoadingDiscretePatch(IFLoadingDiscrete):
 		Params:
 			type (str): 'surf8','surf4','line3','line2','multiQuad','multiStraight'
 			dirType (str): untransformed load direction 'X','Y','Z','Normal','None','patchX','patchY','globalXYZ','transformXYZ'
-			Dir (array of float, optional): An array of 3 real numbers, representing 3d coordinates
+			Dir (array of float, optional): An array of 3 real numbers, representing a 3d vector
 		Returns:
 			IFLoadingDiscretePatch: 
 		"""
@@ -28427,7 +28427,7 @@ class IFAnisotropicMaterial(IFMaterial):
 		r"""
 		 
 		Params:
-			MassDensity (IFVariationAttr or float): density
+			MassDensity (IFVariationAttr or float): Density
 			Angle (object): IFVariationAttr or double
 			Matrix (object): IFVariationAttr or double
 			temperature (float, optional): temperature
@@ -29683,9 +29683,9 @@ class IFMaterialIsotropic(IFMaterialTropicSet):
 		Params:
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): temperature
-			thermalExp (object, optional): coefficient of thermal expansion
+			thermalExp (object, optional): Coefficient of thermal expansion
 			massDamping (IFVariationAttr or float, optional): Mass Rayleigh damping constant
 			stiffDamping (IFVariationAttr or float, optional): Stiffness Rayleigh damping constant
 		Returns:
@@ -30872,7 +30872,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			ShearXY (object): IFVariationAttr or double
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): temperature
 			defnPageType (str, optional): "Plane stress", "Axisymmetric shell"
 		Returns:
@@ -30893,7 +30893,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialOrthotropic: 
@@ -30909,7 +30909,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			YoungY (IFVariationAttr or float): Young's modulus
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialOrthotropic: 
@@ -30928,7 +30928,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			ShearXZ (object): IFVariationAttr or double
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialOrthotropic: 
@@ -30948,7 +30948,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
 			Angle (object): IFVariationAttr or double
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialOrthotropic: 
@@ -30969,7 +30969,7 @@ class IFMaterialOrthotropic(IFMaterialTropicSet):
 			PoissonXY (IFVariationAttr or float): Poisson's ratio
 			PoissonYZ (IFVariationAttr or float): Poisson's ratio
 			PoissonXZ (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialOrthotropic: 
@@ -31881,7 +31881,7 @@ class IFMaterialNonlinearUser(IFMaterialTropicSet):
 		Params:
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialNonlinearUser: 
@@ -31900,7 +31900,7 @@ class IFMaterialResultantUser(IFMaterialTropicSet):
 		Params:
 			Young (IFVariationAttr or float): Young's modulus
 			Poisson (IFVariationAttr or float): Poisson's ratio
-			Density (IFVariationAttr or float): density
+			Density (IFVariationAttr or float): Density
 			temperature (float): 
 		Returns:
 			IFMaterialResultantUser: 
@@ -32646,7 +32646,7 @@ class IFTendonProperties(IFAttribute):
 		Set the design code for this properties object Design codes currently supported for "time inputs" are:, "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:2004 / 2014 Eurocode 2", "IRC:112-2011", "CEB-FIP Model Code 1990", "JTG 3362-2018", "fib Model Code 2010" and "AS5100-2017" Design codes currently supported for "input stresses" are: "AASHTO LRFD 2nd Edition", "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:1992 Eurocode 2", "EN1992-1-1:2004 / 2014 Eurocode 2", "BS5400-4:1990", "JTG D62-2004"  
 		Params:
 			designCode (str): 
-			timeEffects ( bool, optional): True: Losses based on time inputs and calculated stresses. False: Approximate losses, requiring input of estimated stresses
+			timeEffects (bool, optional): True: Losses based on time inputs and calculated stresses. False: Approximate losses, requiring input of estimated stresses
 		Returns:
 			None: 
 		"""
@@ -33425,8 +33425,8 @@ class IFPiecewiseLinearBarMaterial(IFMaterial):
 		Params:
 			minYoungsMod (float): minimum value of Young's modulus
 			curveTolerance (float): curve tolerance parameter
-			density (IFVariationAttr or float): density
-			thermalExpansion (object): coefficient of thermal expansion
+			density (IFVariationAttr or float): Density
+			thermalExpansion (object): Coefficient of thermal expansion
 			massRayleigh (object): Mass Rayleigh damping constant
 			stiffRayleigh (object): Stiffness Rayleigh damping constant
 			temperature (float, optional): temperature, default 0.0
@@ -33605,8 +33605,8 @@ class IFElastoPlasticInterfaceSet(IFMaterialTropicSet):
 			YoungsModulusOutPlane (object): IFVariationAttr or double
 			ShearModulus (object): IFVariationAttr or double
 			PoissonsRatio (IFVariationAttr or float): Poisson's ratio
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			MassRaleighDampingConst (IFVariationAttr or float): Mass Rayleigh damping constant
 			StiffRaleighDampingConst (IFVariationAttr or float): Stiffness Rayleigh damping constant
 			HeatFractionCoeff (IFVariationAttr or float): Heat fraction coefficient
@@ -33630,8 +33630,8 @@ class IFElastoPlasticInterfaceSet(IFMaterialTropicSet):
 			ShearModulusOutPlane (object): IFVariationAttr or double
 			PoissonsRatioInPlane (object): IFVariationAttr or double
 			PoissonsRatioOutPlane (object): IFVariationAttr or double
-			MassDensity (IFVariationAttr or float): density
-			CoeffThermalExpansion (IFVariationAttr or float): coefficient of thermal expansion
+			MassDensity (IFVariationAttr or float): Density
+			CoeffThermalExpansion (IFVariationAttr or float): Coefficient of thermal expansion
 			MassRaleighDampingConst (IFVariationAttr or float): Mass Rayleigh damping constant
 			StiffRaleighDampingConst (IFVariationAttr or float): Stiffness Rayleigh damping constant
 			HeatFractionCoeff (IFVariationAttr or float): Heat fraction coefficient
@@ -34957,7 +34957,7 @@ class IFBasicCombination(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this combination 
 		Returns:
@@ -34966,7 +34966,7 @@ class IFBasicCombination(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this combination 
 		Returns:
@@ -34975,7 +34975,7 @@ class IFBasicCombination(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this combination 
 		Returns:
@@ -34984,7 +34984,7 @@ class IFBasicCombination(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this combination 
 		Returns:
@@ -35138,7 +35138,7 @@ class IFSmartCombination(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this combination 
 		Returns:
@@ -35147,7 +35147,7 @@ class IFSmartCombination(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this combination 
 		Returns:
@@ -35156,7 +35156,7 @@ class IFSmartCombination(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this combination 
 		Returns:
@@ -35165,7 +35165,7 @@ class IFSmartCombination(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this combination 
 		Returns:
@@ -35307,7 +35307,7 @@ class IFEnvelope(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this envelope 
 		Returns:
@@ -35316,7 +35316,7 @@ class IFEnvelope(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this envelope 
 		Returns:
@@ -35325,7 +35325,7 @@ class IFEnvelope(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this envelope 
 		Returns:
@@ -35334,7 +35334,7 @@ class IFEnvelope(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this envelope 
 		Returns:
@@ -35545,7 +35545,7 @@ class IFFatigue(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this loadcase 
 		Returns:
@@ -35554,7 +35554,7 @@ class IFFatigue(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this loadcase 
 		Returns:
@@ -35563,7 +35563,7 @@ class IFFatigue(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this loadcase 
 		Returns:
@@ -35572,7 +35572,7 @@ class IFFatigue(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this loadcase 
 		Returns:
@@ -35850,7 +35850,7 @@ class IFIMD(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this loadcase 
 		Returns:
@@ -35859,7 +35859,7 @@ class IFIMD(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this loadcase 
 		Returns:
@@ -35868,7 +35868,7 @@ class IFIMD(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this loadcase 
 		Returns:
@@ -35877,7 +35877,7 @@ class IFIMD(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this loadcase 
 		Returns:
@@ -36102,7 +36102,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the loadcases within this target value loadset 
 		Returns:
@@ -36111,7 +36111,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this target value loadset 
 		Returns:
@@ -36120,7 +36120,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this target value loadset 
 		Returns:
@@ -36129,7 +36129,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this target value loadset 
 		Returns:
@@ -36138,7 +36138,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getFactorTypes(self) -> list:
+	def getFactorTypes(self) -> list[str]:
 		r"""
 		Return, as an array, the target factor types applied to the loadcases within this target value loadset 
 		Returns:
@@ -36147,7 +36147,7 @@ class IFLoadsetTargetValues(IFLoadset):
 		pass
 
 
-	def getSignTypes(self) -> list:
+	def getSignTypes(self) -> list[str]:
 		r"""
 		Return, as an array, the target sign types applied to the loadcases within this target value loadset 
 		Returns:
@@ -36692,7 +36692,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getLoadcaseIDs(self) -> list:
+	def getLoadcaseIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the IDs of the automatically created loadcases within this cable tuning analysis 
 		Returns:
@@ -36701,7 +36701,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getResultsFileIDs(self) -> list:
+	def getResultsFileIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the result file IDs of the loadcases within this cable tuning analysis 
 		Returns:
@@ -36710,7 +36710,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getEigenvalueIDs(self) -> list:
+	def getEigenvalueIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the eigenvalue IDs of the loadcases within this cable tuning analysis 
 		Returns:
@@ -36719,7 +36719,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getHarmonicIDs(self) -> list:
+	def getHarmonicIDs(self) -> list[int]:
 		r"""
 		Return, as an array, the harmonic IDs of the loadcases within this cable tuning analysis 
 		Returns:
@@ -36728,7 +36728,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getFactorTypes(self) -> list:
+	def getFactorTypes(self) -> list[str]:
 		r"""
 		Return, as an array, the target factor types applied to the loadcases within this cable tuning analysis 
 		Returns:
@@ -36737,7 +36737,7 @@ class IFCableTuningAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getSignTypes(self) -> list:
+	def getSignTypes(self) -> list[str]:
 		r"""
 		Return, as an array, the target sign types applied to the loadcases within this cable tuning analysis 
 		Returns:
@@ -37473,7 +37473,7 @@ class IFPrintResultsWizard(IFAttribute):
 		r"""
 		Set significant figures 
 		Params:
-			nSigFig (short): number of significant figures
+			nSigFig (int): number of significant figures
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			IFPrintResultsWizard: 
@@ -37485,7 +37485,7 @@ class IFPrintResultsWizard(IFAttribute):
 		r"""
 		Set decimal places 
 		Params:
-			nDeciPlaces (short): number of decimal places
+			nDeciPlaces (int): number of decimal places
 		Returns:
 			IFPrintResultsWizard: 
 		"""
@@ -37980,7 +37980,7 @@ class IFArbitrarySection(IFAttribute):
 		pass
 
 
-	def getSectionPropertyNames(self) -> list:
+	def getSectionPropertyNames(self) -> list[str]:
 		r"""
 		Returns an array on property value names The return value is an array of strings 
 		Returns:
@@ -38056,7 +38056,7 @@ class IFParametricSection(IFAttribute):
 		pass
 
 
-	def getSectionPropertyNames(self) -> list:
+	def getSectionPropertyNames(self) -> list[str]:
 		r"""
 		Returns an array on property value names The return value is an array of strings 
 		Returns:
@@ -38748,7 +38748,7 @@ class IFPrimaryScriptedResultsComponentSet(IFScriptedResultsComponentSet):
 		pass
 
 
-	def getStressModels(self, component) -> list:
+	def getStressModels(self, component) -> list[str]:
 		r"""
 		Return the values previously set using IFPrimaryScriptedResultsComponentSet.addStressModel 
 		Params:
@@ -39817,7 +39817,7 @@ class IFView(IFResultsContext):
 			modelY (float): position in model space
 			modelZ (float): position in model space
 			screenX (float): 0.2 = 20% across from left of screen
-			screenY ( float, optional): 0.2 = 20% up from *bottom* of screen
+			screenY (float, optional): 0.2 = 20% up from *bottom* of screen
 			panType (str, optional): "Camera" or "Viewport"
 		Returns:
 			None: 
@@ -40089,8 +40089,8 @@ class IFView(IFResultsContext):
 		Set the magnitude, in mm, of the largest deformation shown. In page layout mode, this size is mm on the paper. In working mode, this size is mm on the screen. This allows the deformation to be exaggerated to a known size for visualisation. 
 		Params:
 			mmMagnitude (float): 
-			exaggerateInitPos ( bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
-			exaggerateCableSag ( bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
+			exaggerateInitPos (bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
+			exaggerateCableSag (bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
 		Returns:
 			None: 
 		"""
@@ -40102,8 +40102,8 @@ class IFView(IFResultsContext):
 		Set the factor by which all deformations will be multiplied before being drawn on the screen. This allows a known uniform exaggeration to be applied. 
 		Params:
 			factor (float): 
-			exaggerateInitPos ( bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
-			exaggerateCableSag ( bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
+			exaggerateInitPos (bool, optional): true to also exaggerate initial deformations. False to view them unexaggerated
+			exaggerateCableSag (bool, optional): true to also exaggerate cable sag. False to view them unexaggerated
 		Returns:
 			None: 
 		"""
@@ -41338,7 +41338,7 @@ class IFVisualiseLayer(IFLayer):
 		r"""
 		Adds the given attribute(s) to the list being visualised Attributes may be given as objects or as a type and name(s) Transparency settings of attributes will not be changed (at present opacity/transparency is only meaningful for geometric attributes) 
 		Params:
-			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc Subsequent arguments can provide specifc names or ids of the first argument type
+			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc, Subsequent arguments can provide specifc names or ids of the first argument type
 			attr2 (object, optional): 
 			attr3 (object, optional): 
 		Returns:
@@ -41351,7 +41351,7 @@ class IFVisualiseLayer(IFLayer):
 		r"""
 		Adds the given attribute(s) to the list being visualised Attributes may be given as objects or as a type and name(s) The attributes will be drawn opaque (at present opacity/transparency is only meaningful for geometric attributes) 
 		Params:
-			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent argument can provide specifc names or ids of the first argument type
+			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent arguments can provide specifc names or ids of the first argument type
 			attr2 (object, optional): 
 		Returns:
 			None: 
@@ -41363,7 +41363,7 @@ class IFVisualiseLayer(IFLayer):
 		r"""
 		Adds the given attribute(s) to the list being visualised Attributes may be given as objects or as a type and name(s) The attributes will be drawn transparent (at present opacity/transparency is only meaningful for geometric attributes) 
 		Params:
-			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent argument can provide specifc names or ids of the first argument type
+			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc. Subsequent arguments can provide specifc names or ids of the first argument type
 			attr2 (object, optional): 
 		Returns:
 			None: 
@@ -41375,7 +41375,7 @@ class IFVisualiseLayer(IFLayer):
 		r"""
 		Removes the given attribute(s) from the list being visualised Attributes may be given as objects or as a type and name(s) 
 		Params:
-			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc Subsequent arguments can provide specifc names or ids of the first argument type
+			attr1 (object): Can be an object type 'Point', 'Line', 'Element', etc or an Attribute type such as 'Loading', 'Support', 'Material', etc, Subsequent arguments can provide specifc names or ids of the first argument type
 			attr2 (object, optional): 
 			attr3 (object, optional): 
 		Returns:
@@ -41463,7 +41463,7 @@ class IFVisualiseLayer(IFLayer):
 		Sets the font used by this drawing layer for text (e.g. support letter codes) 
 		Params:
 			attrType (str): "Loading", "Support", "Material", etc
-			font ( font, optional): 
+			font (font, optional): 
 		Returns:
 			None: 
 		"""
@@ -42130,7 +42130,7 @@ class IFContoursLayer(IFResultsLayer):
 		r"""
 		Sets the contour key to use the specified number of decimal places to display real numbers 
 		Params:
-			nDecimalPlaces (short): 
+			nDecimalPlaces (int): 
 		Returns:
 			None: 
 		"""
@@ -42141,7 +42141,7 @@ class IFContoursLayer(IFResultsLayer):
 		r"""
 		Sets the contour key to use the specified number of significant figures to display real numbers 
 		Params:
-			nSigFig (short): 
+			nSigFig (int): 
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			None: 
@@ -42527,7 +42527,7 @@ class IFDiagramsLayer(IFResultsLayer):
 		r"""
 		Sets the number of significant figures in diagram labels 
 		Params:
-			sigFig (short): 
+			sigFig (int): 
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			None: 
@@ -42539,7 +42539,7 @@ class IFDiagramsLayer(IFResultsLayer):
 		r"""
 		Sets the number of decimal places in diagram labels 
 		Params:
-			nDP (short): 
+			nDP (int): 
 		Returns:
 			None: 
 		"""
@@ -42770,7 +42770,7 @@ class IFValuesLayer(IFResultsLayer):
 		r"""
 		Sets the number of significant figures in labels 
 		Params:
-			sigFig (short): 
+			sigFig (int): 
 			trailingZeros (bool, optional): true for 1.200, false for 1.2
 		Returns:
 			None: 
@@ -42782,7 +42782,7 @@ class IFValuesLayer(IFResultsLayer):
 		r"""
 		Sets the number of decimal places in labels 
 		Params:
-			nDP (short): 
+			nDP (int): 
 		Returns:
 			None: 
 		"""
@@ -43490,11 +43490,11 @@ class IFRailTrackLayout(IFDatabaseMember):
 		pass
 
 
-	def getTracks(self) -> list:
+	def getTracks(self) -> list[IFRailTrackDefinition]:
 		r"""
 		Return an array of the tracks in this railway layout 
 		Returns:
-			array of tracks: Returned array
+			array of IFRailTrackDefinition: Returned array
 		"""
 		pass
 
@@ -44738,12 +44738,12 @@ class IFPrintResultsWindow(IFGridWindow):
 		Params:
 			tabName (str): The name of the tab to access
 		Returns:
-			array of variants: The values of the cells
+			2d array of float: The values of the cells
 		"""
 		pass
 
 
-	def getColHeaders(self, tabName) -> list:
+	def getColHeaders(self, tabName) -> list[str]:
 		r"""
 		Retrieve the header strings, to assist with interpreting the values retrieved by IFPrintResultsWindow.getData 
 		Params:
@@ -44825,7 +44825,7 @@ class IFLPIGridWindow(IFGridWindow):
 		pass
 
 
-	def getRowHeaders(self, tabName) -> list:
+	def getRowHeaders(self, tabName) -> list[str]:
 		r"""
 		Retrieve the header strings previously set with IFLPIGridWindow.setRowHeaders() 
 		Params:
@@ -44836,7 +44836,7 @@ class IFLPIGridWindow(IFGridWindow):
 		pass
 
 
-	def getColHeaders(self, tabName) -> list:
+	def getColHeaders(self, tabName) -> list[str]:
 		r"""
 		Retrieve the header strings previously set with IFLPIGridWindow.setColHeaders() 
 		Params:
@@ -45004,17 +45004,17 @@ class IFAnalysis(IFAnalysisBaseClass):
 			PriFriction (bool): Provide primary effects associated with friction
 			PriAnchorage (bool): Provide primary effects associated with anchorage
 			PriElastic (bool): Provide primary effects associated with elastic shortening
-			PriCreep ( bool, optional): Provide primary effects associated with creep
-			PriShrinkage ( bool, optional): Provide primary effects associated with shrinkage
-			PriRelax ( bool, optional): Provide primary effects associated with relaxation
-			SecFriction ( bool, optional): Provide secondary effects associated with friction
-			SecAnchorage ( bool, optional): Provide secondary effects associated with anchorage
-			SecElastic ( bool, optional): Provide secondary effects associated with elastic shortening
-			SecCreep ( bool, optional): Provide secondary effects associated with creep
-			SecShrinkage ( bool, optional): Provide secondary effects associated with shrinkage
-			SecRelax ( bool, optional): Provide secondary effects associated with relaxation
-			nSolves ( int, optional): Number of solves to determine post-installation losses
-			percent ( float, optional): Percentage reduction of length for end load placement
+			PriCreep (bool, optional): Provide primary effects associated with creep
+			PriShrinkage (bool, optional): Provide primary effects associated with shrinkage
+			PriRelax (bool, optional): Provide primary effects associated with relaxation
+			SecFriction (bool, optional): Provide secondary effects associated with friction
+			SecAnchorage (bool, optional): Provide secondary effects associated with anchorage
+			SecElastic (bool, optional): Provide secondary effects associated with elastic shortening
+			SecCreep (bool, optional): Provide secondary effects associated with creep
+			SecShrinkage (bool, optional): Provide secondary effects associated with shrinkage
+			SecRelax (bool, optional): Provide secondary effects associated with relaxation
+			nSolves (int, optional): Number of solves to determine post-installation losses
+			percent (float, optional): Percentage reduction of length for end load placement
 		Returns:
 			None: 
 		"""
@@ -45030,17 +45030,17 @@ class IFAnalysis(IFAnalysisBaseClass):
 			PriFriction (bool): Provide primary effects associated with friction
 			PriAnchorage (bool): Provide primary effects associated with anchorage
 			PriElastic (bool): Provide primary effects associated with elastic shortening
-			PriCreep ( bool, optional): Provide primary effects associated with creep
-			PriShrinkage ( bool, optional): Provide primary effects associated with shrinkage
-			PriRelax ( bool, optional): Provide primary effects associated with relaxation
-			SecFriction ( bool, optional): Provide secondary effects associated with friction
-			SecAnchorage ( bool, optional): Provide secondary effects associated with anchorage
-			SecElastic ( bool, optional): Provide secondary effects associated with elastic shortening
-			SecCreep ( bool, optional): Provide secondary effects associated with creep
-			SecShrinkage ( bool, optional): Provide secondary effects associated with shrinkage
-			SecRelax ( bool, optional): Provide secondary effects associated with relaxation
-			nSolves ( int, optional): Number of solves to determine post-installation losses
-			percent ( float, optional): Percentage reduction of length for end load placement
+			PriCreep (bool, optional): Provide primary effects associated with creep
+			PriShrinkage (bool, optional): Provide primary effects associated with shrinkage
+			PriRelax (bool, optional): Provide primary effects associated with relaxation
+			SecFriction (bool, optional): Provide secondary effects associated with friction
+			SecAnchorage (bool, optional): Provide secondary effects associated with anchorage
+			SecElastic (bool, optional): Provide secondary effects associated with elastic shortening
+			SecCreep (bool, optional): Provide secondary effects associated with creep
+			SecShrinkage (bool, optional): Provide secondary effects associated with shrinkage
+			SecRelax (bool, optional): Provide secondary effects associated with relaxation
+			nSolves (int, optional): Number of solves to determine post-installation losses
+			percent (float, optional): Percentage reduction of length for end load placement
 		Returns:
 			None: 
 		"""
@@ -46502,7 +46502,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		r"""
 		Abandon processing of the current script 
 		Params:
-			message ( str, optional): Error message that will pop up to the user
+			message (str, optional): Error message that will pop up to the user
 		Returns:
 			None: 
 		"""
@@ -48285,7 +48285,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getTimescales(self) -> list:
+	def getTimescales(self) -> list[str]:
 		r"""
 		Returns an array of the timescales that are supported by Modeller ("Seconds", "Minutes", "Hours", etc) 
 		Returns:
@@ -48294,7 +48294,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getTimescaleFrequencies(self) -> list:
+	def getTimescaleFrequencies(self) -> list[str]:
 		r"""
 		Returns an array of the timescale frequnecies that are supported by Modeller ("/Second", "/Minute", "/Hour", etc) 
 		Returns:
@@ -48720,7 +48720,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getSectionLibraries(self) -> list:
+	def getSectionLibraries(self) -> list[str]:
 		r"""
 		Returns an array of available standard section libraries. The return value is an array of strings 
 		Returns:
@@ -48729,7 +48729,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getSectionTypes(self, libraryName, shapeFilter=None) -> list:
+	def getSectionTypes(self, libraryName, shapeFilter=None) -> list[str]:
 		r"""
 		Returns an array on available section types from the specified library. The return value is an array of strings 
 		Params:
@@ -48741,7 +48741,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getSectionNames(self, libraryName, libraryType, shapeFilter=None) -> list:
+	def getSectionNames(self, libraryName, libraryType, shapeFilter=None) -> list[str]:
 		r"""
 		Returns an array on available sections from the specified library. The return value is an array of strings 
 		Params:
@@ -48767,7 +48767,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getSectionPropertyNames(self, libraryName, libraryType, sectionName) -> list:
+	def getSectionPropertyNames(self, libraryName, libraryType, sectionName) -> list[str]:
 		r"""
 		Returns an array on property value names from the specified section. The return value is an array of strings 
 		Params:
@@ -48923,7 +48923,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		Creates a new, blank, model project without saving changes in the previous project, if any. (Use IFModeller.project.IFProject.save first.) You must provide a path and filename for the new model. Many parts of the LUSAS system require this, and will not work correctly if you do not first specify a valid path and filename. 
 		Params:
 			analysisType (str, optional): Analysis type to create:. "Structural", "Thermal", or "Coupled"
-			filename ( str, optional): Filename to be created, e.g. "C:\temp\myModel.mdl".
+			filename (str, optional): Filename to be created, e.g. "C:\temp\myModel.mdl".
 		Returns:
 			IFProject: The new project
 		"""
