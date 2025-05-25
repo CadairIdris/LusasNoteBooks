@@ -58,7 +58,7 @@ class IFUnitSet(IFDispatch):
 
 	def convertToSI(self, value, energyDim, forceDim, lengthDim, massDim, timeDim, temperatureDim, perLengthDim=None) -> None:
 		r"""
-		Modify the first argument (which is assumed to be given in the same units as this object) such that its value is given in SI (J,N,m,kg,s,C) The other arguments indicate the dimensionality of the value. For example, an acceleration has exponent 1 of length, and exponent -2 of time. In combination with IFUnitSet.convertFromSI, this function can be used to convert any value from any unit system to any other unit system. Whilst energy and force can be derived from the other four dimensions, they are included for convenience. 
+		Converts given value from this object's units to SI (J,N,m,kg,s,C). The other arguments indicate the dimensionality of the value. For example, an acceleration has exponent 1 of length, and exponent -2 of time. In combination with IFUnitSet.convertFromSI, this function can be used to convert any value from any unit system to any other unit system. Whilst energy and force can be derived from the other four dimensions, they are included for convenience. 
 		Params:
 			value (object): value to modify
 			energyDim (int): exponent of energy
@@ -67,7 +67,7 @@ class IFUnitSet(IFDispatch):
 			massDim (int): exponent of mass
 			timeDim (int): exponent of time
 			temperatureDim (int): exponent of temperature
-			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm�/m". Similarly 2 and 3 for quantities that are per unit area or volume.
+			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm²/m". Similarly 2 and 3 for quantities that are per unit area or volume.
 		Returns:
 			None: 
 		"""
@@ -76,7 +76,7 @@ class IFUnitSet(IFDispatch):
 
 	def convertFromSI(self, value, energyDim, forceDim, lengthDim, massDim, timeDim, temperatureDim, perLengthDim=None) -> None:
 		r"""
-		Modify the first argument (which is assumed to be given in SI (J,N,m,kg,s,C) ) such that its value is given in the same units as this object For futher details see IFUnitSet.convertToSI 
+		Converts given value from SI (J,N,m,kg,s,C) to this object's units. For further details see IFUnitSet.convertToSI 
 		Params:
 			value (object): value to modify
 			energyDim (int): exponent of energy
@@ -85,7 +85,7 @@ class IFUnitSet(IFDispatch):
 			massDim (int): exponent of mass
 			timeDim (int): exponent of time
 			temperatureDim (int): exponent of temperature
-			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm�/m". Similarly 2 and 3 for quantities that are per unit area or volume.
+			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm²/m". Similarly 2 and 3 for quantities that are per unit area or volume.
 		Returns:
 			None: 
 		"""
@@ -94,9 +94,9 @@ class IFUnitSet(IFDispatch):
 
 	def convertToUnitSet(self, convertToSet, value, energyDim, forceDim, lengthDim, massDim, timeDim, temperatureDim, perLengthDim=None) -> None:
 		r"""
-		Modify the second argument (which is assumed to be given in this object units) and convert it to the first argument, which is assumed to be an IFUnitSet object (or the name thereof). For futher details see IFUnitSet.convertToSI 
+		Converts given value from this object's units to those defined by convertToSet. For further details see IFUnitSet.convertToSI 
 		Params:
-			convertToSet (str or IFUnitSet): Unit set to modify the value to
+			convertToSet (str or IFUnitSet): Unit set to modify the value to (name or object)
 			value (object): value to modify
 			energyDim (int): exponent of energy
 			forceDim (int): exponent of force
@@ -104,7 +104,7 @@ class IFUnitSet(IFDispatch):
 			massDim (int): exponent of mass
 			timeDim (int): exponent of time
 			temperatureDim (int): exponent of temperature
-			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm�/m". Similarly 2 and 3 for quantities that are per unit area or volume.
+			perLengthDim (int, optional): 0 (the default) for most quantities. 1 for quantities that are 'per unit length', such as "mm²/m". Similarly 2 and 3 for quantities that are per unit area or volume.
 		Returns:
 			None: 
 		"""
@@ -113,9 +113,9 @@ class IFUnitSet(IFDispatch):
 
 	def convertToUnitSetPackedDim(self, convertToSet, value, packedDim) -> None:
 		r"""
-		Modify the second argument (which is assumed to be given in this object's units) and convert it to the first argument, which is assumed to be an IFUnitSet object (or the name thereof). For further details see IFUnitSet.convertToSI This is an overload function of convertToUnitSet that instead of taking all dimensions as arguments, needs just the packed long. 
+		Converts given value from this object's units to those defined by convertToSet. For further details see IFUnitSet.convertToSI This is an overload function of convertToUnitSet that instead of taking all dimensions as arguments, needs just the packed long. 
 		Params:
-			convertToSet (str or IFUnitSet): Unit set to convert the value to
+			convertToSet (str or IFUnitSet): Unit set to convert the value to (name or object)
 			value (object): value to convert
 			packedDim (unsigned int): exponent of the packed dimension
 		Returns:
@@ -1206,7 +1206,7 @@ class IFResultsCache(IFDispatch):
 
 	def calculateNow(self) -> None:
 		r"""
-		Call to immediately loop, compute and cache all the PRW utilties that were previously specified via IFResultsCache.addPRWUtility 
+		Call to immediately loop, compute and cache all the PRW utilities that were previously specified via IFResultsCache.addPRWUtility 
 		Returns:
 			None: 
 		"""
@@ -2200,7 +2200,7 @@ class IFProject(IFDispatch):
 		r"""
 		Allows you to override a standard LUSAS system string for this model only. The values of system strings should never be changed without instruction from LUSAS technical support. To remove an override that was previously set, use an empty string as the value. To set the override value to be an empty string, use a single space. To obtain the current value of a system string, use IFModeller.getSystemString. To override a standard LUSAS system string for all models, use IFModeller.setSystemString 
 		Params:
-			token (str): internal name of the file to be overriden
+			token (str): internal name of the file to be overridden
 			value (str): path to the file that should be used instead
 		Returns:
 			None: 
@@ -2454,11 +2454,11 @@ class IFReportChapter(IFDispatch):
 		pass
 
 
-	def getLoadcases(self) -> list:
+	def getLoadcases(self) -> list[IFLoadcase]:
 		r"""
 		Gets the list of loadcases to be reported upon. Note that any loadcases previously specified, but not currently present (e.g. if results are not loaded) will not be in the returned array, but will still form part of the chapter 
 		Returns:
-			Array: Array of loadcase objects
+			array of IFLoadcase objects: the returned array
 		"""
 		pass
 
@@ -2526,7 +2526,7 @@ class IFCustomSubReport(IFDispatch):
 			left (int): Left positioning. Set -1 for the image to be placed in center
 			top (int): Additional top positioning from the previous text or image that was added.
 			image (str): Path of the image file
-			autoDelete (bool, optional): If True, the image file will be deleted from the hard drive when the report has created. Deafult value is False.
+			autoDelete (bool, optional): If True, the image file will be deleted from the hard drive when the report has created. Default value is False.
 		Returns:
 			None: 
 		"""
@@ -2535,7 +2535,7 @@ class IFCustomSubReport(IFDispatch):
 
 	def newLine(self, section, lines=None) -> None:
 		r"""
-		Adds a number of void lines from the previous text that has been added. If no text has previsously been added no lines will be added. 
+		Adds a number of void lines from the previous text that has been added. If no text has previously been added no lines will be added. 
 		Params:
 			section (str): "Header", "Details", "Footer".
 			lines (int, optional): Number of lines to be added. Default = 1.
@@ -3327,7 +3327,7 @@ class IFAttribute(IFDispatch):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Returns the units ("N/mm�", "m/s", etc) of the value that will be returned by IFAttribute.getValue for the given named variable. In order to find the list of valid named variables, use IFAttribute.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Returns the units ("N/mm²", "m/s", etc) of the value that will be returned by IFAttribute.getValue for the given named variable. In order to find the list of valid named variables, use IFAttribute.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -3361,7 +3361,7 @@ class IFAttribute(IFDispatch):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFAttribute: 
 		"""
@@ -3394,7 +3394,7 @@ class IFAttribute(IFDispatch):
 
 	def getID(self) -> int:
 		r"""
-		Returns the unique ID of this attribute IDs are program-generated and quite seperate from names which the user can change 
+		Returns the unique ID of this attribute IDs are program-generated and quite separate from names which the user can change 
 		Returns:
 			int: the ID
 		"""
@@ -3535,9 +3535,9 @@ class IFAttribute(IFDispatch):
 
 	def showEditDlg(self) -> int:
 		r"""
-		Pops up the dialog to edit this attribte 
+		Pops up the dialog to edit this attribute 
 		Returns:
-			int: 1 if the user pressed OK, 2 if ther user pressed Cancel
+			int: 1 if the user pressed OK, 2 if the user pressed Cancel
 		"""
 		pass
 
@@ -3607,6 +3607,15 @@ class IFAttribute(IFDispatch):
 	def isDefault(self) -> bool:
 		r"""
 		Returns true is this attribute is set as default 
+		Returns:
+			bool: 
+		"""
+		pass
+
+
+	def canAssign(self) -> bool:
+		r"""
+		Returns true if this attribute can be assigned, false if it is a utility 
 		Returns:
 			bool: 
 		"""
@@ -4655,7 +4664,7 @@ class IFAssignment(IFDispatch):
 
 	def setLcDependentConstraintsOff(self) -> IFAssignment:
 		r"""
-		post V15.0 constraint equations assignments may be loadcase dependent, use this function to maintain pre-V15.0 behavior of scripts 
+		post V15.0 constraint equations assignments may be loadcase dependent, use this function to maintain pre-V15.0 behaviour of scripts 
 		Returns:
 			IFAssignment: 
 		"""
@@ -4664,7 +4673,7 @@ class IFAssignment(IFDispatch):
 
 	def setLcDependentConstraintsOn(self) -> IFAssignment:
 		r"""
-		post V15.0 constraint equations assignments may be loadcase dependent, use this function to take advantage of the new behavior 
+		post V15.0 constraint equations assignments may be loadcase dependent, use this function to take advantage of the new behaviour 
 		Returns:
 			IFAssignment: 
 		"""
@@ -5104,7 +5113,7 @@ class IFControl(IFDispatch):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Return the units ("N/mm�", "m/s", etc) of the value that will be returned by IFControl.getValue for the given named variable. In order to find the list of valid named variables, use IFControl.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Return the units ("N/mm²", "m/s", etc) of the value that will be returned by IFControl.getValue for the given named variable. In order to find the list of valid named variables, use IFControl.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -5137,7 +5146,7 @@ class IFControl(IFDispatch):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFControl: 
 		"""
@@ -5412,7 +5421,7 @@ class IFLoadset(IFDispatch):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Return the units ("N/mm�", "m/s", etc) of the value that will be returned by IFLoadset.getValue for the given named variable. In order to find the list of valid named variables, use IFLoadset.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Return the units ("N/mm²", "m/s", etc) of the value that will be returned by IFLoadset.getValue for the given named variable. In order to find the list of valid named variables, use IFLoadset.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -5433,7 +5442,7 @@ class IFLoadset(IFDispatch):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFLoadset: 
 		"""
@@ -5610,7 +5619,7 @@ class IFLoadset(IFDispatch):
 
 	def saveIntArray(self, name, array) -> None:
 		r"""
-		Preserves a named array of integers in this loadset LUSAS will not examine the integers, or use them in any way, but it will preserve them in the mdl file for later retreival using loadIntArray This mechanism is independent from the getValue / setValue system 
+		Preserves a named array of integers in this loadset LUSAS will not examine the integers, or use them in any way, but it will preserve them in the mdl file for later retrieval using loadIntArray This mechanism is independent from the getValue / setValue system 
 		Params:
 			name (str): unique name for the array
 			array (array of strs): The array of strings to save
@@ -11312,7 +11321,7 @@ class IFAnalysisBaseClass(IFDispatch):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Return the units ("N/mm�", "m/s", etc) of the value that will be returned by IFAnalysisBaseClass.getValue for the given named variable. In order to find the list of valid named variables, use IFAnalysisBaseClass.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Return the units ("N/mm²", "m/s", etc) of the value that will be returned by IFAnalysisBaseClass.getValue for the given named variable. In order to find the list of valid named variables, use IFAnalysisBaseClass.getValueNames Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -11333,7 +11342,7 @@ class IFAnalysisBaseClass(IFDispatch):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFAnalysisBaseClass: 
 		"""
@@ -11762,7 +11771,7 @@ class IFVLOInfluenceAssignEntry(IFDispatch):
 
 class IFVLOInfDesignLoadcase(IFDispatch):
 	"""
-	VLO (Vehicle Loading Optimization) influence design loadcase It is a placeholder for TLO results grouped by Influence attribute � Sign � Design case; its results are shown in a tab in the TLO results table 
+	VLO (Vehicle Loading Optimization) influence design loadcase It is a placeholder for TLO results grouped by Influence attribute – Sign – Design case; its results are shown in a tab in the TLO results table 
 	"""
 
 	def addInfAssignResult(self, pInfName, assignmentRank, isPositive) -> IFVLOInfAssignResult:
@@ -13358,7 +13367,7 @@ class IFGeometry(IFDatabaseOperations):
 
 	def getID(self) -> int:
 		r"""
-		Returns objects ID IDs are program-generated and quite seperate from names which the user can change 
+		Returns objects ID IDs are program-generated and quite separate from names which the user can change 
 		Returns:
 			int: the ID
 		"""
@@ -13515,7 +13524,7 @@ class IFGeometry(IFDatabaseOperations):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFGeometry: 
 		"""
@@ -13571,7 +13580,7 @@ class IFGeometry(IFDatabaseOperations):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Returns the units ("N/mm�", "m/s", etc) of the value that will be returned by IFGeometry.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Returns the units ("N/mm²", "m/s", etc) of the value that will be returned by IFGeometry.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -15836,7 +15845,7 @@ class IFGroup(IFObjectSet):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFGroup: 
 		"""
@@ -15892,7 +15901,7 @@ class IFGroup(IFObjectSet):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Returns the units ("N/mm�", "m/s", etc) of the value that will be returned by IFGroup.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Returns the units ("N/mm²", "m/s", etc) of the value that will be returned by IFGroup.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -17076,7 +17085,7 @@ class IFDatabase(IFGroup):
 
 	def getLoadsets(self, IDs, resFiles=None, eigens=None, harms=None) -> list[IFLoadset]:
 		r"""
-		Creates and returns an array of specified loadsets - may be loadcases, load curves, combinations, envelopes, all etc.  
+		Returns an array of specified loadsets - may be loadcases, load curves, combinations, envelopes, all etc.  
 		Params:
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
 			resFiles (array of ints, optional): 
@@ -22687,7 +22696,7 @@ class IFModuleChapter(IFReportChapter):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFModuleChapter: 
 		"""
@@ -26238,7 +26247,7 @@ class IFInspectionLine(IFDatabaseMember):
 			mass (int, optional): mass component of the new value (default 0.0)
 			time (int, optional): time component of the new value (default 0.0)
 			temperature (int, optional): temperature component of the new value (default 0.0)
-			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm�/m" (default 0.0)
+			perUnitLength (int, optional): Only to be used for quantities that are 'per unit length' or 'per unit area', such as "mm²/m" (default 0.0)
 		Returns:
 			IFInspectionLine: 
 		"""
@@ -26294,7 +26303,7 @@ class IFInspectionLine(IFDatabaseMember):
 
 	def getValueUnits(self, varName, units=None) -> str:
 		r"""
-		Returns the units ("N/mm�", "m/s", etc) of the value that will be returned by IFInspectionLine.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
+		Returns the units ("N/mm²", "m/s", etc) of the value that will be returned by IFInspectionLine.getValue for the given named variable. Optionally, an IFUnitSet object (or its name) can be passed to control which system of units (e.g. mm/m/inch) will be used to build the returned string. If not given, the database's current unit system will be used. 
 		Params:
 			varName (str): name of the value (e.g. "E")
 			units (IFUnitSet, optional): unit system to use. If not given, database units will be assumed
@@ -26485,7 +26494,7 @@ class IFInspectionLine(IFDatabaseMember):
 
 	def getID(self) -> int:
 		r"""
-		Returns objects ID IDs are program-generated and quite seperate from names which the user can change 
+		Returns objects ID IDs are program-generated and quite separate from names which the user can change 
 		Returns:
 			int: the ID
 		"""
@@ -26506,6 +26515,15 @@ class IFInspectionLine(IFDatabaseMember):
 		Returns the ID, name and description of this utility, as shown in the modeller treeview Currently it is the same as "getID():getName() (getDescription())" 
 		Returns:
 			str: the returned name
+		"""
+		pass
+
+
+	def hasInfluenceAssignments(self) -> bool:
+		r"""
+		Indicates if influence assignments are assigned to the inspection locations 
+		Returns:
+			bool: True if influences are assigned
 		"""
 		pass
 
@@ -26968,9 +26986,9 @@ class IFLoadingStressStrain(IFLoading):
 
 	def setStressStrain(self, type, values, eleType1=None, eleType2=None, eleType3=None) -> IFLoadingStressStrain:
 		r"""
-		Sets up an initial stress/strain loading The number of values required will depend on the element type and whether the load is to be initial or residual. For initial loading, both stresses and strains should be provided. For residual loading, only stresses should be provided To determine the number of stress values that are appropriate to a particular element type, see the element reference manual The element type can be given in either of two different ways - by feature type and description, e.g. "line - thick non linear beam" or by element name, .e.g "BMS3". Once defined, a stress and strain load can be assigned to any element type of the same stress model. 
+		Sets up an initial stress/strain loading The number of values required will depend on the element type and whether the load is to be initial, target or residual. For initial loading, both stresses and strains should be provided. For residual and target loading, only stresses should be provided To determine the number of stress values that are appropriate to a particular element type, see the element reference manual The element type can be given in either of two different ways - by feature type and description, e.g. "line - thick non linear beam" or by element name, .e.g "BMS3". Once defined, a stress and strain load can be assigned to any element type of the same stress model. 
 		Params:
-			type (str): 'Initial' or 'Residual'
+			type (str): 'Target', 'Initial' or 'Residual'
 			values (array of realvariation): see above
 			eleType1 (str, optional): feature type - e.g. "line", "surface" etc or element type - e.g. "BMS3", "QTS8" etc
 			eleType2 (str, optional): Only needed if 'eleType1' above is given as a feature type, in which case further clarifies element type, e.g. "Thick nonlinear beam"
@@ -33263,9 +33281,20 @@ class IFSoilStructureMaterialSet(IFMaterialTropicSet):
 
 	def setSoilInterfacePropertiesType(self, type) -> IFSoilStructureMaterialSet:
 		r"""
-		set the properties type this function hidden as currently we are only allowing "displacement" type 
+		set the properties type determining how the normal and tangential stiffnesses are defined. Either "Absolute" stiffnesses or stiffnesses as factors that may be updated 
 		Params:
-			type (str): "Factor","Increment Update","Iteration Update"
+			type (str): "Absolute","Never","Incrementally","Iteratively"
+		Returns:
+			IFSoilStructureMaterialSet: 
+		"""
+		pass
+
+
+	def setSoilInterfaceGraphType(self, type) -> IFSoilStructureMaterialSet:
+		r"""
+		set the graph type Currently only supports "displacement" type 
+		Params:
+			type (str): "displacement"
 		Returns:
 			IFSoilStructureMaterialSet: 
 		"""
@@ -34465,9 +34494,9 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Create or modify the eigenvalue control attached to this loadcase 
 		Params:
-			eigenvaluetype (str): 
-			maxMinType (str): 
-			numberOfEigenvalues (int): 
+			eigenvaluetype (str): "Frequency", "FrequencyDamped", "Buckling", "Stiffness"
+			maxMinType (str): "Maximum", "Minimum"
+			numberOfEigenvalues (int): No of eigenvalues to find
 		Returns:
 			IFLoadcase: 
 		"""
@@ -34478,10 +34507,10 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Create or modify the eigenvalue control attached to this loadcase 
 		Params:
-			eigenvalueType (str): 
-			rangeType (str): 
-			maxVal (float): 
-			minVal (float): 
+			eigenvalueType (str): "Frequency", "Buckling", "Stiffness"
+			rangeType (str): "Eigenvalue", "Frequency", "Buckling load"
+			maxVal (float): Maximum value of range to search
+			minVal (float): Minimum value of range to search
 			numberOfEigenvalues (int): 
 		Returns:
 			IFLoadcase: 
@@ -35078,10 +35107,10 @@ class IFSmartCombination(IFLoadset):
 
 	def addEntry(self, factor, variableFactor, ID, resFile=None, eigen=None, harm=None) -> IFSmartCombination:
 		r"""
-		Add the specified loadset. Note that the factors are given in the old "permanent" and "variable" factor style. To use the more recent "beneficial" and "adverse" style, simply enter factor as "beneficial + adverse".  
+		Add the specified loadset. Note that the factors are given in the old "permanent" and "variable" factor style. To use the more recent "beneficial" and "adverse" style, simply enter factor as "beneficial" and variableFactor as "adverse" - "beneficial".  
 		Params:
-			factor (float): 
-			variableFactor (float): 
+			factor (float): permanent or beneficial factor
+			variableFactor (float): variable factor or adverse - beneficial factor
 			ID (object): IFLoadset object, loadset ID or loadset name
 			resFile (int, optional): default = 0
 			eigen (int, optional): default = -1
@@ -35094,14 +35123,14 @@ class IFSmartCombination(IFLoadset):
 
 	def addEntries(self, factors, variableFactors, IDs, resFiles=None, eigens=None, harms=None) -> IFSmartCombination:
 		r"""
-		Add the specified loadsets. Note that the factors are given in the old "permanent" and "variable" factor style. To use the more recent "beneficial" and "adverse" style, simply enter each factor as "beneficial + adverse".  
+		Add the specified loadsets. Note that the factors are given in the old "permanent" and "variable" factor style. To use the more recent "beneficial" and "adverse" style, simply enter factor as "beneficial" and variableFactor as "adverse" - "beneficial".  
 		Params:
-			factors (array of float): 
-			variableFactors (array of float): 
+			factors (array of float): permanent or beneficial factors
+			variableFactors (array of float): variable factor or adverse - beneficial factors
 			IDs (object): Array of IFLoadset objects, loadset IDs or loadset names
-			resFiles (array of ints, optional): 
-			eigens (array of ints, optional): 
-			harms (array of ints, optional): 
+			resFiles (array of ints, optional): default = array of 0
+			eigens (array of ints, optional): default = array of -1
+			harms (array of ints, optional): default = array of -1
 		Returns:
 			IFSmartCombination: 
 		"""
@@ -37674,11 +37703,11 @@ class IFPrintResultsWizard(IFAttribute):
 		pass
 
 
-	def getLoadcases(self) -> list:
+	def getLoadcases(self) -> list[IFLoadcase]:
 		r"""
 		Gets the list of loadcases to be reported upon. Note that any loadcases previously specified, but not currently present (e.g. if results are not loaded) will not be in the returned array, but will still form part of the print results wizard 
 		Returns:
-			Array: Array of loadcase objects
+			array of IFLoadcase objects: the returned array
 		"""
 		pass
 
@@ -40790,6 +40819,17 @@ class IFWireframeLayer(IFLayer):
 			draw1 (bool, optional): Draw objects with 1 parent? (default true)
 			draw2 (bool, optional): Draw objects with 2 parents? (default true)
 			draw3 (bool, optional): Draw objects with 3 or more parents? (default true)
+		Returns:
+			None: 
+		"""
+		pass
+
+
+	def setMaxShade(self, maxShade) -> None:
+		r"""
+		now set on the view 
+		Params:
+			maxShade (float): 
 		Returns:
 			None: 
 		"""
@@ -44953,7 +44993,7 @@ class IFAnalysis(IFAnalysisBaseClass):
 
 	def createCopyForPrestress(self, name, attributes) -> IFAnalysis:
 		r"""
-		Creates a new analysis with the name given. All loadcases in "this" analysis will be replicated in the new analysis. Additionally, discrete load attributes and search area attributes will be created and assigned as necessary to mimic all the prestress �internal workings� for the specified tendon load attributes. Any other assignments that may exist (material, geometric, etc) will also be duplicated into the new analysis � but no other loading. Any tendon loads not explicitly specified will also be excluded. 
+		Creates a new analysis with the name given. All loadcases in "this" analysis will be replicated in the new analysis. Additionally, discrete load attributes and search area attributes will be created and assigned as necessary to mimic all the prestress “internal workings” for the specified tendon load attributes. Any other assignments that may exist (material, geometric, etc) will also be duplicated into the new analysis – but no other loading. Any tendon loads not explicitly specified will also be excluded. 
 		Params:
 			name (str): name of the new analysis
 			attributes (array): Names and/or numbers of IFLoadingTendon attributes. If empty, all tendon load attributes will be used.
@@ -45047,11 +45087,11 @@ class IFAnalysis(IFAnalysisBaseClass):
 		pass
 
 
-	def getLoadcases(self) -> list:
+	def getLoadcases(self) -> list[IFLoadcase]:
 		r"""
 		Gets the list of loadcases belonging directly to the analysis. Branches, loadcurves and loadsets other than loadcases are ignored. 
 		Returns:
-			Array: Array of IFLoadcase objects
+			array of IFLoadcase objects: the returned array
 		"""
 		pass
 
@@ -47935,7 +47975,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def clockEnd(self, label, filename=None) -> int:
 		r"""
-		Marks the end of a timing step in "clock ticks". Clock ticks measure only CPU time and ignore time taken by other processes, interaction with disk, etc. The number of clock ticks taken by an opeartion should be relatively consistent between runs, regardless of what else the PC is doing. However, since it ignores interaction with the disk, it can be misleading. Conversely "wall clock time" counts minutes and seconds as seen by a clock on the wall, and times will be slower if the PC has many other tasks running. Unfortunately, Windows does not provide a mechanism to measure how long an application took, including disk access but excluding other applications. Can be called repeatedly (in other words, calling clockEnd() resets the start time). If �filename� parameter is not given: times are written only to the text output window and log file. If �filename� parameter is given:     a tmg file is created (unless exists) and is opened for writing. 
+		Marks the end of a timing step in "clock ticks". Clock ticks measure only CPU time and ignore time taken by other processes, interaction with disk, etc. The number of clock ticks taken by an opeartion should be relatively consistent between runs, regardless of what else the PC is doing. However, since it ignores interaction with the disk, it can be misleading. Conversely "wall clock time" counts minutes and seconds as seen by a clock on the wall, and times will be slower if the PC has many other tasks running. Unfortunately, Windows does not provide a mechanism to measure how long an application took, including disk access but excluding other applications. Can be called repeatedly (in other words, calling clockEnd() resets the start time). If “filename” parameter is not given: times are written only to the text output window and log file. If “filename” parameter is given:     a tmg file is created (unless exists) and is opened for writing. 
 		Params:
 			label (str): label to identify the task
 			filename (str, optional): filename of tmg file.
@@ -47961,7 +48001,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def wallClockEnd(self, label, filename=None) -> None:
 		r"""
-		Marks the end of a timing step in "wall clock time". "Wall clock time" counts minutes and seconds as seen by a clock on the wall,  and times will therefore be slower if the PC has many other tasks running. Conversely, clock ticks measure only CPU time and ignore time taken by other processes, interaction with disk, etc. The number of clock ticks taken by an operation should be relatively consistent between runs, regardless of what else the PC is doing. However, since it ignores interaction with the disk, it can be misleading. Unfortunately, Windows does not provide a mechanism to measure how long an application took, including disk access but excluding other applications. Can be called repeatedly (in other words, calling wallClockEnd() resets the start time). If �filename� parameter is not given: times are written only to the text output window. If �filename� parameter is given:     a tmg file is created (unless it already exists) and is opened for writing. In all situations, a new line of text in the following format will be created and added to the text output window (and optionally to the given file): <S> seconds of elapsed time, to 3 decimal places 
+		Marks the end of a timing step in "wall clock time". "Wall clock time" counts minutes and seconds as seen by a clock on the wall,  and times will therefore be slower if the PC has many other tasks running. Conversely, clock ticks measure only CPU time and ignore time taken by other processes, interaction with disk, etc. The number of clock ticks taken by an operation should be relatively consistent between runs, regardless of what else the PC is doing. However, since it ignores interaction with the disk, it can be misleading. Unfortunately, Windows does not provide a mechanism to measure how long an application took, including disk access but excluding other applications. Can be called repeatedly (in other words, calling wallClockEnd() resets the start time). If “filename” parameter is not given: times are written only to the text output window. If “filename” parameter is given:     a tmg file is created (unless it already exists) and is opened for writing. In all situations, a new line of text in the following format will be created and added to the text output window (and optionally to the given file): <S> seconds of elapsed time, to 3 decimal places 
 		Params:
 			label (str): label to identify the task
 			filename (str, optional): filename of tmg file.
@@ -48267,7 +48307,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def getUnitSet(self, name) -> IFUnitSet:
 		r"""
-		Returns a set of units previously created using IFModeller.createUnitSet A search is carried out to find a set of units with the given name. Note that model units should be got using IFDatabase.getModelUnits. 
+		Returns a set of units previously created using IFModeller.createUnitSet A search is carried out to find a set of units with the given name. To get all defined unitSets use IFDatabase.getUnitSets. Note that model units should be got using IFDatabase.getModelUnits. 
 		Params:
 			name (str): name of unit set to search for
 		Returns:
@@ -48278,7 +48318,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def getUnitSets(self) -> list:
 		r"""
-		Returns a set of units previously created using IFModeller.createUnitSet If a name is given, a search is carried out to find a set of units with that name. If an integer is given, it is assumed to be the index of a set of units. The index represents the order in which IFModeller.createUnitSet was originally called, so the first set of units created has the index 0 and so on. 
+		Returns an array of all IFUnitSet previously created using IFModeller.createUnitSet. 
 		Returns:
 			array of IFUnitSet objects: the returned array
 		"""
@@ -48633,7 +48673,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def createGridWindow(self, nID) -> IFGridWindow:
 		r"""
-		Create and return a new IFGridWindow object The window ID allows subsequent retrieval using IFModeller.getGridWindowByID 
+		Create and return a new IFGridWindow object The window ID allows subsequent retrieval using IFModeller.getGridWindowByID An unused gid window ID can be aquired with IFModeller.nextGridWindowID 
 		Params:
 			nID (int): grid window ID
 		Returns:
