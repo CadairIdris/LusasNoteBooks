@@ -118,6 +118,45 @@ def create_surface_by_coordinates(x:list[float], y:list[float], z:list[float]) -
     surf : IFSurface = lusas.db().createSurface(geometry_data).getObjects("Surface")[0]
     return surf
 
+
+def create_surface_from_points(points:'list[IFPoint]') -> 'IFSurface':
+    """Helper function to create a surface from a list of more than two point objects.
+
+    Args:
+        points (List[IFPoint]): List of points defining the surface. The order of the points determines the orientation of the surface axes
+
+    Returns:
+        IFSurface: Flat surface connecting the points
+    """    
+    # geometryData object contains all the settings to perform a geometry creation
+    geom_data = lusas.geometryData().setAllDefaults()         
+    # set the options for creating surfaces from points
+    geom_data.setLowerOrderGeometryType("points")        
+    # Create an object set to contain the points and use this set to create the surface
+    obs = lusas.newObjectSet().add(points)                 
+    # Create the surface, get the surface object from the returned object set
+    return win32.CastTo(obs.createSurface(geom_data).getObject("Surface"), "IFSurface")
+
+
+def create_surface_from_lines(lines:'list[IFLine]') -> 'IFSurface':
+    """Helper function to create a surface from a list of more than two line objects.
+
+    Args:
+        lines (List[IFLine]): List of lines defining the surface. The order of the lines determines the orientation of the surface axes. The lines buts be connected
+
+    Returns:
+        IFSurface: Flat surface from the boundary lines
+    """    
+    # geometryData object contains all the settings to perform a geometry creation
+    geom_data = lusas.geometryData().setAllDefaults()         
+    # set the options for creating surfaces from lines
+    geom_data.setLowerOrderGeometryType("lines")        
+    # Create an object set to contain the lines and use this set to create the surface
+    obs = lusas.newObjectSet().add(lines)                 
+    # Create the surface, get the surface object from the returned object set
+    return win32.CastTo(obs.createSurface(geom_data).getObject("Surface"), "IFSurface")
+
+
 def create_volume_by_surfaces(surfaces:list[IFSurface]) -> IFVolume:
     """Helper function to create a volume from surfaces
 
