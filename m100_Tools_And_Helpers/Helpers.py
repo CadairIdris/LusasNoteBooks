@@ -10,6 +10,7 @@ def initialise(modeller:'IFModeller'):
     global lusas
     lusas = modeller
 
+
 def create_point(x:float, y:float, z:float) -> 'IFPoint':
     """Helper function to create a point from coordinates
 
@@ -30,6 +31,7 @@ def create_point(x:float, y:float, z:float) -> 'IFPoint':
     # Create the point and return it. 
     # Note that createPoint returns and IFObjectSet from which we can get the point.
     return win32.CastTo(lusas.database().createPoint(geom_data).getObject("Point"), "IFPoint")
+
 
 def create_line_by_coordinates(x1:float, y1:float, z1:float, x2:float, y2:float, z2:float,) -> 'IFLine':
     """Helper function to create a line from coordinates
@@ -54,6 +56,7 @@ def create_line_by_coordinates(x1:float, y1:float, z1:float, x2:float, y2:float,
     newLine:IFLine = lusas.database().createLine(geometry_data).getObjects("Line")[0]
     return newLine
 
+
 def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
     """Helper function to create a line from two point objects.
 
@@ -74,6 +77,7 @@ def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
     obs.add(p2)
     # Create the line, get the line object array from the returned object set
     return win32.CastTo(obs.createLine(geom_data).getObject("Line"), "IFLine")
+
 
 def create_line(p1:list, p2:list) -> 'IFLine':
     """Helper function to create a straight line from two point coordinates defined 
@@ -98,6 +102,7 @@ def create_line(p1:list, p2:list) -> 'IFLine':
 
     # Create the line, get the line objects from the returned object set
     return win32.CastTo(lusas.database().createLine(geom_data).getObject("Line"), "IFLine")
+
 
 def create_surface_by_coordinates(x:list[float], y:list[float], z:list[float]) -> IFSurface:
     """Helper function to create a surface from coordinates
@@ -175,8 +180,8 @@ def create_volume_by_surfaces(surfaces:list[IFSurface]) -> IFVolume:
     surfsObj = lusas.newObjectSet()
     surfsObj.add(surfaces)
     # Create the volume using the surfaces
-    vlm : IFVolume = lusas.db().createVolume(geometry_data).getObjects("Volume")[0]
-    return vlm
+    return lusas.db().createVolume(geometry_data).getObject("Volume")
+
 
 def sweep_points(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
     """
@@ -197,6 +202,7 @@ def sweep_points(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
         return []
     return lines
 
+
 def sweep_lines(lines:list[IFLine], vector: list[float]) -> list[IFSurface]:
     """
     Sweeps the given lines in the specified direction to create surfaces.
@@ -216,6 +222,7 @@ def sweep_lines(lines:list[IFLine], vector: list[float]) -> list[IFSurface]:
         return []
     return surfs
 
+
 def sweep_surfaces(surfs:list[IFSurface], vector: list[float]) -> list[IFVolume]:
     """
     Sweeps the given surfaces in the specified direction to create volumes.
@@ -234,6 +241,7 @@ def sweep_surfaces(surfs:list[IFSurface], vector: list[float]) -> list[IFVolume]
         print(f"Error sweeping surfaces: {str(e)}")
         return []
     return vlms
+
 
 def sweep_Ext(trgtObjSet:IFObjectSet, vector: list[float], hofType:str):
     """
@@ -264,6 +272,7 @@ def sweep_Ext(trgtObjSet:IFObjectSet, vector: list[float], hofType:str):
 
     return objSet
 
+
 def sweep_points_rotationally(pnts:list[IFPoint], degrees : float, origin: list[float] = [0, 0, 0], aboutAxis : str = "z") -> list[IFLine]:
     """
     Sweeps the given points in the specified degrees to create lines.
@@ -284,6 +293,7 @@ def sweep_points_rotationally(pnts:list[IFPoint], degrees : float, origin: list[
         print(f"Error sweeping points: {str(e)}")
         return []
     return lines
+
 
 def sweep_lines_rotationally(lines:list[IFLine], degrees : float, origin: list[float] = [0, 0, 0], aboutAxis : str = "z") -> list[IFSurface]:
     """
@@ -306,6 +316,7 @@ def sweep_lines_rotationally(lines:list[IFLine], degrees : float, origin: list[f
         return []
     return surfs
 
+
 def sweep_surfaces_rotationally(surfs:list[IFSurface], degrees : float, origin: list[float] = [0, 0, 0], aboutAxis : str = "z") -> list[IFVolume]:
     """
     Sweeps the given surfaces in the specified degrees to create volumes.
@@ -326,6 +337,7 @@ def sweep_surfaces_rotationally(surfs:list[IFSurface], degrees : float, origin: 
         print(f"Error sweeping surfaces: {str(e)}")
         return []
     return vlms
+
 
 def sweep_rotationally_Ext(trgtObjSet:IFObjectSet, origin:list, hofType:str, degree:float, aboutAxis:str=None):
     """
@@ -389,7 +401,6 @@ def delete_all_database_contents(db:'IFDatabase'):
     db.deleteAll()
 
     db.createAnalysisStructural("Analysis 1")
-
 
 
 def create_reinforcing_bar_attributes(db:'IFDatabase', diameters:list) -> list:
@@ -465,3 +476,30 @@ def get_loadcase(id:int) -> IFLoadcase:
     loadset = lusas.db().getLoadset(id)
     # Cast the return type from IFLoadset to IFLoadcase so loadcase functions can be called.
     return win32.CastTo(loadset, "IFLoadcase")
+
+
+
+
+def set_creep_analysis(loadcase:IFLoadcase, no_time_steps:int, time_step:float, total_time:float, time_step_exponent:int=0) -> None:
+    """ Adds a nonlinear control to the given loadcase for a creep analysis. 
+    Args:
+        loadcase (IFLoadcase): Loadcase to modify
+        no_time_steps (int): Number of times steps to be considered in the analysis
+        time_step (float): Size of the intended time steps in seconds
+        total_time (float): Duration of the analysis
+        time_step_exponent (int): Exponent by which time steps increase during the analysis. Default is 0 = no increase
+    """  
+    # Transient control with noTimeSteps
+    control = loadcase.setTransientControl(no_time_steps).getTransientControl()
+    # Set default constant and output options
+    control.setConstants().setOutput()
+    # Loading is nonlinear
+    control.setNonlinearManual()
+    # Creep analysis is conducted in the time domain
+    # LPI inputs expected in seconds, regardless of global settings
+    control.setTimeDomainViscous(time_step)
+    control.setValue("TotalResponseTime", total_time)
+    if time_step_exponent > 0:
+        # Exponent by which time steps increase
+        control.setValue("CEBFIP", time_step_exponent)
+
