@@ -2458,7 +2458,7 @@ class IFReportChapter(IFDispatch):
 		r"""
 		Gets the list of loadcases to be reported upon. Note that any loadcases previously specified, but not currently present (e.g. if results are not loaded) will not be in the returned array, but will still form part of the chapter 
 		Returns:
-			array of IFLoadcase objects: the returned array
+			array of IFLoadcase: the returned array
 		"""
 		pass
 
@@ -3230,7 +3230,7 @@ class IFAttribute(IFDispatch):
 
 	def assignTo(self, arg1, arg2=None, arg3=None, arg4=None, arg5=None) -> IFObjectSet:
 		r"""
-		Assigns this attribute to the object(s) given Optionally also pass in assignment data giving extra details about the assignment, such as loadcase, local coordinates, load factor etc. There are two ways to call this function. For most attributes only a single object, IFObjectSet, or array is required, and the attribute will be assigned to that. However, for interface mesh, it is necessary to indicate both primaries and secondaries at the same time. Thus, two objects, IFObjectSet, or arrays must be given. In the case of IFObjectSet and arrays, the same number of objects must be given in each, and the primary secondary pairing will be assumed from the order. E.g. item 1 in the first array will be the primary of item 1 in the second array, and so on. The assignment info, if given, must always be last. 
+		Assigns this attribute to the object(s) given. Optionally also pass in assignment data giving extra details about the assignment, such as loadcase, local coordinates, load factor etc. There are two ways to call this function. For most attributes only a single object, IFObjectSet, or array is required, and the attribute will be assigned to that. However, for interface mesh, it is necessary to indicate both primaries and secondaries at the same time. Thus, two objects, IFObjectSet, or arrays must be given. In the case of IFObjectSet and arrays, the same number of objects must be given in each, and the primary secondary pairing will be assumed from the order. E.g. item 1 in the first array will be the primary of item 1 in the second array, and so on. The assignment info, if given, must always be last. 
 		Params:
 			arg1 (object): Can be any database object capable of having assignments, or an array or objectset, containing any such objects. Alternatively specify an object type such as 'Volume'. Subsequent arguments can provide more context, typically with and assignment object
 			arg2 (object, optional): 
@@ -5049,7 +5049,7 @@ class IFAssignment(IFDispatch):
 
 class IFControl(IFDispatch):
 	"""
-	 
+	A control is added to a loadcase to specify how the loadcase behaves in the analysis. This is the base class of all loadcase controls, the derived classs provide specific implementations for each analysis type. 
 	"""
 
 	def setValue(self, varName, value, index=None, units=None) -> IFControl:
@@ -5201,7 +5201,7 @@ class IFControl(IFDispatch):
 
 class IFLoadset(IFDispatch):
 	"""
-	 
+	A loadset is the abstract base class of all items that appear in the analysis tree. The types of loadset are given in IFLoadset.getTypeCode  
 	"""
 
 	def setName(self, name) -> IFLoadset:
@@ -13784,7 +13784,7 @@ class IFMeshFamily(IFDatabaseMember):
 
 class IFPoint(IFGeometry):
 	"""
-	Methods available on Point object 
+	Points are the "lowest order feature" in the database. They represent a 2D (x,y) or 3D (X,Y,Z) coordinate and are used to define lines. 
 	"""
 
 	def getX(self, pDoTrans=None) -> float:
@@ -13915,7 +13915,7 @@ class IFPoint(IFGeometry):
 
 class IFLine(IFGeometry):
 	"""
-	 
+	A line is a geometric feature defined by lower order features, points, in turn being a lower order feature of surfaces. A line can be used to define beam or bar elements along it's length or joint/interfaces elements acting perpendicular to the length. 
 	"""
 
 	def getLineTypeCode(self) -> int:
@@ -14343,7 +14343,7 @@ class IFCombinedLine(IFLine):
 
 class IFSurface(IFGeometry):
 	"""
-	 
+	A surface is a geometric feature defined by lower order features, lines, in turn being a lower order feature of volumes. A surface can be used to define 2d elements such as shells and plane strain/stress elements. 
 	"""
 
 	def getSurfaceTypeCode(self) -> int:
@@ -14470,7 +14470,7 @@ class IFSurface(IFGeometry):
 
 class IFVolume(IFGeometry):
 	"""
-	 
+	A volume is a geometric feature defined by lower order features, surfaces. It can be used to define continuum elements. 
 	"""
 
 	def getVolumeTypeCode(self) -> int:
@@ -14616,7 +14616,7 @@ class IFHollowVolume(IFGeometry):
 
 class IFNode(IFMeshFamily):
 	"""
-	Node object used to set and extract node data 
+	A node is part of the finite element mesh and is created automatically by LUSAS Modeller when the mesh is generated. A node represents the vertex of an element at which results can be provided. 
 	"""
 
 	def getResults(self, entity, component, units=None, loadcase=None, context=None) -> float:
@@ -14974,7 +14974,7 @@ class IFFace(IFMeshFamily):
 
 class IFElement(IFMeshFamily):
 	"""
-	Functions available on an element object 
+	An element is part of the finite element mesh and is created automatically by LUSAS Modeller when the mesh is generated. An element provides results at gauss points and at the nodes defining its extents. 
 	"""
 
 	def countGaussPoints(self) -> int:
@@ -16627,7 +16627,7 @@ class IFObjsToDrape(IFDatabaseMember):
 
 class IFDatabase(IFGroup):
 	"""
-	Methods available on Database object 
+	The database contains all model geometry, attributes and loadcases. The database provides functions to create the all the geometric features, attributes and loadcases it contains. 
 	"""
 
 	def setReadOnly(self, readOnly) -> None:
@@ -17136,7 +17136,7 @@ class IFDatabase(IFGroup):
 		r"""
 		Renumbers the post-processing loadsets (combinations and envelopes) within this database to start with the given ID number. Note that the given ID is updated such that on return it is suitable for passing to another call to renumber another group or analysis 
 		Params:
-			type (str): "structural" "thermal".or "hygro"
+			type (str): "structural" "thermal" or "hygro"
 			startingValue (int): first new ID to use, reset on exit
 		Returns:
 			None: 
@@ -17842,7 +17842,7 @@ class IFDatabase(IFGroup):
 
 	def getLoadset(self, ID, resFile=None, eigen=None, harm=None) -> IFLoadset:
 		r"""
-		Returns the loadset with the given specification. It is an error for the loadset to not be found  
+		Returns the loadset with the given criteria. If no loadset matches the given criteria an error will occur. Therefore it is recommended to check the loadset exists with IFDatabase.existsLoadset before calling this function.  
 		Params:
 			ID (object): IFLoadset object, loadset ID or loadset name
 			resFile (int, optional): default = 0
@@ -22215,7 +22215,7 @@ class IFDatabase(IFGroup):
 
 	def createBeamShellSlice(self, name) -> IFBeamShellSlice:
 		r"""
-		Create a utility for the Slice Resultants Beams/Shells facility. The underlying implemenatiun is the same as an inspection line with fixed entity and components - see comments therein 
+		Create a utility for the Slice Resultants Beams/Shells facility. The underlying implementation is the same as an inspection line with fixed entity and components - see comments therein 
 		Params:
 			name (str): name of this object
 		Returns:
@@ -22872,7 +22872,7 @@ class IFMeshAttr(IFAttribute):
 
 class IFMeshPoint(IFMeshAttr):
 	"""
-	point mesh attribute 
+	A point mesh attribute specifies the type of elements to be meshed on a point feature. Typically these are single joint or non-structural mass elements For a complete list of available elements consult the element reference manual. 
 	"""
 
 	pass
@@ -22896,7 +22896,7 @@ class IFPointElementMeshAttr(IFMeshPoint):
 
 class IFMeshLine(IFMeshAttr):
 	"""
-	line mesh attribute 
+	A line mesh attribute specifies the type and arrangement of elements to be meshed along a line feature. Typically these  are "Bars", "Beams" and "Grillage" elements but joint elements can also be used to connect two lines along their lengths. For 2D problems "Interface" elements can be used to model soil structure interaction. For a complete list of available elements consult the element reference manual. 
 	"""
 
 	def setEndRelease(self, whichEnd, dof, releaseType, fixityValue=None) -> IFMeshLine:
@@ -23011,13 +23011,13 @@ class IFMeshLine(IFMeshAttr):
 		pass
 
 
-	def getMeshDivisions(self, pType) -> object:
+	def getMeshDivisions(self, pType) -> list:
 		r"""
 		Return the mesh spacing. Operation is best described by an example, as below 
 		Params:
 			pType (int): type code
 		Returns:
-			float: array depending on the value of pType
+			array: array depending on the value of pType
 		"""
 		pass
 
@@ -23114,7 +23114,7 @@ class IFMeshLine(IFMeshAttr):
 
 class IFMeshSurface(IFMeshAttr):
 	"""
-	surface mesh attribute 
+	A surface mesh attribute specifies the type and arrangement of elements to be meshed along a surface feature. Typically these are "Shells" in 3D problems or Joint elements to connect two surfaces together. For 2D-Inplane, plane stress or plane strain elements are more typical. For a complete list of available elements consult the element reference manual. 
 	"""
 
 	def setRegular(self, element, xDivisions=None, yDivisions=None, transition=None) -> IFMeshSurface:
@@ -23170,7 +23170,7 @@ class IFMeshSurface(IFMeshAttr):
 
 class IFMeshVolume(IFMeshAttr):
 	"""
-	volume mesh attribute 
+	A volume mesh attribute specifies the type and arrangement of elements to be meshed along a volume feature. Typically these are "continuum" elements and are only applicable in 3D problems. For a complete list of available elements consult the element reference manual. 
 	"""
 
 	def setRegular(self, element, xDivisions=None, yDivisions=None, zDivisions=None, transition=None) -> IFMeshVolume:
@@ -23540,7 +23540,7 @@ class IFAboutAxisTransAttr(IFTransformationAttr):
 
 class IFVariationAttr(IFAttribute):
 	"""
-	 
+	Base class for all variation utilities. A variation allows specified values to vary over a defined domain. Typical examples include variation of geometric properties such as thickness in a surface or loading applied over the model. See the derived classes for specific types of variation. 
 	"""
 
 class IFDataset(IFAttribute):
@@ -23971,7 +23971,7 @@ class IFProfileVariation(IFVariationAttr):
 
 class IFGeometric(IFAttribute):
 	"""
-	 
+	Base class for all geometric attributes  
 	"""
 
 	def setTransparent(self, isTrans) -> IFAttribute:
@@ -23996,7 +23996,7 @@ class IFGeometric(IFAttribute):
 
 class IFGeometricLine(IFGeometric):
 	"""
-	Setup beam geometric attribute 
+	Defines all geometric properties for elements meshed along lines, such as bars and beams. Required properties depend on the elemnt type. 
 	"""
 
 	def setBeam(self, A, Iyy, Izz, Iyz, J, Asz, Asy, ey=None, ez=None, section=None) -> IFGeometricLine:
@@ -25774,17 +25774,8 @@ class IFSurfaceRadiation(IFAttribute):
 
 class IFSearchArea(IFAttribute):
 	"""
-	search area attribute 
+	Search areas are used to restrict the area of application of discrete point and patch loads. They are used for example in the moving load analyses to ensure the loads are projected onto the correct area of the model. 
 	"""
-
-	def setSearch(self) -> IFSearchArea:
-		r"""
-		empty place holder in case one day we have extra params or different subtypes 
-		Returns:
-			IFSearchArea: 
-		"""
-		pass
-
 
 class IFAge(IFAttribute):
 	"""
@@ -32661,7 +32652,7 @@ class IFTendonProperties(IFAttribute):
 
 	def setDesignCode(self, designCode, timeEffects=None) -> None:
 		r"""
-		Set the design code for this properties object Design codes currently supported for "time inputs" are:, "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:2004 / 2014 Eurocode 2", "IRC:112-2011", "CEB-FIP Model Code 1990", "JTG 3362-2018", "fib Model Code 2010" and "AS5100-2017" Design codes currently supported for "input stresses" are: "AASHTO LRFD 2nd Edition", "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:1992 Eurocode 2", "EN1992-1-1:2004 / 2014 Eurocode 2", "BS5400-4:1990", "JTG D62-2004"  
+		Set the design code for this properties object. Design codes currently supported for "time inputs" are: "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:2004 / 2014 Eurocode 2", "IRC:112-2011", "CEB-FIP Model Code 1990", "JTG 3362-2018", "fib Model Code 2010" and "AS5100-2017" Design codes currently supported for "input stresses" are: "AASHTO LRFD 2nd Edition", "AASHTO LRFD 5th -> 7th Editions", "AASHTO LRFD 8th -> 9th Editions", "EN1992-1-1:1992 Eurocode 2", "EN1992-1-1:2004 / 2014 Eurocode 2", "BS5400-4:1990", "JTG D62-2004"  
 		Params:
 			designCode (str): 
 			timeEffects (bool, optional): True: Losses based on time inputs and calculated stresses. False: Approximate losses, requiring input of estimated stresses
@@ -34061,7 +34052,7 @@ class IFPileMaterialLayup(IFMaterial):
 
 class IFEigenControl(IFControl):
 	"""
-	 
+	An Eigen Control is used to specify that the loadcase should be solved to determine the eigenvalues. It should be attached to the first loadcase in an analysis 
 	"""
 
 	def getSolutionType(self) -> str:
@@ -34168,12 +34159,12 @@ class IFFourierControl(IFControl):
 
 class IFTransientControl(IFControl):
 	"""
-	 
+	A Transient Control is used to specify that the loadcase is part of a nonlinear or time-dependant analysis It should be attached to the first loadcase in an analysis but may also be attacehd to subsequent loadcases to further control the analysis. 
 	"""
 
 	def setNonlinearManual(self) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the nonlinear incrementation to manual, which means that loading data in each loadcase is specified separately. 
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34182,9 +34173,9 @@ class IFTransientControl(IFControl):
 
 	def setNonlinearAutomatic(self, startLoadFactor) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the nonlinear incrementation to automatic. 
 		Params:
-			startLoadFactor (float): 
+			startLoadFactor (float): starting load factor
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34193,7 +34184,7 @@ class IFTransientControl(IFControl):
 
 	def removeNonlinear(self) -> IFTransientControl:
 		r"""
-		 
+		Deactivates the nonlinear incrementation. 
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34211,9 +34202,9 @@ class IFTransientControl(IFControl):
 
 	def setTimeDomainConsolidation(self, initialTimeStep) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the time domain to "Two Phase". The min/max time step and total responce parameters can be set through the following control values: MinTimeStepFactor, MaxTimeStepFactor, TotalResponseTime 
 		Params:
-			initialTimeStep (float): 
+			initialTimeStep (float): initial time step in model units seconds
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34222,10 +34213,10 @@ class IFTransientControl(IFControl):
 
 	def setTimeDomainDynamics(self, initialTimeStep, IsExplicit=None) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the time domain to "Implicit Dynamics" or "Explicit Dynamics". The min/max time step and total responce parameters can be set through the following control values: MinTimeStepFactor, MaxTimeStepFactor, TotalResponseTime 
 		Params:
-			initialTimeStep (float): 
-			IsExplicit (bool, optional): 
+			initialTimeStep (float): initial time step in model units seconds
+			IsExplicit (bool, optional): true for explicit, false for implicit
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34234,7 +34225,7 @@ class IFTransientControl(IFControl):
 
 	def setTimeDomainThermal(self, initialTimeStep) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the time domain to "Thermal". The min/max time step and total responce parameters can be set through the following control values: MinTimeStepFactor, MaxTimeStepFactor, TotalResponseTime 
 		Params:
 			initialTimeStep (float): 
 		Returns:
@@ -34245,9 +34236,9 @@ class IFTransientControl(IFControl):
 
 	def setTimeDomainViscous(self, initialTimeStep) -> IFTransientControl:
 		r"""
-		 
+		Enables and sets the time domain to "Viscous". The min/max time step and total responce parameters can be set through the following control values: MinTimeStepFactor, MaxTimeStepFactor, TotalResponseTime 
 		Params:
-			initialTimeStep (float): initial time step in seconds
+			initialTimeStep (float): initial time step in model units seconds
 		Returns:
 			IFTransientControl: 
 		"""
@@ -34426,7 +34417,7 @@ class IFPreLoadset(IFLoadset):
 
 class IFLoadcase(IFPreLoadset):
 	"""
-	LPI access to the loadcase objects visible in LUSAS Modeller's loadcase treeview. Each loadcase may have one or more controls attached to it. Each control is independently accessed as an object, and has its own section of the LPI 
+	LPI access to the loadcase objects visible in LUSAS Modeller's analyses treeview. Each loadcase may have one or more controls attached to it. Each control is independently accessed as an object, and has its own section of the LPI 
 	"""
 
 	def moveAfter(self, ID, updateCombs=None) -> IFLoadcase:
@@ -34456,7 +34447,7 @@ class IFLoadcase(IFPreLoadset):
 		r"""
 		Create or modify the transient/non-linear control attached to this loadcase 
 		Params:
-			maxTimeSteps (int): 
+			maxTimeSteps (int): maximum number of time steps (use 0 for unlimited)
 		Returns:
 			IFLoadcase: 
 		"""
@@ -37707,7 +37698,7 @@ class IFPrintResultsWizard(IFAttribute):
 		r"""
 		Gets the list of loadcases to be reported upon. Note that any loadcases previously specified, but not currently present (e.g. if results are not loaded) will not be in the returned array, but will still form part of the print results wizard 
 		Returns:
-			array of IFLoadcase objects: the returned array
+			array of IFLoadcase: the returned array
 		"""
 		pass
 
@@ -38560,7 +38551,7 @@ class IFScriptedResultsComponentSet(IFResultsComponentSet):
 
 class IFPrimaryScriptedResultsComponentSet(IFScriptedResultsComponentSet):
 	"""
-	a container for scripted results components This object allows you to set up components, prior to supplying actual results values. When the user asks for results (via contours, print results wizard, etc), the callback module will be asked to supply the actual values. 
+	A container for scripted results components. This object allows you to set up components, prior to supplying actual results values. When the user asks for results (via contours, print results wizard, etc), the callback module will be asked to supply the actual values. 
 	"""
 
 	def setUniqueID(self, idStr) -> None:
@@ -45091,7 +45082,7 @@ class IFAnalysis(IFAnalysisBaseClass):
 		r"""
 		Gets the list of loadcases belonging directly to the analysis. Branches, loadcurves and loadsets other than loadcases are ignored. 
 		Returns:
-			array of IFLoadcase objects: the returned array
+			array of IFLoadcase: the returned array
 		"""
 		pass
 
@@ -48307,7 +48298,7 @@ All other objects in the LPI are accessed through these global variables and fun
 
 	def getUnitSet(self, name) -> IFUnitSet:
 		r"""
-		Returns a set of units previously created using IFModeller.createUnitSet A search is carried out to find a set of units with the given name. To get all defined unitSets use IFDatabase.getUnitSets. Note that model units should be got using IFDatabase.getModelUnits. 
+		Returns a set of units previously created using IFModeller.createUnitSet A search is carried out to find a set of units with the given name. To get all defined unitSets use IFModeller.getUnitSets. Note that model units should be got using IFDatabase.getModelUnits. 
 		Params:
 			name (str): name of unit set to search for
 		Returns:
