@@ -48307,7 +48307,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
-	def getUnitSets(self) -> list:
+	def getUnitSets(self) -> list[IFUnitSet]:
 		r"""
 		Returns an array of all IFUnitSet previously created using IFModeller.createUnitSet. 
 		Returns:
@@ -48995,8 +48995,7 @@ All other objects in the LPI are accessed through these global variables and fun
 		pass
 
 
+
 import win32com.client as win32
-
-
 def get_lusas_modeller() -> IFModeller:
-	return win32.dynamic.Dispatch('Lusas.Modeller.22.0')
+	return win32.gencache.EnsureDispatch('Lusas.Modeller.22.0')
