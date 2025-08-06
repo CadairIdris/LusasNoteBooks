@@ -503,3 +503,11 @@ def set_creep_analysis(loadcase:IFLoadcase, no_time_steps:int, time_step:float, 
         # Exponent by which time steps increase
         control.setValue("CEBFIP", time_step_exponent)
 
+
+def get_line_between_points(p1:IFPoint, p2:IFPoint) -> IFLine:
+    """Gets the line between two points"""
+    for hof in p1.getHOFs():
+        if hof.getTypeCode() == 2:
+            line = win32.CastTo(hof, "IFLine")
+            if line.getStartPoint() == p2 or line.getEndPoint() == p2:
+                return line
