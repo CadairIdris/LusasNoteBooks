@@ -53,7 +53,7 @@ def create_line_by_coordinates(x1:float, y1:float, z1:float, x2:float, y2:float,
     geometry_data.setCreateMethod("straight")
     geometry_data.addCoords(x1, y1, z1)
     geometry_data.addCoords(x2, y2, z2)
-    newLine:IFLine = lusas.database().createLine(geometry_data).getObjects("Line")[0]
+    newLine:IFLine = lusas.database().createLine(geometry_data).getObject("Line")
     return newLine
 
 
@@ -120,7 +120,7 @@ def create_surface_by_coordinates(x:list[float], y:list[float], z:list[float]) -
     geometry_data.setLowerOrderGeometryType("coordinates")
     for i in range(len(x)):
         geometry_data.addCoords(x[i], y[i], z[i])
-    surf : IFSurface = lusas.db().createSurface(geometry_data).getObjects("Surface")[0]
+    surf : IFSurface = lusas.db().createSurface(geometry_data).getObject("Surface")
     return surf
 
 
