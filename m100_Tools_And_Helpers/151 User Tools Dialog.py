@@ -4,7 +4,7 @@
 import User_Tools_Library as lib
 from tkinter import *
 import sys; sys.path.append('../') # Reference modules in parent directory
-from LPI_22_0 import *
+from LPI import *
 lusas = get_lusas_modeller()
 
 root = Tk()

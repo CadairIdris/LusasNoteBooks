@@ -1,7 +1,7 @@
 # This file provides the functionality behind the dialog in #150
 
 import ctypes  # An included library with Python install.
-from LPI_22_0 import *
+from LPI import *
 
 def msgbox(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
