@@ -53,8 +53,9 @@ def create_line_by_coordinates(x1:float, y1:float, z1:float, x2:float, y2:float,
     geometry_data.setCreateMethod("straight")
     geometry_data.addCoords(x1, y1, z1)
     geometry_data.addCoords(x2, y2, z2)
-    newLine:IFLine = lusas.database().createLine(geometry_data).getObject("Line")
-    return newLine
+
+    return win32.CastTo(lusas.database().createLine(geometry_data).getObject("Line"), 'IFLine')
+
 
 
 def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
@@ -120,8 +121,8 @@ def create_surface_by_coordinates(x:list[float], y:list[float], z:list[float]) -
     geometry_data.setLowerOrderGeometryType("coordinates")
     for i in range(len(x)):
         geometry_data.addCoords(x[i], y[i], z[i])
-    surf : IFSurface = lusas.db().createSurface(geometry_data).getObject("Surface")
-    return surf
+    
+    return win32.CastTo(lusas.db().createSurface(geometry_data).getObject("Surface"), 'IFSurface')
 
 
 def create_surface_from_points(points:'list[IFPoint]') -> 'IFSurface':
@@ -180,7 +181,7 @@ def create_volume_by_surfaces(surfaces:list[IFSurface]) -> IFVolume:
     surfsObj = lusas.newObjectSet()
     surfsObj.add(surfaces)
     # Create the volume using the surfaces
-    return lusas.db().createVolume(geometry_data).getObject("Volume")
+    return win32.CastTo(lusas.db().createVolume(geometry_data).getObject("Volume"), 'IFVolume')
 
 
 def sweep_points(pnts:list[IFPoint], vector: list[float]) -> list[IFLine]:
@@ -445,7 +446,7 @@ def create_circular_section(db:'IFDatabase', name:str, dia:float) -> 'IFGeometri
 
 
 def create_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:float) -> 'IFGeometricLine':
-    """Creates a geometric attribute based on a parametric rectandular definition
+    """Creates a geometric attribute based on a parametric rectangular definition
 
     Args:
         db (IFDatabase): Reference to the database
@@ -462,6 +463,46 @@ def create_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:f
     return db.createGeometricLine(name).setFromLibrary("Utilities", "", name, 0, 0, 0)
     
 
+def create_hollow_rectangular_section(db:'IFDatabase', name:str, breadth:float, depth:float, thk:float, ri:float, ro:float) -> 'IFGeometricLine':
+    """Creates a geometric attribute based on a parametric rectangular hollow definition
+
+    Args:
+        db (IFDatabase): Reference to the database
+        name (str): Name of the attribute to be created
+        breadth (float): Breadth of the section
+        depth (float): Depth of the section
+        thk (float): Thickness of the section
+        ri (float): Radius inner of the section
+        ro (float): Radius outer of the section
+
+    Returns:
+        IFGeometricLine: Reference to the created geometric attribute
+    """    
+    util = db.createParametricSection(name).setType("Rectangular Hollow")
+    util.setDimensions(['B', 'D', 't', 'ri', 'ro'], [breadth, depth, thk, ri, ro])
+
+    return db.createGeometricLine(name).setFromLibrary("Utilities", "", name, 0, 0, 0)
+
+
+def create_equal_I_section(db:'IFDatabase', name:str, breadth:float, depth:float, tf:float, tw:float, r:float=0) -> 'IFGeometricLine':
+    """Creates a geometric attribute based on a parametric rectangular hollow definition
+
+    Args:
+        db (IFDatabase): Reference to the database
+        name (str): Name of the attribute to be created
+        breadth (float): Breadth of the section
+        depth (float): Depth of the section
+        tf (float): Thickness of the flange
+        tw (float): Thickness of the web
+        r (float): Radius of the fillets
+
+    Returns:
+        IFGeometricLine: Reference to the created geometric attribute
+    """    
+    util = db.createParametricSection(name).setType("I")
+    util.setDimensions(['B', 'D', 'tf', 'tw', 'r'], [breadth, depth, tf, tw, 0.0])
+
+    return db.createGeometricLine(name).setFromLibrary("Utilities", "", name, 0, 0, 0)
 
 
 def get_loadcase(id:int) -> IFLoadcase:
@@ -504,10 +545,10 @@ def set_creep_analysis(loadcase:IFLoadcase, no_time_steps:int, time_step:float, 
         control.setValue("CEBFIP", time_step_exponent)
 
 
-def get_line_between_points(p1:IFPoint, p2:IFPoint) -> IFLine:
+def get_line_between_points(p1:IFPoint, p2:IFPoint) -> IFLine: # type: ignore
     """Gets the line between two points"""
     for hof in p1.getHOFs():
         if hof.getTypeCode() == 2:
-            line = win32.CastTo(hof, "IFLine")
+            line:IFLine = win32.CastTo(hof, "IFLine")
             if line.getStartPoint() == p2 or line.getEndPoint() == p2:
                 return line
