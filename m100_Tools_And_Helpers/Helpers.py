@@ -80,6 +80,34 @@ def create_line_from_points(p1:'IFPoint', p2:'IFPoint') -> 'IFLine':
     return win32.CastTo(obs.createLine(geom_data).getObject("Line"), "IFLine")
 
 
+def create_spline_from_points(points:list[IFPoint], splitLine:bool) -> IFObjectSet:
+    """Helper function to create a spline from a list of point objects
+
+    Args:
+        points (list[IFPoint]): Points defining the spline
+        splitLine (bool): Option to split the line 
+
+    Returns:
+        IFObjectSet: ObjectSet containing the created spline or splines when split
+    """    
+    # geometryData object contains all the settings to perform a geometry creation
+    geom_data = lusas.geometryData().setAllDefaults()         
+    # set the options for creating spline lines from points
+    geom_data.setCreateMethod("spline").setLowerOrderGeometryType("points").useSelectionOrder(True)        
+    # Create an object set to contain the points and use this set to create the line
+    obs = lusas.newObjectSet().add(points)              
+    # Create the spline
+    splineObjectSet = obs.createLine(geom_data)
+
+    if splitLine:
+        # Split the line at the points        
+        geom_data.setAllDefaults()
+        splineObjectSet.add(points)
+        return splineObjectSet.splitLine(geom_data)
+    else:
+        return splineObjectSet
+
+
 def create_line(p1:list, p2:list) -> 'IFLine':
     """Helper function to create a straight line from two point coordinates defined 
 
