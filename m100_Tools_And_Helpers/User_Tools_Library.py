@@ -1,5 +1,5 @@
 # This file provides the functionality behind the dialog in #150
-
+import sys; sys.path.append('../') # Reference modules in parent directory
 import ctypes  # An included library with Python install.
 from LPI import *
 
@@ -78,7 +78,37 @@ def match_assignments_line(copy_mesh:bool):
 
         if copy_mesh: # Causes re-mesh
             __copy_assignments(lines, "Mesh")	
-			
+
+
+def select_surfaces_with_no_material_assignments():
+    slection = lusas.selection()
+    slection.remove("all")
+    surface : IFSurface
+    for surface in lusas.db().getObjects("Surface"):
+         
+         assigns = surface.getAssignments("Material")
+         if len(assigns) == 0:
+              slection.add(surface)
+
+
+def boolean_union():
+    lusas.geometryData().setAllDefaults().setBooleanDeleteSecondary(False)
+    lusas.selection().booleanUnion()
+
+def align_surface_normals_to_global_z():
+    surface:IFSurface
+    objs = lusas.newObjectSet()
+    for surface in lusas.selection().getObjects("Surface"):
+         xyz = surface.getNormal()
+
+         if(xyz[2] < 0):
+            objs.add(surface)
+    geom_data = lusas.geometryData().setAllDefaults()
+    geom_data.cycleReverse(True)
+    geom_data.setReverseKeepX(True)
+    geom_data.cycleReset(True)
+    objs.reverse(geom_data)
+              
 
 
 # %%
