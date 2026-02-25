@@ -81,14 +81,14 @@ def match_assignments_line(copy_mesh:bool):
 
 
 def select_surfaces_with_no_material_assignments():
-    slection = lusas.selection()
-    slection.remove("all")
+    selection = lusas.selection()
+    selection.remove("all")
     surface : IFSurface
     for surface in lusas.db().getObjects("Surface"):
          
          assigns = surface.getAssignments("Material")
          if len(assigns) == 0:
-              slection.add(surface)
+              selection.add(surface)
 
 
 def boolean_union():
