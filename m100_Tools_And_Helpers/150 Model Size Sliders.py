@@ -8,9 +8,13 @@ lusas = get_lusas_modeller()
 
 
 def set_support_size(size:int):
+    size = int(size)
     lusas.view().insertAttributesLayer()
-    lusas.view().getAttributesLayer().visualiseAll("Supports")
-    lusas.view().getAttributesLayer().setMaxArrowSize("Supports", int(size))
+    if size > 0:
+        lusas.view().getAttributesLayer().visualiseAll("Supports")
+        lusas.view().getAttributesLayer().setMaxArrowSize("Supports", size)        
+    else:
+        lusas.view().getAttributesLayer().visualiseNone("Supports")
 
 
 def set_load_arrow_size(size:int):
@@ -19,6 +23,11 @@ def set_load_arrow_size(size:int):
     lusas.view().getAttributesLayer().setMaxArrowSize("Loading", int(size))
     lusas.view().getAttributesLayer().setArrowHeadSize("Loading", int(size)/3)
 
+def set_projection_vector_scale(size:float):
+    lusas.database().options().setDouble("dscrteProjVectDrawMultipier", float(size)/100)
+    # lusas.view().getAttributesLayer().visualiseAll("Loading")
+    # lusas.view().getAttributesLayer().setMaxArrowSize("Loading", int(size))
+    # lusas.view().getAttributesLayer().setArrowHeadSize("Loading", int(size)/3)
 
 def set_deformed_mesh_size(size:int):
     lusas.view().insertDeformLayer()
@@ -44,6 +53,9 @@ Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_support_s
 
 Label(root, text='Load Size').pack()
 Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_load_arrow_size).pack()
+
+Label(root, text='Projection Vector Scale').pack()
+Scale(root, from_=0, to=200, orient=HORIZONTAL, length=200, command=set_projection_vector_scale).pack()
 
 Label(root, text='Deformed Mesh Size').pack()
 Scale(root, from_=0, to=20, orient=HORIZONTAL, length=200, command=set_deformed_mesh_size).pack()
